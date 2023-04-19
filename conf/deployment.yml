@@ -1,0 +1,100 @@
+# Custom section is used to store configurations that might be repetative.
+# Please read YAML documentation for details on how to use substitutions and anchors.
+custom:
+  basic-cluster-props: &basic-cluster-props
+    spark_version: "10.4.x-cpu-ml-scala2.12"
+
+  basic-static-cluster: &basic-static-cluster
+    new_cluster:
+      <<: *basic-cluster-props
+      num_workers: 1
+      node_type_id: "i3.xlarge"
+
+environments:
+  default:
+    workflows:
+      #######################################################################################
+      #   Example workflow for integration tests                                            #
+      #######################################################################################
+      - name: "packaged-poc-mlops-sample-tests"
+        tasks:
+          - task_key: "main"
+            <<: *basic-static-cluster
+            spark_python_task:
+                python_file: "file://tests/entrypoint.py"
+                # this call supports all standard pytest arguments
+                parameters: ["file:fuse://tests/integration", "--cov=packaged_poc"]
+      #######################################################################################
+      # this is an example job with single ETL task based on 2.1 API and wheel_task format #
+      ######################################################################################
+      - name: "packaged-poc-mlops-sample-etl"
+        tasks:
+          - task_key: "main"
+            <<: *basic-static-cluster
+            python_wheel_task:
+              package_name: "packaged_poc"
+              entry_point: "etl" # take a look at the setup.py entry_points section for details on how to define an entrypoint
+              parameters: ["--conf-file", "file:fuse://conf/tasks/sample_etl_config.yml"]
+      #############################################################
+      # this is an example multitask job with notebook task       #
+      #############################################################
+      - name: "packaged-poc-mlops-sample-multitask"
+        job_clusters:
+          - job_cluster_key: "default"
+            <<: *basic-static-cluster
+        tasks:
+          - task_key: "etl"
+            job_cluster_key: "default"
+            spark_python_task:
+              python_file: "file://packaged_poc/tasks/sample_etl_task.py"
+              parameters: [ "--conf-file", "file:fuse://conf/tasks/sample_etl_config.yml" ]
+          - task_key: "ml"
+            depends_on:
+              - task_key: "etl"
+            job_cluster_key: "default"
+            python_wheel_task:
+              package_name: "packaged_poc"
+              entry_point: "ml"
+              parameters: [ "--conf-file", "file:fuse://conf/tasks/sample_ml_config.yml" ]
+          ###############################################################################
+          # this is an example task based on the notebook                               #
+          # Please note that first you'll need to add a Repo and commit notebook to it. #
+          ###############################################################################
+          - task_key: "notebook"
+            deployment_config:
+              no_package: true # we omit using package since code will be shipped directly from the Repo
+            depends_on:
+              - task_key: "ml"
+            job_cluster_key: "default"
+            notebook_task:
+              notebook_path: "/Repos/Staging/packaged_poc/notebooks/sample_notebook"
+
+      - name: "setup_data"
+        tasks:
+          - task_key: "main"
+            <<: *basic-static-cluster
+            spark_python_task:
+              python_file: "file://packaged_poc/cali_housing_mlops/pipelines/setup_data_job.py"
+              parameters: ["--conf-file", "file:fuse://conf/cali_housing_mlops/pipelines/setup_data.yml"]
+
+  dev:
+    workflows:
+      - name: "setup_data"
+        tasks:
+          - task_key: "main"
+            <<: *basic-static-cluster
+            spark_python_task:
+              python_file: "file://packaged_poc/cali_housing_mlops/pipelines/setup_data_job.py"
+              parameters: [
+                "--base-data-params", "file:fuse://conf/cali_housing_mlops/.base_data_params.yml",
+                "--env", "file:fuse://conf/cali_housing_mlops/dev/.dev.env",
+                "--conf-file", "file:fuse://conf/cali_housing_mlops/pipelines/setup_data.yml"]
+
+      - name: "setup_data"
+        git_source:
+          git_url: 
+          git_provider: "github"
+          git_branch: "main"
+        tasks:
+          - task_key: "main"
+            <<: *basic-static-cluster

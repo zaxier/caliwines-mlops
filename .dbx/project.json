@@ -1,0 +1,39 @@
+{
+    "environments": {
+        "default": {
+            "profile": "DEFAULT",
+            "storage_type": "mlflow",
+            "properties": {
+                "workspace_directory": "/Shared/dbx/packaged_poc",
+                "artifact_location": "dbfs:/Shared/dbx/projects/packaged_poc"
+            }
+        },
+        "dev": {
+            "profile": "aws-dev",
+            "storage_type": "mlflow",
+            "properties": {
+                "workspace_directory": "/Shared/zaxier/packaged-poc/dev/",
+                "artifact_location": "dbfs:/Shared/zaxier/packaged-poc/dev/dbx/artifacts"
+            }
+        },
+        "staging": {
+            "profile": "aws-staging",
+            "storage_type": "mlflow",
+            "properties": {
+                "workspace_directory": "/Shared/zaxier/packaged-poc/staging/",
+                "artifact_location": "dbfs:/Shared/zaxier/packaged-poc/staging/dbx/artifacts"
+            }
+        },
+        "prod": {
+            "profile": "aws-prod",
+            "storage_type": "mlflow",
+            "properties": {
+                "workspace_directory": "/Shared/zaxier/packaged-poc/prod/",
+                "artifact_location": "dbfs:/Shared/zaxier/packaged-poc/prod/dbx/artifacts"
+            }
+        }
+    },
+    "inplace_jinja_support": false,
+    "failsafe_cluster_reuse_with_assets": false,
+    "context_based_upload_for_execute": false
+}

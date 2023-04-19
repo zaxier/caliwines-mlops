@@ -1,0 +1,9 @@
+input:
+  catalog: "catlaog_b"
+  database: "sklearn_db"
+  table: "sklearn_housing"
+# experiment: "/Shared/charming-afro_experiment"
+experiment: "/zaxier_test/sklearn_housing_experiment"
+
+catalog:
+  name: "variable"

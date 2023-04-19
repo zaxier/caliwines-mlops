@@ -1,0 +1,3 @@
+model_comparison_params:
+  metric: 'r2_score' # You can edit the comparison metric in the ModelEvaluation class
+  higher_is_better: True
