@@ -35,30 +35,6 @@ def load_and_set_env_vars(env: str) -> Dict[str, Any]:
     return os_dict
 
 
-def load_and_set_env_vars_with_project(env: str, project: str) -> Dict[str, Any]:
-    """
-    Utility function to use in Databricks notebooks to load .env files and set them via os
-    Return a dict of set environment variables
-    Parameters
-    ----------
-    env : str
-        Name of deployment environment. One of
-    Returns
-    -------
-    Dictionary of set environment variables
-    """
-    env_vars_path = os.path.join(relative_root, "conf", project, env, f".{env}.env")
-    dotenv.load_dotenv(env_vars_path)
-
-    base_data_vars_vars_path = os.path.join(relative_root, "conf", project, ".base_data_params.env")
-    dotenv.load_dotenv(base_data_vars_vars_path)
-
-    os_dict = dict(os.environ)
-    pprint.pprint(os_dict)
-
-    return os_dict
-
-
 def load_config_depr(pipeline_name) -> Dict[str, Any]:
     """
     Utility function to use in Databricks notebooks to load the config yaml file for a given pipeline
@@ -93,8 +69,7 @@ def load_config(pipeline_name, project) -> Dict[str, Any]:
     Dictionary of config params
     """
     config_path = os.path.join(
-        os.pardir,
-        os.pardir,
+        relative_root,
         "conf",
         project,
         "pipeline_configs",
