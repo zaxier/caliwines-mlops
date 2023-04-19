@@ -23,7 +23,7 @@ from packaged_poc.utils.notebook_utils import load_config, load_and_set_env_vars
 # COMMAND ----------
 # DBTITLE 1,Load Config
 pipeline_config = load_config(pipeline_name="setup_data", project="cali_housing_mlops")
-env_vars = load_and_set_env_vars(env=dbutils.widgets.get("env"), project="cali_housing_mlops")
+env_vars = load_and_set_env_vars(env=dbutils.widgets.get("env"))
 
 # COMMAND ----------
 # DBTITLE 1,Setup Pipeline Config
