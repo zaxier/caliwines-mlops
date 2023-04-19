@@ -5,7 +5,7 @@ import mlflow
 
 from packaged_poc.utils.get_spark import spark
 from packaged_poc.utils.logger_utils import get_logger
-from packaged_poc.common_new2 import MetastoreTable
+from packaged_poc.common import MetastoreTable
 
 _logger = get_logger()
 

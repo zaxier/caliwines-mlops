@@ -4,7 +4,7 @@ from sklearn.model_selection import train_test_split
 import pyspark.sql.dataframe
 from typing import List, Tuple
 
-from packaged_poc.common_new2 import MetastoreCatalog, MetastoreTable, MetastoreSchema
+from packaged_poc.common import MetastoreCatalog, MetastoreTable, MetastoreSchema
 from packaged_poc.utils.fetch_sklearn_datasets import (
     SklearnDataFetcher,
     SklearnDataFetcherConfig,

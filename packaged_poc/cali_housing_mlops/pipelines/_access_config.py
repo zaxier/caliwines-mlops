@@ -1,4 +1,4 @@
-from packaged_poc.common_new2 import Workload
+from packaged_poc.common import Workload
 
 
 class AccessConfig(Workload):

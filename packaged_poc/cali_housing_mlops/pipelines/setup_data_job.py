@@ -5,7 +5,7 @@ from packaged_poc.cali_housing_mlops.setup_data import (
     SetupCaliHousingMLops,
     SetupCaliHousingMLopsConfig,
 )
-from packaged_poc.common_new2 import Workload, MetastoreTable
+from packaged_poc.common import Workload, MetastoreTable
 
 
 class SetupCaliHousingMLopsJob(Workload):

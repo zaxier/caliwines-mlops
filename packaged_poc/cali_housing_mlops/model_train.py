@@ -10,7 +10,7 @@ import mlflow
 from mlflow.models import infer_signature
 from mlflow.tracking import MlflowClient
 
-from packaged_poc.common_new2 import MetastoreTable
+from packaged_poc.common import MetastoreTable
 from packaged_poc.utils.logger_utils import get_logger
 from packaged_poc.utils.get_spark import spark
 from packaged_poc.utils.notebook_utils import load_and_set_env_vars, load_config

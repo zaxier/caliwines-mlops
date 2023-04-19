@@ -37,3 +37,5 @@ mlruns/
 # Environment variables
 .env
 .env*
+
+.databricks

@@ -1,4 +1,4 @@
-# Databricks source notebook
+# Databricks notebook source
 # MAGIC %md
 # MAGIC # `model_deployment`
 # MAGIC
@@ -25,12 +25,8 @@ from packaged_poc.common import MetastoreTable
 
 # COMMAND ----------
 # DBTITLE 1,Load Config
-pipeline_config = load_config(
-    pipeline_name="model_deployment", project="cali_housing_mlops"
-)
-env_vars = load_and_set_env_vars(
-    env=dbutils.widgets.get("env"), project="cali_housing_mlops"
-)
+pipeline_config = load_config(pipeline_name="model_deployment", project="cali_housing_mlops")
+env_vars = load_and_set_env_vars(env=dbutils.widgets.get("env"), project="cali_housing_mlops")
 
 # COMMAND ----------
 # DBTITLE 1,Setup Pipeline Config

@@ -6,7 +6,7 @@ import mlflow
 from mlflow import MlflowClient
 import pandas as pd
 
-from packaged_poc.common_new2 import MetastoreTable
+from packaged_poc.common import MetastoreTable
 from packaged_poc.cali_housing_mlops.model_train import MLflowTrackingConfig
 from packaged_poc.cali_housing_mlops.model_inference import ModelInference
 from packaged_poc.cali_housing_mlops.evaluation_utils import ModelEvaluation

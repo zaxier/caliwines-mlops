@@ -28,10 +28,11 @@ class MetastoreTable:
     - Read the table as a Spark DataFrame
     """
 
-    def __init__(self, catalog: str, schema: str, name: str) -> None:
+    def __init__(self, catalog: str, schema: str, table: str) -> None:
         self.catalog = catalog
         self.schema = schema
-        self.name = name
+        self.name = table
+        self.table = table
         self.ref = self._get_ref()
         self.short_ref = self._get_short_ref()
 

@@ -1,6 +1,6 @@
 from typing import Dict
 
-from packaged_poc.common_new2 import Workload, MetastoreTable
+from packaged_poc.common import Workload, MetastoreTable
 
 from packaged_poc.cali_housing_mlops.model_inference import ModelInference
 

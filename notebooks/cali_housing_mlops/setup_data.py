@@ -6,8 +6,7 @@
 
 # COMMAND ----------
 # DBTITLE 1,install requirement here if necessary
-# MAGIC %md
-# MAGIC `%pip install -r ../requirements.txt`
+# MAGIC %pip install -r ../../requirements.txt
 
 # COMMAND ----------
 dbutils.widgets.dropdown("env", "dev", ["dev", "staging", "prod"], "Environment Name")
@@ -19,14 +18,12 @@ from packaged_poc.cali_housing_mlops.setup_data import (
     SetupCaliHousingMLopsConfig,
     SetupCaliHousingMLops,
 )
-from packaged_poc.utils.notebook_utils import load_and_set_env_vars, load_config
+from packaged_poc.utils.notebook_utils import load_config, load_and_set_env_vars_with_project
 
 # COMMAND ----------
 # DBTITLE 1,Load Config
 pipeline_config = load_config(pipeline_name="setup_data", project="cali_housing_mlops")
-env_vars = load_and_set_env_vars(
-    env=dbutils.widgets.get("env"), project="cali_housing_mlops"
-)
+env_vars = load_and_set_env_vars_with_project(env=dbutils.widgets.get("env"), project="cali_housing_mlops")
 
 # COMMAND ----------
 # DBTITLE 1,Setup Pipeline Config
