@@ -6,7 +6,7 @@
 
 # COMMAND ----------
 # DBTITLE 1,install requirement here if necessary
-# MAGIC %pip install -r requirements.txt
+# MAGIC %pip install -r ../../requirements.txt
 
 # COMMAND ----------
 dbutils.widgets.dropdown("env", "dev", ["dev", "staging", "prod"], "Environment Name")
