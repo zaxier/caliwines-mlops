@@ -2,7 +2,7 @@
 # Please read YAML documentation for details on how to use substitutions and anchors.
 custom:
   basic-cluster-props: &basic-cluster-props
-    spark_version: "10.4.x-cpu-ml-scala2.12"
+    spark_version: "13.0.x-cpu-ml-scala2.12"
 
   basic-static-cluster: &basic-static-cluster
     new_cluster:
@@ -101,9 +101,10 @@ environments:
             deployment_config:
               no_package: true # we omit using package since code will be shipped directly from the Repo
             notebook_task:
-              notebook_path: "notebooks/cali_housing_mlops/setup_data.py"
+              notebook_path: "notebooks/cali_housing_mlops/setup_data"
               parameters: ['--base-data-params': 'file:fuse://conf/.base_data_params.env',
                            '--env', 'file:fuse://conf/dev/.dev.env',
                            '--conf-file', 'file:fuse://conf/cali_housing_pipeline_configs/setup_data.yml']
               base_parameters: {"env" : "dev"}
+            
             

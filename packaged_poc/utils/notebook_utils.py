@@ -96,7 +96,6 @@ def load_config(pipeline_name, project) -> Dict[str, Any]:
         os.pardir,
         os.pardir,
         "conf",
-        project,
         "pipeline_configs",
         f"{pipeline_name}.yml",
     )
