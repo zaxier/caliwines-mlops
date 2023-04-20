@@ -111,3 +111,5 @@ function configure_dbx_environment() {
 configure_dbx_environment dev $dev_dir $(clean_profile_name $dev_profile)
 configure_dbx_environment staging $staging_dir $(clean_profile_name $staging_profile)
 configure_dbx_environment prod $prod_dir $(clean_profile_name $prod_profile)
+
+# TODO: Add code to create cluster or update deployment file with cluster id
