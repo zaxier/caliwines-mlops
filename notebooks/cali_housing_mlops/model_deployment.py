@@ -32,7 +32,7 @@ env_vars = load_and_set_env_vars(env=dbutils.widgets.get("env"))
 mlflow_tracking_cfg = MLflowTrackingConfig(
     run_name="staging_vs_prod_comparison",
     experiment_path=env_vars["model_deploy_experiment_path"],
-    model_name=env_vars["model_name"],
+    model_name=f"{pipeline_config['mlflow_params']['model_name']}_{env_vars['env']}",
 )
 
 model_deployment_cfg = ModelDeploymentConfig(

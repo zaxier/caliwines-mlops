@@ -31,7 +31,7 @@ env_vars = load_and_set_env_vars(env=dbutils.widgets.get("env"))
 mlflow_tracking_cfg = MLflowTrackingConfig(
     run_name=pipeline_config["mlflow_params"]["run_name"],
     experiment_path=env_vars["model_train_experiment_path"],
-    model_name=env_vars["model_name"],
+    model_name=f"{pipeline_config['mlflow_params']['model_name']}_{env_vars['env']}",
 )
 
 train_table = MetastoreTable(
