@@ -4,32 +4,32 @@
             "profile": "DEFAULT",
             "storage_type": "mlflow",
             "properties": {
-                "workspace_directory": "/Shared/dbx/packaged_poc",
-                "artifact_location": "dbfs:/Shared/dbx/projects/packaged_poc"
+                "workspace_directory": "/Shared/packaged_poc/default",
+                "artifact_location": "dbfs:/Shared/packaged_poc/default/dbx/artifacts"
             }
         },
         "dev": {
-            "profile": "aws-dev",
+            "profile": "DEFAULT",
             "storage_type": "mlflow",
             "properties": {
-                "workspace_directory": "/Shared/zaxier/packaged-poc/dev/",
-                "artifact_location": "dbfs:/Shared/zaxier/packaged-poc/dev/dbx/artifacts"
+                "workspace_directory": "/Shared/packaged-poc/dev",
+                "artifact_location": "dbfs:/Shared/packaged-poc/dev/dbx/artifacts"
             }
         },
         "staging": {
-            "profile": "aws-staging",
+            "profile": "azure-field-eng-east",
             "storage_type": "mlflow",
             "properties": {
-                "workspace_directory": "/Shared/zaxier/packaged-poc/staging/",
-                "artifact_location": "dbfs:/Shared/zaxier/packaged-poc/staging/dbx/artifacts"
+                "workspace_directory": "/Shared/packaged-poc/staging",
+                "artifact_location": "dbfs:/Shared/packaged-poc/staging/dbx/artifacts"
             }
         },
         "prod": {
-            "profile": "aws-prod",
+            "profile": "aws-dev",
             "storage_type": "mlflow",
             "properties": {
-                "workspace_directory": "/Shared/zaxier/packaged-poc/prod/",
-                "artifact_location": "dbfs:/Shared/zaxier/packaged-poc/prod/dbx/artifacts"
+                "workspace_directory": "/Shared/packaged-poc/prod",
+                "artifact_location": "dbfs:/Shared/packaged-poc/prod/dbx/artifacts"
             }
         }
     },
