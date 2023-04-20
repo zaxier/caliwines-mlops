@@ -103,7 +103,7 @@ environments:
           git_branch: "master"
         tasks:
           - task_key: "main"
-            description: "a description"
+            description: "TODO"
             existing_cluster_id: "0420-014219-930j61s2"
             deployment_config:
               no_package: true # we omit using package since code will be shipped directly from the Repo
@@ -113,6 +113,89 @@ environments:
                            '--env', 'file:fuse://conf/dev/.dev.env',
                            '--conf-file', 'file:fuse://conf/cali_housing_mlops/pipeline_configs/setup_data.yml']
               base_parameters: {"env" : "dev", "job-id" : "{{job_id}}", "start-time" : "{{start_time}}" }         
-            
+
+      - name: "model_train"
+        git_source:
+          git_url: https://github.com/Zaxier/packaged-poc-mlops
+          git_provider: "github"
+          git_branch: "master"
+        tasks:
+          - task_key: "main"
+            description: " TODO "
+            existing_cluster_id: "<existing_cluster_id>"
+            deployment_config:
+              no_package: true # we omit using package since code will be shipped directly from the Repo
+            notebook_task:
+              notebook_path: "notebooks/cali_housing_mlops/model_train"
+              parameters: ['--base-data-params': 'file:fuse://conf/.base_data_params.env',
+                           '--env', 'file:fuse://conf/dev/.dev.env',
+                           '--conf-file', 'file:fuse://conf/cali_housing_mlops/pipeline_configs/model_train.yml']
+              base_parameters: {"env" : "dev", "job-id" : "{{job_id}}", "start-time" : "{{start_time}}" }         
       
+      - name: "model_deployment"
+        git_source:
+          git_url: https://github.com/Zaxier/packaged-poc-mlops
+          git_provider: "github"
+          git_branch: "master"
+        tasks:
+          - task_key: "main"
+            description: " TODO "
+            existing_cluster_id: "<existing_cluster_id>"
+            deployment_config:
+              no_package: true # we omit using package since code will be shipped directly from the Repo
+            notebook_task:
+              notebook_path: "notebooks/cali_housing_mlops/model_deployment"
+              parameters: ['--base-data-params': 'file:fuse://conf/.base_data_params.env',
+                           '--env', 'file:fuse://conf/dev/.dev.env',
+                           '--conf-file', 'file:fuse://conf/cali_housing_mlops/pipeline_configs/model_deployment.yml']
+              base_parameters: {"env" : "dev", "job-id" : "{{job_id}}", "start-time" : "{{start_time}}" }         
             
+      - name: "model_train_and_deploy"
+        git_source:
+          git_url: https://github.com/Zaxier/packaged-poc-mlops
+          git_provider: "github"
+          git_branch: "master"
+        tasks:
+          - task_key: "train"
+            description: " TODO "
+            existing_cluster_id: "<existing_cluster_id>"
+            deployment_config:
+              no_package: true # we omit using package since code will be shipped directly from the Repo
+            notebook_task:
+              notebook_path: "notebooks/cali_housing_mlops/model_train"
+              parameters: ['--base-data-params': 'file:fuse://conf/.base_data_params.env',
+                           '--env', 'file:fuse://conf/dev/.dev.env',
+                           '--conf-file', 'file:fuse://conf/cali_housing_mlops/pipeline_configs/model_train.yml']
+              base_parameters: {"env" : "dev", "job-id" : "{{job_id}}", "start-time" : "{{start_time}}" }         
+
+          - task_key: "deploy"
+            description: " TODO "
+            depends_on:
+              - task_key: "train"
+            existing_cluster_id: "<existing_cluster_id>"
+            deployment_config:
+              no_package: true # we omit using package since code will be shipped directly from the Repo
+            notebook_task:
+              notebook_path: "notebooks/cali_housing_mlops/model_deployment"
+              parameters: ['--base-data-params': 'file:fuse://conf/.base_data_params.env',
+                           '--env', 'file:fuse://conf/dev/.dev.env',
+                           '--conf-file', 'file:fuse://conf/cali_housing_mlops/pipeline_configs/model_deployment.yml']
+              base_parameters: {"env" : "dev", "job-id" : "{{job_id}}", "start-time" : "{{start_time}}" }    
+            
+      - name: "model_inference"
+              git_source:
+                git_url: https://github.com/Zaxier/packaged-poc-mlops
+                git_provider: "github"
+                git_branch: "master"
+              tasks:
+                - task_key: "main"
+                  description: " TODO "
+                  existing_cluster_id: "<existing_cluster_id>"
+                  deployment_config:
+                    no_package: true # we omit using package since code will be shipped directly from the Repo
+                  notebook_task:
+                    notebook_path: "notebooks/cali_housing_mlops/model_inference"
+                    parameters: ['--base-data-params': 'file:fuse://conf/.base_data_params.env',
+                                '--env', 'file:fuse://conf/dev/.dev.env',
+                                '--conf-file', 'file:fuse://conf/cali_housing_mlops/pipeline_configs/model_inference.yml']
+                    base_parameters: {"env" : "dev", "job-id" : "{{job_id}}", "start-time" : "{{start_time}}" }         
