@@ -8,7 +8,7 @@ import pandas as pd
 
 from packaged_poc.common import MetastoreTable
 from packaged_poc.cali_housing_mlops.model_train import MLflowTrackingConfig
-from packaged_poc.cali_housing_mlops.model_inference import ModelInference
+from packaged_poc.cali_housing_mlops.model_inference_batch import ModelInferenceBatch
 from packaged_poc.cali_housing_mlops.evaluation_utils import ModelEvaluation
 from packaged_poc.utils.get_spark import spark
 from packaged_poc.utils.logger_utils import get_logger
@@ -97,7 +97,7 @@ class ModelDeployment:
         model_uri = self._get_model_uri_by_stage(stage=stage)
         _logger.info(f"Computing batch inference using: {model_uri}")
         _logger.info(f"Reference data: {self.cfg.reference_data}")
-        model_inference = ModelInference(model_uri=model_uri, input_table=self.cfg.reference_data)
+        model_inference = ModelInferenceBatch(model_uri=model_uri, input_table=self.cfg.reference_data)
 
         return model_inference.run_batch()
 
