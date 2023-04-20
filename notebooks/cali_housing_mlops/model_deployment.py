@@ -6,8 +6,7 @@
 
 # COMMAND ----------
 # DBTITLE 1,install requirement here if necessary
-# MAGIC %md
-# MAGIC `%pip install -r ../requirements.txt`
+# MAGIC %pip install -r ../../requirements.txt
 
 # COMMAND ----------
 # DBTITLE 1,Set env
@@ -26,7 +25,7 @@ from packaged_poc.common import MetastoreTable
 # COMMAND ----------
 # DBTITLE 1,Load Config
 pipeline_config = load_config(pipeline_name="model_deployment", project="cali_housing_mlops")
-env_vars = load_and_set_env_vars(env=dbutils.widgets.get("env"), project="cali_housing_mlops")
+env_vars = load_and_set_env_vars(env=dbutils.widgets.get("env"))
 
 # COMMAND ----------
 # DBTITLE 1,Setup Pipeline Config
@@ -40,7 +39,7 @@ model_deployment_cfg = ModelDeploymentConfig(
     mlflow_tracking_cfg=mlflow_tracking_cfg,
     reference_data=MetastoreTable(
         catalog=env_vars["catalog"],
-        schema=env_vars["reference_table_schema"],
+        schema=env_vars["cali_housing_schema"],
         table=env_vars["reference_table_name"],
     ),
     comparison_metric=pipeline_config["model_comparison_params"]["metric"],

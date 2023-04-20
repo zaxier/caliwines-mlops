@@ -7,8 +7,7 @@
 
 # COMMAND ----------
 # DBTITLE 1,install requirement here if necessary
-# MAGIC %md
-# MAGIC `%pip install -r ../requirements.txt`
+# MAGIC %pip install -r ../../requirements.txt
 
 # COMMAND ----------
 dbutils.widgets.dropdown("env", "dev", ["dev", "staging", "prod"], "Environment Name")
@@ -25,9 +24,7 @@ from packaged_poc.common import MetastoreTable
 # COMMAND ----------
 # DBTITLE 1,Load Config
 pipeline_config = load_config(pipeline_name="model_train", project="cali_housing_mlops")
-env_vars = load_and_set_env_vars(
-    env=dbutils.widgets.get("env"), project="cali_housing_mlops"
-)
+env_vars = load_and_set_env_vars(env=dbutils.widgets.get("env"))
 
 # COMMAND ----------
 # DBTITLE 1,Setup Pipeline Config
@@ -39,7 +36,7 @@ mlflow_tracking_cfg = MLflowTrackingConfig(
 
 train_table = MetastoreTable(
     catalog=env_vars["catalog"],
-    schema=env_vars["train_table_schema"],
+    schema=env_vars["cali_housing_schema"],
     table=env_vars["train_table_name"],
 )
 

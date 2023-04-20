@@ -79,17 +79,6 @@ environments:
 
   dev:
     workflows:
-      - name: "setup_data_spark_python"
-        tasks:
-          - task_key: "main"
-            <<: *basic-static-cluster
-            spark_python_task:
-              python_file: "file://packaged_poc/cali_housing_mlops/pipelines/setup_data_job.py"
-              parameters: [
-                "--base-data-params", "file:fuse://conf/cali_housing_mlops/.base_data_params.yml",
-                "--env", "file:fuse://conf/cali_housing_mlops/dev/.dev.env",
-                "--conf-file", "file:fuse://conf/cali_housing_mlops/pipelines/setup_data.yml"]
-
       - name: "setup_data"
         git_source:
           git_url: https://github.com/Zaxier/packaged-poc-mlops 
@@ -105,6 +94,25 @@ environments:
               parameters: ['--base-data-params': 'file:fuse://conf/.base_data_params.env',
                            '--env', 'file:fuse://conf/dev/.dev.env',
                            '--conf-file', 'file:fuse://conf/cali_housing_mlops/pipeline_configs/setup_data.yml']
-              base_parameters: {"env" : "dev"}
+              base_parameters: {"env" : "dev", "job-id" : "{{job_id}}", "start-time" : "{{start_time}}" }
+
+      - name: "setup_data_existing_cluster"
+        git_source:
+          git_url: https://github.com/Zaxier/packaged-poc-mlops 
+          git_provider: "github"
+          git_branch: "master"
+        tasks:
+          - task_key: "main"
+            description: "a description"
+            existing_cluster_id: "0420-014219-930j61s2"
+            deployment_config:
+              no_package: true # we omit using package since code will be shipped directly from the Repo
+            notebook_task:
+              notebook_path: "notebooks/cali_housing_mlops/setup_data"
+              parameters: ['--base-data-params': 'file:fuse://conf/.base_data_params.env',
+                           '--env', 'file:fuse://conf/dev/.dev.env',
+                           '--conf-file', 'file:fuse://conf/cali_housing_mlops/pipeline_configs/setup_data.yml']
+              base_parameters: {"env" : "dev", "job-id" : "{{job_id}}", "start-time" : "{{start_time}}" }         
             
+      
             

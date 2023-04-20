@@ -6,8 +6,7 @@
 
 # COMMAND ----------
 # DBTITLE 1,install requirement here if necessary
-# MAGIC %md
-# MAGIC `%pip install -r ../requirements.txt`
+# MAGIC %pip install -r ../../requirements.txt
 
 # COMMAND ----------
 # DBTITLE 1,Set env
@@ -21,12 +20,8 @@ from packaged_poc.utils.notebook_utils import load_config, load_and_set_env_vars
 
 # COMMAND ----------
 # DBTITLE 1,Setup Pipeline Config
-pipeline_config = load_config(
-    pipeline_name="model_inference_batch", project="cali_housing_mlops"
-)
-env_vars = load_and_set_env_vars(
-    env=dbutils.widgets.get("env"), project="cali_housing_mlops"
-)
+pipeline_config = load_config(pipeline_name="model_inference_batch", project="cali_housing_mlops")
+env_vars = load_and_set_env_vars(env=dbutils.widgets.get("env"))
 
 model_name = env_vars["model_name"]
 model_registry_stage = pipeline_config["mlflow_params"]["model_registry_stage"]
@@ -38,12 +33,12 @@ model_inference = ModelInference(
     model_uri=model_uri,
     input_table=MetastoreTable(
         catalog=env_vars["catalog"],
-        schema=env_vars["inference_table_schema"],
+        schema=env_vars["cali_housing_schema"],
         table=pipeline_config["data_input"]["table_name"],
     ),
     output_table=MetastoreTable(
         catalog=env_vars["catalog"],
-        schema=env_vars["predictions_table_schema"],
+        schema=env_vars["cali_housing_schema"],
         table=env_vars["predictions_table_name"],
     ),
 )
