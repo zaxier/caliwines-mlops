@@ -5,7 +5,7 @@ from sklearn.preprocessing import OneHotEncoder, StandardScaler
 from sklearn.ensemble import RandomForestRegressor
 
 
-class CaliHousingModelPipeline:
+class ModelTrainPipeline:
     @classmethod
     def _DEPR_create_train_pipeline(cls, model_params: dict) -> Pipeline:
         preprocessor = ColumnTransformer(
@@ -37,7 +37,7 @@ class CaliHousingModelPipeline:
         return pipeline
 
     @classmethod
-    def create_train_pipeline(cls, model_params: dict) -> Pipeline:
+    def cali_housing_train_pipeline(cls, model_params: dict) -> Pipeline:
         """
         Create a pipeline for training a model.
         """

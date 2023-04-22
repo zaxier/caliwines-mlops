@@ -15,7 +15,7 @@ from packaged_poc.utils.logger_utils import get_logger
 from packaged_poc.utils.get_spark import spark
 from packaged_poc.utils.notebook_utils import load_and_set_env_vars, load_config
 from packaged_poc.mlops.cali_housing_model import (
-    CaliHousingModelPipeline,
+    ModelTrainPipeline,
 )
 from packaged_poc.mlops.mlflow_utils import MLflowTrackingConfig
 
@@ -35,7 +35,7 @@ class ModelTrainConfig:
             - test_size: Proportion of input data to use as training data
             - random_state: Random state to enable reproducible train-test split
         model_params (dict):
-            Dictionary of params for model. Read from model_train.yml
+            Dictionary of params for model. Read from model_train.yml # TODO: this is currently incorrect
         conf (dict):
             [Optional] dictionary of conf file used to trigger pipeline. If provided will be tracked as a yml
             file to MLflow tracking.
@@ -47,13 +47,14 @@ class ModelTrainConfig:
     mlflow_tracking_cfg: MLflowTrackingConfig
     train_table: MetastoreTable
     label_col: str
-    pipeline_params: Dict[str, Any]
+    model_pipeline: sklearn.pipeline.Pipeline = None
     model_params: Dict[str, Any]
+    preproc_params: Dict[str, Any]
     conf: Dict[str, Any] = None
     env_vars: Dict[str, str] = None
 
 
-class ModelTrain:
+class ModelTrain:  # TODO make completely generic
     """
     Class to train a model on a given dataset and log results to MLflow.
 
@@ -66,7 +67,7 @@ class ModelTrain:
             Execute ModelTrain pipeline.
     """
 
-    def __init__(self, cfg: ModelTrainConfig):
+    def __init__(self, cfg: ModelTrainConfig):  # TODO update to be generic
         self.cfg = cfg
 
     @staticmethod
@@ -93,8 +94,8 @@ class ModelTrain:
         X_train, X_test, y_train, y_test = train_test_split(
             X,
             y,
-            test_size=self.cfg.pipeline_params["test_size"],
-            random_state=self.cfg.pipeline_params["random_state"],
+            test_size=self.cfg.preproc_params["test_size"],
+            random_state=self.cfg.preproc_params["random_state"],
         )
         return X_train, X_test, y_train, y_test
 
@@ -115,7 +116,7 @@ class ModelTrain:
         scikit-learn pipeline with fitted steps.
         """
         _logger.info("Creating sklearn pipeline...")
-        pipeline = CaliHousingModelPipeline.create_train_pipeline(self.cfg.model_params)
+        pipeline = self.cfg.pipeline(self.cfg.model_params)
 
         _logger.info("Fitting sklearn RandomForestClassifier...")
         _logger.info(f"Model params: {pprint.pformat(self.cfg.model_params)}")
@@ -181,9 +182,19 @@ class ModelTrain:
                     name=mlflow_tracking_cfg.model_name, version=model_details.version
                 )
 
-                _logger.info(f"Transitioning model: {mlflow_tracking_cfg.model_name} to Staging")
-                client.transition_model_version_stage(
-                    name=mlflow_tracking_cfg.model_name,
-                    version=model_details.version,
-                    stage="Staging",
-                )
+                if model_details.version == 1:
+                    _logger.info(
+                        f"There is no previous model version. Skipping Staging and transitioning model: {mlflow_tracking_cfg.model_name} to Production"
+                    )
+                    client.transition_model_version_stage(
+                        name=mlflow_tracking_cfg.model_name,
+                        version=model_details.version,
+                        stage="Production",
+                    )
+                else:
+                    _logger.info(f"Transitioning model: {mlflow_tracking_cfg.model_name} to Staging")
+                    client.transition_model_version_stage(
+                        name=mlflow_tracking_cfg.model_name,
+                        version=model_details.version,
+                        stage="Staging",
+                    )

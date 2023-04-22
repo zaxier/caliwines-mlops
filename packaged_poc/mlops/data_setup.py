@@ -15,19 +15,19 @@ _logger = get_logger()
 
 
 @dataclass
-class SetupCaliHousingMLopsConfig:
+class SetupCaliHousingConfig:
     train_table: MetastoreTable
     holdout_table: MetastoreTable
     holdout_pct: int
     random_seed: int
 
 
-class SetupCaliHousingMLops:
+class SetupCaliHousing:
     """
     Class to grab california housing data from sklearn and split into train and holdout sets.
     """
 
-    def __init__(self, cfg: SetupCaliHousingMLopsConfig):
+    def __init__(self, cfg: SetupCaliHousingConfig):
         self.cfg = cfg
 
     def _setup_catalog(self, catalog_name: str) -> None:
