@@ -26,12 +26,14 @@ class ModelTrainConfig:
     Attributes:
         mlflow_tracking_cfg (MLflowTrackingConfig)
             Configuration data class used to unpack MLflow parameters during a model training run.
-        pipeline_params (dict):
+        model_pipeline (sklearn.pipeline.Pipeline):
+            Pipeline to use for model training.
+        model_params (dict):
+            Dictionary of params for model.
+        preproc_params (dict):
             Params to use in preprocessing pipeline. Read from model_train.yml
             - test_size: Proportion of input data to use as training data
             - random_state: Random state to enable reproducible train-test split
-        model_params (dict):
-            Dictionary of params for model. Read from model_train.yml # TODO: this is currently incorrect
         conf (dict):
             [Optional] dictionary of conf file used to trigger pipeline. If provided will be tracked as a yml
             file to MLflow tracking.
@@ -43,7 +45,7 @@ class ModelTrainConfig:
     mlflow_tracking_cfg: MLflowTrackingConfig
     train_table: MetastoreTable
     label_col: str
-    model_pipeline: sklearn.pipeline.Pipeline = None
+    model_pipeline: sklearn.pipeline.Pipeline
     model_params: Dict[str, Any]
     preproc_params: Dict[str, Any]
     conf: Dict[str, Any] = None
