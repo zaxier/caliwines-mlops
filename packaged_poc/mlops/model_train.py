@@ -14,10 +14,10 @@ from packaged_poc.common import MetastoreTable
 from packaged_poc.utils.logger_utils import get_logger
 from packaged_poc.utils.get_spark import spark
 from packaged_poc.utils.notebook_utils import load_and_set_env_vars, load_config
-from packaged_poc.cali_housing_mlops.model_train_pipeline import (
+from packaged_poc.mlops.model_train_pipeline import (
     ModelTrainPipeline,
 )
-from packaged_poc.cali_housing_mlops.mlflow_utils import MLflowTrackingConfig
+from packaged_poc.mlops.mlflow_utils import MLflowTrackingConfig
 
 _logger = get_logger()
 
