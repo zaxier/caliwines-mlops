@@ -6,7 +6,7 @@ Please follow the `entry_points` documentation for more details on how to config
 """
 
 from setuptools import find_packages, setup
-from packaged_poc import __version__
+from src import __version__
 
 PACKAGE_REQUIREMENTS = ["pyyaml", "python-dotenv"]
 

@@ -1,4 +1,5 @@
-from packaged_poc.tasks.sample_etl_task import SampleETLTask
+from src.tasks.sample_etl_task import SampleETLTask
+
 
 def test_etl():
     common_config = {"database": "default", "table": "sklearn_housing"}
