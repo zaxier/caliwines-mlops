@@ -24,7 +24,7 @@ class SetupCaliHousingMLopsConfig:
 
 class SetupCaliHousingMLops:
     """
-    TODO: xxx
+    Class to grab california housing data from sklearn and split into train and holdout sets.
     """
 
     def __init__(self, cfg: SetupCaliHousingMLopsConfig):
@@ -77,9 +77,6 @@ class SetupCaliHousingMLops:
         holdout_df.write.format("delta").mode("overwrite").saveAsTable(self.cfg.holdout_table.ref)
 
     def run(self):
-        """
-        TODO: add explo here
-        """
         _logger.info("==========Setting up CaliHousing MLOps data assets ==========")
 
         # Setup catalog if not exists

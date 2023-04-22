@@ -55,7 +55,15 @@ class ModelTrainConfig:
 
 class ModelTrain:
     """
-    TODO: Add docstring
+    Class to train a model on a given dataset and log results to MLflow.
+
+    Attributes:
+        cfg (ModelTrainConfig):
+            Configuration data class used to execute ModelTrain pipeline.
+
+    Methods:
+        run():
+            Execute ModelTrain pipeline.
     """
 
     def __init__(self, cfg: ModelTrainConfig):
