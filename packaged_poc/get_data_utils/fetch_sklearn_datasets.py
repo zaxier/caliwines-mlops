@@ -12,27 +12,13 @@ from packaged_poc.utils.notebook_utils import load_and_set_env_vars, load_config
 _logger = get_logger()
 
 
-@dataclass
-class SklearnDataFetcherConfig:
-    """
-    Attributes:
-        datasets (string or list):
-            String or list of strings, of names of the datasets to fetch.
-            Options: 'california_housing', 'iris'
-        database_name (string):
-            If persist, then Name of database to store dataset # TODO: should I add persist option?
-    """
-
-    datasets: Union[str, List[str]]
-
-
 class SklearnDataFetcher:
     """
     Class to fetch sklearn datasets easily
     """
 
-    def __init__(self, cfg: SklearnDataFetcherConfig):
-        self.cfg = cfg
+    def __init__(self, datasets: Union[str, List[str]]):
+        self.datasets = datasets
 
     @staticmethod
     def _fetch_sklearn_cali_housing() -> pyspark.sql.DataFrame:
@@ -59,9 +45,7 @@ class SklearnDataFetcher:
             raise
 
     @staticmethod
-    def write_to_temp_dbfs(
-        df: pyspark.sql.DataFrame, table_name: str, dbfs_dir: str = "dbfs:/FileStore"
-    ) -> None:
+    def write_to_temp_dbfs(df: pyspark.sql.DataFrame, table_name: str, dbfs_dir: str = "dbfs:/FileStore") -> None:
         """
         Write a dataframe to a temporary table in the database
         """
@@ -72,11 +56,11 @@ class SklearnDataFetcher:
         Run the task
         """
 
-        if isinstance(self.cfg.datasets, str):
+        if isinstance(self.datasets, str):
             # Get dataframe
-            df = self.fetch_dataset_from_name(self.cfg.datasets)
+            df = self.fetch_dataset_from_name(self.datasets)
             _logger.info(type(df))
-            dataset_name = self.cfg.datasets
+            dataset_name = self.datasets
 
             # Write to temp dbfs
             # self.write_to_temp_dbfs(df, dataset_name)
@@ -85,12 +69,10 @@ class SklearnDataFetcher:
 
         else:
             # Get dataframes
-            tuple_of_dataframes = tuple(
-                self.fetch_dataset_from_name(dataset) for dataset in self.cfg.datasets
-            )
+            tuple_of_dataframes = tuple(self.fetch_dataset_from_name(dataset) for dataset in self.datasets)
 
             # Write to temp dbfs
-            for df, dataset_name in zip(tuple_of_dataframes, self.cfg.datasets):
+            for df, dataset_name in zip(tuple_of_dataframes, self.datasets):
                 # self.write_to_temp_dbfs(df, dataset_name)
                 pass
 
@@ -104,8 +86,5 @@ if __name__ == "__main__":
     task_cfg = load_config(task_name)
 
     # if loading from notebook
-    cfg = SklearnDataFetcherConfig(
-        datasets=["california_housing", "iris"], database_name="zaxier_test"
-    )
     fetcher = SklearnDataFetcher(cfg=cfg)
     fetcher.run_fetch_and_write_to_db()

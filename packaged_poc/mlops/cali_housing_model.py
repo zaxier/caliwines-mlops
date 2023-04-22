@@ -5,7 +5,7 @@ from sklearn.preprocessing import OneHotEncoder, StandardScaler
 from sklearn.ensemble import RandomForestRegressor
 
 
-class ModelTrainPipeline:
+class CaliHousingModelPipeline:
     @classmethod
     def _DEPR_create_train_pipeline(cls, model_params: dict) -> Pipeline:
         preprocessor = ColumnTransformer(

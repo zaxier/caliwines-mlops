@@ -14,8 +14,8 @@ from packaged_poc.common import MetastoreTable
 from packaged_poc.utils.logger_utils import get_logger
 from packaged_poc.utils.get_spark import spark
 from packaged_poc.utils.notebook_utils import load_and_set_env_vars, load_config
-from packaged_poc.mlops.model_train_pipeline import (
-    ModelTrainPipeline,
+from packaged_poc.mlops.cali_housing_model import (
+    CaliHousingModelPipeline,
 )
 from packaged_poc.mlops.mlflow_utils import MLflowTrackingConfig
 
@@ -115,7 +115,7 @@ class ModelTrain:
         scikit-learn pipeline with fitted steps.
         """
         _logger.info("Creating sklearn pipeline...")
-        pipeline = ModelTrainPipeline.create_train_pipeline(self.cfg.model_params)
+        pipeline = CaliHousingModelPipeline.create_train_pipeline(self.cfg.model_params)
 
         _logger.info("Fitting sklearn RandomForestClassifier...")
         _logger.info(f"Model params: {pprint.pformat(self.cfg.model_params)}")

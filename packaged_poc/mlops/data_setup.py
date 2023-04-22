@@ -5,7 +5,7 @@ import pyspark.sql.dataframe
 from typing import List, Tuple
 
 from packaged_poc.common import MetastoreCatalog, MetastoreTable, MetastoreSchema
-from packaged_poc.utils.fetch_sklearn_datasets import (
+from packaged_poc.get_data_utils.fetch_sklearn_datasets import (
     SklearnDataFetcher,
     SklearnDataFetcherConfig,
 )
@@ -57,8 +57,7 @@ class SetupCaliHousingMLops:
 
     def _fetch_data(self) -> pyspark.sql.DataFrame:
         _logger.info("Fetching california housing data...")
-        fetcher_config = SklearnDataFetcherConfig(datasets=["california_housing"])
-        fetcher = SklearnDataFetcher(cfg=fetcher_config)
+        fetcher = SklearnDataFetcher(datasets=["california_housing"])
         _data = fetcher.run()[0]
         return _data
 
