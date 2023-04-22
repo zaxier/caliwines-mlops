@@ -39,3 +39,6 @@ mlruns/
 .env*
 
 .databricks
+
+# Backup files
+.bak
