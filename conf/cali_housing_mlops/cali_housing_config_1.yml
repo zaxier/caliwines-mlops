@@ -1,0 +1,47 @@
+custom:
+  model_name: 'cali_housing_rf' &model_name # Environment suffix will be added by code
+
+
+setup_data:
+  train_data: 'cali_housing_train'
+  holdout_data: 'cali_housing_holdout' # Note that both model_deployment and model_inference use the same holdout set. In practice one would represent new data and the other represents a curated dataset for benchmarking models. 
+  label_col: 'MedHouseVal'
+  holdout_params:
+    holdout_pct: 20
+    random_seed: 72
+
+
+model_train:
+  mlflow_params:
+    <<: *model_name
+    run_name: 'new_forest'
+  pipeline_params:
+    test_size: 0.33
+    random_state: 42
+  model_params:
+    n_estimators: 150
+    max_depth: 44
+    min_samples_leaf: 1
+    max_features: 'auto'
+    random_state: 206
+
+
+model_deployment:
+  data_params:
+    reference_data_table_name: 'cali_housing_holdout' # See comment in setup_data.holdout_data
+  mlflow_params:
+    <<: *model_name
+  model_comparison_params:
+    metric: 'r2_score'
+    higher_is_better: True
+
+
+model_inference_batch:
+  mlflow_params:
+    <<: *model_name
+    model_registry_stage: 'production'
+  data_input:
+    table_name: 'cali_housing_holdout' 
+  data_output:
+    table_name: 'cali_housing_predictions'
+    mode: 'overwrite'

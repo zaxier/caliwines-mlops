@@ -6,4 +6,5 @@ data_input:
   table_name: 'cali_housing_holdout'
 
 data_output:
+  table_name: 'cali_housing_predictions'
   mode: 'overwrite'

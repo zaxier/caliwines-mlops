@@ -40,7 +40,7 @@ model_inference = ModelInferenceBatch(
     output_table=MetastoreTable(
         catalog=env_vars["catalog"],
         schema=env_vars["cali_housing_schema"],
-        table=env_vars["predictions_table_name"],
+        table=pipeline_config["predictions_table_name"],
     ),
 )
 

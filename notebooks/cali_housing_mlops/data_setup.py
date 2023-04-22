@@ -14,7 +14,7 @@ dbutils.widgets.dropdown("env", "dev", ["dev", "staging", "prod"], "Environment 
 # COMMAND ----------
 # DBTITLE 1,Module Imports
 from packaged_poc.common import MetastoreTable
-from packaged_poc.cali_housing_mlops.setup_data import (
+from packaged_poc.cali_housing_mlops.data_setup import (
     SetupCaliHousingMLopsConfig,
     SetupCaliHousingMLops,
 )
