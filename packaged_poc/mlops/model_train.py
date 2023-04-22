@@ -1,5 +1,5 @@
 from dataclasses import dataclass
-from typing import Callable, List, Union, Dict, Any
+from typing import Dict, Any
 import pprint
 
 import pyspark.sql.dataframe
@@ -13,10 +13,6 @@ from mlflow.tracking import MlflowClient
 from packaged_poc.common import MetastoreTable
 from packaged_poc.utils.logger_utils import get_logger
 from packaged_poc.utils.get_spark import spark
-from packaged_poc.utils.notebook_utils import load_and_set_env_vars, load_config
-from packaged_poc.mlops.cali_housing_model import (
-    ModelTrainPipeline,
-)
 from packaged_poc.mlops.mlflow_utils import MLflowTrackingConfig
 
 _logger = get_logger()

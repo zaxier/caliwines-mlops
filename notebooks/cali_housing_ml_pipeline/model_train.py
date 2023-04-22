@@ -18,6 +18,7 @@ from packaged_poc.mlops.model_train import (
     ModelTrainConfig,
     MLflowTrackingConfig,
 )
+from packaged_poc.model_pipelines.cali_housing_pipeline import CaliHousingPipeline
 from packaged_poc.utils.notebook_utils import load_and_set_env_vars, load_config
 from packaged_poc.common import MetastoreTable
 
@@ -44,8 +45,9 @@ model_train_cfg = ModelTrainConfig(
     mlflow_tracking_cfg=mlflow_tracking_cfg,
     train_table=train_table,
     label_col=env_vars["train_table_label_col"],
-    preproc_params=pipeline_config["pipeline_params"],
+    model_pipeline=CaliHousingPipeline.create_rf_pipeline_v2(),
     model_params=pipeline_config["model_params"],
+    preproc_params=pipeline_config["preproc_params"],
     conf=pipeline_config,
     env_vars=env_vars,
 )
