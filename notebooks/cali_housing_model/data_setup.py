@@ -14,12 +14,12 @@ dbutils.widgets.dropdown("env", "dev", ["dev", "staging", "prod"], "Environment 
 
 # COMMAND ----------
 # DBTITLE 1,Module Imports
-from packaged_poc.common import MetastoreTable
-from packaged_poc.get_data_utils.cali_housing_data_setup import (
+from src.common import MetastoreTable
+from src.get_data_utils.cali_housing_data_setup import (
     SetupCaliHousingConfig,
     SetupCaliHousing,
 )
-from packaged_poc.utils.notebook_utils import load_config, load_and_set_env_vars
+from src.utils.notebook_utils import load_config, load_and_set_env_vars
 
 # COMMAND ----------
 # DBTITLE 1,Load Config

@@ -14,9 +14,9 @@ dbutils.widgets.dropdown("env", "dev", ["dev", "staging", "prod"], "Environment 
 
 # COMMAND ----------
 # DBTITLE 1,Module Imports
-from packaged_poc.mlops.model_inference_batch import ModelInferenceBatch
-from packaged_poc.common import MetastoreTable
-from packaged_poc.utils.notebook_utils import load_config, load_and_set_env_vars
+from src.mlops.model_inference_batch import ModelInferenceBatch
+from src.common import MetastoreTable
+from src.utils.notebook_utils import load_config, load_and_set_env_vars
 
 # COMMAND ----------
 # DBTITLE 1,Setup Pipeline Config

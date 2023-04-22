@@ -14,13 +14,13 @@ dbutils.widgets.dropdown("env", "dev", ["dev", "staging", "prod"], "Environment 
 
 # COMMAND ----------
 # DBTITLE 1,Module Imports
-from packaged_poc.mlops.model_deployment import (
+from src.mlops.model_deployment import (
     ModelDeployment,
     ModelDeploymentConfig,
 )
-from packaged_poc.mlops.mlflow_utils import MLflowTrackingConfig
-from packaged_poc.utils.notebook_utils import load_and_set_env_vars, load_config
-from packaged_poc.common import MetastoreTable
+from src.mlops.mlflow_utils import MLflowTrackingConfig
+from src.utils.notebook_utils import load_and_set_env_vars, load_config
+from src.common import MetastoreTable
 
 # COMMAND ----------
 # DBTITLE 1,Load Config
