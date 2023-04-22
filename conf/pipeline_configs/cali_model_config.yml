@@ -29,7 +29,7 @@ model_inference_batch:
     <<: *model_name
     model_registry_stage: 'production'
   data_input:
-    table_name: 'cali_housing_holdout' 
+    table_name: 'holdout' 
   data_output:
-    table_name: 'cali_housing_predictions'
+    table_name: 'predictions'
     mode: 'overwrite'

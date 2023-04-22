@@ -14,6 +14,7 @@
 dbutils.widgets.dropdown("env", "dev", ["dev", "staging", "prod"], "Environment Name")
 
 # COMMAND ----------
+# DBTITLE 1,Module Imports
 from packaged_poc.mlops.model_train import (
     ModelTrain,
     ModelTrainConfig,
