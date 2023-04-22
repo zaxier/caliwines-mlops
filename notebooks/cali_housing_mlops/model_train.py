@@ -13,7 +13,7 @@
 dbutils.widgets.dropdown("env", "dev", ["dev", "staging", "prod"], "Environment Name")
 
 # COMMAND ----------
-from packaged_poc.cali_housing_mlops.model_train import (
+from packaged_poc.mlops.model_train import (
     ModelTrain,
     ModelTrainConfig,
     MLflowTrackingConfig,
