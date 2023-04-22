@@ -9,12 +9,13 @@
 # MAGIC %pip install -r ../../requirements.txt
 
 # COMMAND ----------
+# DBTITLE 1,Set env
 dbutils.widgets.dropdown("env", "dev", ["dev", "staging", "prod"], "Environment Name")
 
 # COMMAND ----------
 # DBTITLE 1,Module Imports
 from packaged_poc.common import MetastoreTable
-from packaged_poc.mlops.data_setup import (
+from packaged_poc.get_data_utils.cali_housing_data_setup import (
     SetupCaliHousingConfig,
     SetupCaliHousing,
 )
