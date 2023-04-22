@@ -5,9 +5,9 @@ from sklearn.preprocessing import OneHotEncoder, StandardScaler
 from sklearn.ensemble import RandomForestRegressor
 
 
-class ModelTrainPipeline:
+class CaliHousingPipeline:
     @classmethod
-    def _DEPR_create_train_pipeline(cls, model_params: dict) -> Pipeline:
+    def create_rf_pipeline_v1(cls, model_params: dict) -> Pipeline:
         preprocessor = ColumnTransformer(
             transformers=[
                 (
@@ -37,7 +37,7 @@ class ModelTrainPipeline:
         return pipeline
 
     @classmethod
-    def cali_housing_train_pipeline(cls, model_params: dict) -> Pipeline:
+    def create_rf_pipeline_v2(cls, model_params: dict) -> Pipeline:
         """
         Create a pipeline for training a model.
         """
@@ -60,6 +60,8 @@ class ModelTrainPipeline:
                 ("num", numeric_transformer, selector(dtype_exclude="object")),
                 ("cat", categorical_transformer, selector(dtype_include="object")),
             ],
+            remainder="passthrough",
+            sparse_threshold=0,
         )
 
         rf_regressor = RandomForestRegressor(**model_params)
