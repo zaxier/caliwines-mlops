@@ -41,12 +41,14 @@ train_table = MetastoreTable(
     table=env_vars["cali_train_table"],
 )
 
+model_pipeline = CaliHousingPipeline.create_rf_pipeline_v2(model_params=pipeline_config["model_params"])
+
 model_train_cfg = ModelTrainConfig(
     mlflow_tracking_cfg=mlflow_tracking_cfg,
     train_table=train_table,
     label_col=env_vars["train_table_label_col"],
-    model_pipeline=CaliHousingPipeline.create_rf_pipeline_v2(),
-    model_params=pipeline_config["model_params"],
+    model_pipeline=model_pipeline,
+    model_params=pipeline_config["model_params"],  # For logging with model
     preproc_params=pipeline_config["preproc_params"],
     conf=pipeline_config,
     env_vars=env_vars,
