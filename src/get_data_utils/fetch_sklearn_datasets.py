@@ -5,9 +5,9 @@ import pyspark.sql.dataframe
 from sklearn.datasets import fetch_california_housing, load_iris
 import pandas as pd
 
-from packaged_poc.utils.logger_utils import get_logger
-from packaged_poc.utils.get_spark import spark
-from packaged_poc.utils.notebook_utils import load_and_set_env_vars, load_config
+from src.utils.logger_utils import get_logger
+from src.utils.get_spark import spark
+from src.utils.notebook_utils import load_and_set_env_vars, load_config
 
 _logger = get_logger()
 

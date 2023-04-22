@@ -10,10 +10,10 @@ import mlflow
 from mlflow.models import infer_signature
 from mlflow.tracking import MlflowClient
 
-from packaged_poc.common import MetastoreTable
-from packaged_poc.utils.logger_utils import get_logger
-from packaged_poc.utils.get_spark import spark
-from packaged_poc.mlops.mlflow_utils import MLflowTrackingConfig
+from src.common import MetastoreTable
+from src.utils.logger_utils import get_logger
+from src.utils.get_spark import spark
+from src.mlops.mlflow_utils import MLflowTrackingConfig
 
 _logger = get_logger()
 

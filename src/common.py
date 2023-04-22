@@ -9,8 +9,8 @@ from logging import Logger
 import dotenv
 import os
 
-from packaged_poc.utils.logger_utils import get_logger
-from packaged_poc.utils.get_spark import spark
+from src.utils.logger_utils import get_logger
+from src.utils.get_spark import spark
 
 # TODO: Establish logging standard
 _logger = get_logger()

@@ -5,7 +5,7 @@ import yaml
 import pprint
 from typing import Dict, Any
 
-from packaged_poc.utils.get_spark import spark
+from src.utils.get_spark import spark
 from pyspark.sql import SparkSession
 
 relative_root = os.path.join(os.pardir, os.pardir)

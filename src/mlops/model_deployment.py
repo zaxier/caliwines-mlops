@@ -6,12 +6,12 @@ import mlflow
 from mlflow import MlflowClient
 import pandas as pd
 
-from packaged_poc.common import MetastoreTable
-from packaged_poc.mlops.model_train import MLflowTrackingConfig
-from packaged_poc.mlops.model_inference_batch import ModelInferenceBatch
-from packaged_poc.mlops.evaluation_utils import ModelEvaluation
-from packaged_poc.utils.get_spark import spark
-from packaged_poc.utils.logger_utils import get_logger
+from src.common import MetastoreTable
+from src.mlops.model_train import MLflowTrackingConfig
+from src.mlops.model_inference_batch import ModelInferenceBatch
+from src.mlops.evaluation_utils import ModelEvaluation
+from src.utils.get_spark import spark
+from src.utils.logger_utils import get_logger
 
 _logger = get_logger()
 

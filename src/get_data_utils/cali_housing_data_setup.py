@@ -4,12 +4,12 @@ from sklearn.model_selection import train_test_split
 import pyspark.sql.dataframe
 from typing import List, Tuple
 
-from packaged_poc.common import MetastoreCatalog, MetastoreTable, MetastoreSchema
-from packaged_poc.get_data_utils.fetch_sklearn_datasets import (
+from src.common import MetastoreCatalog, MetastoreTable, MetastoreSchema
+from src.get_data_utils.fetch_sklearn_datasets import (
     SklearnDataFetcher,
     SklearnDataFetcherConfig,
 )
-from packaged_poc.utils.logger_utils import get_logger
+from src.utils.logger_utils import get_logger
 
 _logger = get_logger()
 

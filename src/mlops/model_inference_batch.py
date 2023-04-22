@@ -3,9 +3,9 @@ from pyspark.sql.functions import col, struct
 import mlflow
 
 
-from packaged_poc.utils.get_spark import spark
-from packaged_poc.utils.logger_utils import get_logger
-from packaged_poc.common import MetastoreTable
+from src.utils.get_spark import spark
+from src.utils.logger_utils import get_logger
+from src.common import MetastoreTable
 
 _logger = get_logger()
 
