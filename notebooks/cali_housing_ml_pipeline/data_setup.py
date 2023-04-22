@@ -15,28 +15,28 @@ dbutils.widgets.dropdown("env", "dev", ["dev", "staging", "prod"], "Environment 
 # DBTITLE 1,Module Imports
 from packaged_poc.common import MetastoreTable
 from packaged_poc.mlops.data_setup import (
-    SetupCaliHousingMLopsConfig,
-    SetupCaliHousingMLops,
+    SetupCaliHousingConfig,
+    SetupCaliHousing,
 )
 from packaged_poc.utils.notebook_utils import load_config, load_and_set_env_vars
 
 # COMMAND ----------
 # DBTITLE 1,Load Config
-pipeline_config = load_config(pipeline_name="setup_data", project="cali_housing_mlops")
+pipeline_config = load_config(config_name="cali_setup_config")
 env_vars = load_and_set_env_vars(env=dbutils.widgets.get("env"))
 
 # COMMAND ----------
 # DBTITLE 1,Setup Pipeline Config
-setup_cali_housing_mlops_cfg = SetupCaliHousingMLopsConfig(
+setup_cali_housing_mlops_cfg = SetupCaliHousingConfig(
     train_table=MetastoreTable(
         catalog=env_vars["catalog"],
         schema=env_vars["cali_housing_schema"],
-        table=env_vars["train_table_name"],
+        table=env_vars["cali_train_table"],
     ),
     holdout_table=MetastoreTable(
         catalog=env_vars["catalog"],
         schema=env_vars["cali_housing_schema"],
-        table=env_vars["holdout_table_name"],
+        table=env_vars["cali_holdout_table"],
     ),
     holdout_pct=pipeline_config["holdout_params"]["holdout_pct"],
     random_seed=pipeline_config["holdout_params"]["random_seed"],
@@ -44,5 +44,5 @@ setup_cali_housing_mlops_cfg = SetupCaliHousingMLopsConfig(
 
 # COMMAND ----------
 # DBTITLE 1, Execute Pipeline
-setup_cali_housing_mlops = SetupCaliHousingMLops(cfg=setup_cali_housing_mlops_cfg)
+setup_cali_housing_mlops = SetupCaliHousing(cfg=setup_cali_housing_mlops_cfg)
 setup_cali_housing_mlops.run()
