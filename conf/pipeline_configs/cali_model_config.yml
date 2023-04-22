@@ -5,7 +5,7 @@ model_train:
   mlflow_params:
     <<: *model_name
     run_name: 'new_forest'
-  pipeline_params:
+  preproc_params:
     test_size: 0.33
     random_state: 42
   model_params:
