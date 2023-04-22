@@ -54,16 +54,14 @@ def load_config_depr(pipeline_name) -> Dict[str, Any]:
     return pipeline_config
 
 
-def load_config(pipeline_name, project) -> Dict[str, Any]:
+def load_config(config_name) -> Dict[str, Any]:
     """
     Utility function to use in Databricks notebooks to load the config yaml file for a given pipeline
     Return dict of specified config params
     Parameters
     ----------
-    pipeline_name :  str
-        Name of pipeline
-    project : str
-        Name of project (e.g. "cali_housing_mlops")
+    config_name :  str
+        Name of the config file
     Returns
     -------
     Dictionary of config params
@@ -71,9 +69,8 @@ def load_config(pipeline_name, project) -> Dict[str, Any]:
     config_path = os.path.join(
         relative_root,
         "conf",
-        project,
         "pipeline_configs",
-        f"{pipeline_name}.yml",
+        f"{config_name}.yml",
     )
     config = yaml.safe_load(pathlib.Path(config_path).read_text())
     pprint.pprint(config)
