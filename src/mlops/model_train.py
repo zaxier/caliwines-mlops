@@ -113,12 +113,10 @@ class ModelTrain:  # TODO make completely generic
         -------
         scikit-learn pipeline with fitted steps.
         """
-        _logger.info("Creating sklearn pipeline...")
-        pipeline = self.cfg.pipeline(self.cfg.model_params)
 
-        _logger.info("Fitting sklearn RandomForestClassifier...")
+        _logger.info("Fitting model_pipeline...")
         _logger.info(f"Model params: {pprint.pformat(self.cfg.model_params)}")
-        model = pipeline.fit(X_train, y_train)
+        model = self.cfg.model_pipeline.fit(X_train, y_train)
 
         return model
 

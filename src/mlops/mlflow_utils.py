@@ -1,5 +1,5 @@
-
 from dataclasses import dataclass
+
 
 @dataclass
 class MLflowTrackingConfig:
@@ -18,6 +18,7 @@ class MLflowTrackingConfig:
             Name of the registered model under which to create a new model version. If a registered model with the given
             name does not exist, it will be created automatically.
     """
+
     run_name: str
     experiment_id: int = None
     experiment_path: str = None

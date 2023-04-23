@@ -5,10 +5,7 @@ import pyspark.sql.dataframe
 from typing import List, Tuple
 
 from src.common import MetastoreCatalog, MetastoreTable, MetastoreSchema
-from src.get_data_utils.fetch_sklearn_datasets import (
-    SklearnDataFetcher,
-    SklearnDataFetcherConfig,
-)
+from src.get_data_utils.fetch_sklearn_datasets import SklearnDataFetcher
 from src.utils.logger_utils import get_logger
 
 _logger = get_logger()

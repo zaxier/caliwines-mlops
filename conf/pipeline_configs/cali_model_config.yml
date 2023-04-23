@@ -1,9 +1,8 @@
-custom:
-  model_name: 'cali_housing_rf' &model_name # Environment suffix will be added by code
+model_name: 'cali_housing_rf' # Environment suffix will be added by code
 
 model_train:
   mlflow_params:
-    <<: *model_name
+    model_name: 'cali_housing_rf' # Environment suffix will be added by code
     run_name: 'new_forest'
   preproc_params:
     test_size: 0.33
@@ -17,8 +16,6 @@ model_train:
 
 
 model_deployment:
-  mlflow_params:
-    <<: *model_name
   model_comparison_params:
     metric: 'r2_score'
     higher_is_better: True
@@ -26,7 +23,6 @@ model_deployment:
 
 model_inference_batch:
   mlflow_params:
-    <<: *model_name
     model_registry_stage: 'production'
   data_input:
     table_name: 'holdout' 

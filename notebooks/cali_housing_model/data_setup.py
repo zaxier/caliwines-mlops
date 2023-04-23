@@ -30,13 +30,13 @@ env_vars = load_and_set_env_vars(env=dbutils.widgets.get("env"))
 # DBTITLE 1,Setup Pipeline Config
 setup_cali_housing_mlops_cfg = SetupCaliHousingConfig(
     train_table=MetastoreTable(
-        catalog=env_vars["catalog"],
-        schema=env_vars["cali_housing_schema"],
+        catalog=env_vars["cali_catalog"],
+        schema=env_vars["cali_schema"],
         table=env_vars["cali_train_table"],
     ),
     holdout_table=MetastoreTable(
-        catalog=env_vars["catalog"],
-        schema=env_vars["cali_housing_schema"],
+        catalog=env_vars["cali_catalog"],
+        schema=env_vars["cali_schema"],
         table=env_vars["cali_holdout_table"],
     ),
     holdout_pct=pipeline_config["holdout_params"]["holdout_pct"],

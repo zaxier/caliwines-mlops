@@ -200,3 +200,16 @@ environments:
                           '--env', 'file:fuse://conf/dev/.dev.env',
                           '--conf-file', 'file:fuse://conf/cali_housing_mlops/pipeline_configs/model_inference.yml']
               base_parameters: {"env" : "dev", "job-id" : "{{job_id}}", "start-time" : "{{start_time}}" }         
+
+  staging:
+    workflows:
+      - name: "setup_data"
+        git_source:
+          git_url:
+
+
+  prod:
+    workflows:
+      - name: "setup_data"
+        git_source:
+          git_url:

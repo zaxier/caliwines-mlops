@@ -24,7 +24,7 @@ pipeline_config = load_config(config_name="model_inference_batch")
 env_vars = load_and_set_env_vars(env=dbutils.widgets.get("env"))
 # TODO: Figure out if you want to move things like model name to the config file
 
-model_name = pipeline_config["mlflow_params"]["model_name"] + f"_{env_vars['env']}"
+model_name = pipeline_config["model_name"] + f"_{env_vars['env']}"
 model_registry_stage = pipeline_config["mlflow_params"]["model_registry_stage"]
 model_uri = f"models:/{model_name}/{model_registry_stage}"
 
@@ -33,14 +33,14 @@ model_uri = f"models:/{model_name}/{model_registry_stage}"
 model_inference = ModelInferenceBatch(
     model_uri=model_uri,
     input_table=MetastoreTable(
-        catalog=env_vars["catalog"],
-        schema=env_vars["cali_housing_schema"],
+        catalog=env_vars["cali_catalog"],
+        schema=env_vars["cali_schema"],
         table=pipeline_config["data_input"]["table_name"],
     ),
     output_table=MetastoreTable(
-        catalog=env_vars["catalog"],
-        schema=env_vars["cali_housing_schema"],
-        table=pipeline_config["predictions_table_name"],
+        catalog=env_vars["cali_catalog"],
+        schema=env_vars["cali_schema"],
+        table=pipeline_config["predictions"],
     ),
 )
 

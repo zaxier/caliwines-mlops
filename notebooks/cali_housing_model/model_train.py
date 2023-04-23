@@ -26,7 +26,7 @@ from src.common import MetastoreTable
 
 # COMMAND ----------
 # DBTITLE 1,Load Config
-pipeline_config = load_config(config_name="cali_housing_config_1")
+pipeline_config = load_config(config_name="cali_model_config")["model_train"]
 env_vars = load_and_set_env_vars(env=dbutils.widgets.get("env"))
 
 # COMMAND ----------
@@ -48,7 +48,7 @@ model_pipeline = CaliHousingPipeline.create_rf_pipeline_v2(model_params=pipeline
 model_train_cfg = ModelTrainConfig(
     mlflow_tracking_cfg=mlflow_tracking_cfg,
     train_table=train_table,
-    label_col=env_vars["train_table_label_col"],
+    label_col=env_vars["cali_label_col"],
     model_pipeline=model_pipeline,
     model_params=pipeline_config["model_params"],  # For logging with model
     preproc_params=pipeline_config["preproc_params"],

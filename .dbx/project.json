@@ -9,7 +9,7 @@
             }
         },
         "dev": {
-            "profile": "DEFAULT",
+            "profile": "aws-dev",
             "storage_type": "mlflow",
             "properties": {
                 "workspace_directory": "/Shared/packaged-poc/dev",
@@ -17,7 +17,7 @@
             }
         },
         "staging": {
-            "profile": "azure-field-eng-east",
+            "profile": "aws-dev",
             "storage_type": "mlflow",
             "properties": {
                 "workspace_directory": "/Shared/packaged-poc/staging",
