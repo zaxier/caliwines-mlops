@@ -35,7 +35,7 @@ def load_and_set_env_vars(env: str) -> Dict[str, Any]:
     return os_dict
 
 
-def load_config_depr(pipeline_name) -> Dict[str, Any]:
+def load_config_depr(pipeline_name, project) -> Dict[str, Any]:
     """
     Utility function to use in Databricks notebooks to load the config yaml file for a given pipeline
     Return dict of specified config params
@@ -47,7 +47,7 @@ def load_config_depr(pipeline_name) -> Dict[str, Any]:
     -------
     Dictionary of config params
     """
-    config_path = os.path.join(os.pardir, os.pardir, "conf", "pipeline_configs", f"{pipeline_name}.yml")
+    config_path = os.path.join(os.pardir, os.pardir, "conf", "pipeline_configs", project, f"{pipeline_name}.yml")
     pipeline_config = yaml.safe_load(pathlib.Path(config_path).read_text())
     pprint.pprint(pipeline_config)
 
