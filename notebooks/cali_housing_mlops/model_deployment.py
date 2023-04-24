@@ -24,8 +24,14 @@ from src.common import MetastoreTable
 
 # COMMAND ----------
 # DBTITLE 1,Load Config
-pipeline_config = load_config(config_name="model_deployment")
+# Load env vars from config file (`conf/env_name/` dir)
 env_vars = load_and_set_env_vars(env=dbutils.widgets.get("env"))
+
+# Load pipeline config from config file (`conf/pipeline_config/` dir)
+pipeline_config = load_config(
+    config_name="model_deployment_cfg",
+    project="cali_housing_mlops",
+)
 
 # COMMAND ----------
 # DBTITLE 1,Setup Pipeline Config

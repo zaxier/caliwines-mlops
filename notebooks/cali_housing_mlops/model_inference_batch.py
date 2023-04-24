@@ -20,7 +20,16 @@ from src.utils.notebook_utils import load_config, load_and_set_env_vars
 
 # COMMAND ----------
 # DBTITLE 1,Setup Pipeline Config
-pipeline_config = load_config(config_name="model_inference_batch")
+
+# Load env vars from config file (`conf/env_name/` dir)
+env_vars = load_and_set_env_vars(env=dbutils.widgets.get("env"))
+
+# Load pipeline config from config file (`conf/pipeline_config/` dir)
+pipeline_config = load_config(
+    config_name="model_inference_batch_cfg",
+    project="cali_housing_mlops",
+)
+
 env_vars = load_and_set_env_vars(env=dbutils.widgets.get("env"))
 # TODO: Figure out if you want to move things like model name to the config file
 
