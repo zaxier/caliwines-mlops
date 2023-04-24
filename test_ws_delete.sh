@@ -3,16 +3,13 @@
 # Set variables
 project_dir='/Shared/packaged_poc'
 
-# dev_ws_dir=$project_dir'/dev/dbx/cali_housing_mlops_dev'
-dev_ws_dir=$project_dir'/dev/dbx'
+dev_ws_dir=$project_dir'/dev/dbx/cali_housing_mlops_dev'
 dev_artifacts=$project_dir'/dev/dbx/projects/cali_housing_mlops_dev'
 
-# staging_ws_dir=$project_dir'/staging/dbx/cali_housing_mlops_staging'
-staging_ws_dir=$project_dir'/staging/dbx'
+staging_ws_dir=$project_dir'/staging/dbx/cali_housing_mlops_staging'
 staging_artifacts=$project_dir'/staging/dbx/projects/cali_housing_mlops_staging'
 
-# prod_ws_dir=$project_dir'/prod/dbx/cali_housing_mlops_prod'
-prod_ws_dir=$project_dir'/prod/dbx'
+prod_ws_dir=$project_dir'/prod/dbx/cali_housing_mlops_prod'
 prod_artifacts=$project_dir'/prod/dbx/projects/cali_housing_mlops_prod'
 
 # Search for databricks profiles in the .databrickscfg file
@@ -128,48 +125,3 @@ if [ "$cleanup" == "y" ]; then
   echo ""
 fi
 
-
-
-# Create the workspace folders in each environment
-function create_workspace_dir() {
-  local host=$1
-  local dir=$2
-  local netrc_file=$3
-
-  echo "Creating workspace directory '$dir' in workspace shard: https://$host"
-  curl --netrc-file $netrc_file --request POST \
-      https://$host/api/2.0/workspace/mkdirs \
-      --header 'Accept: application/json' \
-      --data "{\"path\": \"$dir\"}" 
-}
-
-create_workspace_dir $dev_host $dev_ws_dir ~/.netrc_databricks_dev
-create_workspace_dir $staging_host $staging_ws_dir ~/.netrc_databricks_staging
-create_workspace_dir $prod_host $prod_ws_dir ~/.netrc_databricks_prod
-echo ""
-
-# Function to remove the square brackets from the profile name
-function clean_profile_name() {
-  local input_string=$1
-  local result=$(echo "$input_string" | sed 's/\[//g; s/\]//g')
-  echo "$result"
-}
-
-# Configure dbx for use in each environment
-dbx configure -e dev \
-  --profile $(clean_profile_name $dev_profile) \
-  --workspace-dir $dev_ws_dir/cali_housing_mlops_dev \
-  --artifact-location dbfs:$dev_artifacts
-
-dbx configure -e staging \
-  --profile $(clean_profile_name $staging_profile) \
-  --workspace-dir $staging_ws_dir/cali_housing_mlops_staging \
-  --artifact-location dbfs:$staging_artifacts
-
-dbx configure -e prod \
-  --profile $(clean_profile_name $prod_profile) \
-  --workspace-dir $prod_ws_dir/cali_housing_mlops_prod \
-  --artifact-location dbfs:$prod_artifacts
-echo ""
-
-# TODO: Add code to create cluster or update deployment file with cluster id

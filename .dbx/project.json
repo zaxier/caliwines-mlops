@@ -9,27 +9,27 @@
             }
         },
         "dev": {
-            "profile": "aws-dev",
+            "profile": "aws-e2-demo",
             "storage_type": "mlflow",
             "properties": {
-                "workspace_directory": "/Shared/packaged-poc/dev",
-                "artifact_location": "dbfs:/Shared/packaged-poc/dev/dbx/artifacts"
+                "workspace_directory": "/Shared/packaged_poc/dev/dbx/cali_housing_mlops_dev",
+                "artifact_location": "dbfs:/Shared/packaged_poc/dev/dbx/projects/cali_housing_mlops_dev"
             }
         },
         "staging": {
-            "profile": "aws-dev",
+            "profile": "aws-e2-demo",
             "storage_type": "mlflow",
             "properties": {
-                "workspace_directory": "/Shared/packaged-poc/staging",
-                "artifact_location": "dbfs:/Shared/packaged-poc/staging/dbx/artifacts"
+                "workspace_directory": "/Shared/packaged_poc/staging/dbx/cali_housing_mlops_staging",
+                "artifact_location": "dbfs:/Shared/packaged_poc/staging/dbx/projects/cali_housing_mlops_staging"
             }
         },
         "prod": {
-            "profile": "aws-dev",
+            "profile": "aws-e2-demo",
             "storage_type": "mlflow",
             "properties": {
-                "workspace_directory": "/Shared/packaged-poc/prod",
-                "artifact_location": "dbfs:/Shared/packaged-poc/prod/dbx/artifacts"
+                "workspace_directory": "/Shared/packaged_poc/prod/dbx/cali_housing_mlops_prod",
+                "artifact_location": "dbfs:/Shared/packaged_poc/prod/dbx/projects/cali_housing_mlops_prod"
             }
         }
     },
