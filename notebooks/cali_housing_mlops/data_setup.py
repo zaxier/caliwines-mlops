@@ -15,11 +15,11 @@ dbutils.widgets.dropdown("env", "dev", ["dev", "staging", "prod"], "Environment 
 # COMMAND ----------
 # DBTITLE 1,Module Imports
 from src.common import MetastoreTable
+from src.utils.notebook_utils import load_config, load_and_set_env_vars
 from src.get_data_utils.cali_housing_data_setup import (
     SetupCaliHousingConfig,
-    SetupCaliHousing,
+    CaliHousingDataSetup,
 )
-from src.utils.notebook_utils import load_config, load_and_set_env_vars
 
 # COMMAND ----------
 # DBTITLE 1,Load Config
@@ -28,7 +28,7 @@ env_vars = load_and_set_env_vars(env=dbutils.widgets.get("env"))
 
 # Load pipeline config from config file (`conf/pipeline_config/` dir)
 pipeline_config = load_config(
-    config_name="data_setup_cfg",
+    pipeline_name="data_setup_cfg",
     project="cali_housing_mlops",
 )
 
@@ -51,5 +51,5 @@ setup_cali_housing_mlops_cfg = SetupCaliHousingConfig(
 
 # COMMAND ----------
 # DBTITLE 1, Execute Pipeline
-setup_cali_housing_mlops = SetupCaliHousing(cfg=setup_cali_housing_mlops_cfg)
+setup_cali_housing_mlops = CaliHousingDataSetup(cfg=setup_cali_housing_mlops_cfg)
 setup_cali_housing_mlops.run()

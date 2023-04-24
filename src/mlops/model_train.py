@@ -178,19 +178,9 @@ class ModelTrain:  # TODO make completely generic
                     name=mlflow_tracking_cfg.model_name, version=model_details.version
                 )
 
-                if model_details.version == 1:
-                    _logger.info(
-                        f"There is no previous model version. Skipping Staging and transitioning model: {mlflow_tracking_cfg.model_name} to Production"
-                    )
-                    client.transition_model_version_stage(
-                        name=mlflow_tracking_cfg.model_name,
-                        version=model_details.version,
-                        stage="Production",
-                    )
-                else:
-                    _logger.info(f"Transitioning model: {mlflow_tracking_cfg.model_name} to Staging")
-                    client.transition_model_version_stage(
-                        name=mlflow_tracking_cfg.model_name,
-                        version=model_details.version,
-                        stage="Staging",
-                    )
+                _logger.info(f"Transitioning model: {mlflow_tracking_cfg.model_name} to Staging")
+                client.transition_model_version_stage(
+                    name=mlflow_tracking_cfg.model_name,
+                    version=model_details.version,
+                    stage="Staging",
+                )

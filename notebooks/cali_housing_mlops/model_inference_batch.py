@@ -14,9 +14,9 @@ dbutils.widgets.dropdown("env", "dev", ["dev", "staging", "prod"], "Environment 
 
 # COMMAND ----------
 # DBTITLE 1,Module Imports
-from src.mlops.model_inference_batch import ModelInferenceBatch
 from src.common import MetastoreTable
 from src.utils.notebook_utils import load_config, load_and_set_env_vars
+from src.mlops.model_inference_batch import ModelInferenceBatch
 
 # COMMAND ----------
 # DBTITLE 1,Setup Pipeline Config
@@ -26,14 +26,13 @@ env_vars = load_and_set_env_vars(env=dbutils.widgets.get("env"))
 
 # Load pipeline config from config file (`conf/pipeline_config/` dir)
 pipeline_config = load_config(
-    config_name="model_inference_batch_cfg",
+    pipeline_name="model_inference_batch_cfg",
     project="cali_housing_mlops",
 )
 
 env_vars = load_and_set_env_vars(env=dbutils.widgets.get("env"))
-# TODO: Figure out if you want to move things like model name to the config file
 
-model_name = pipeline_config["model_name"] + f"_{env_vars['env']}"
+model_name = env_vars["cali_model_name"]
 model_registry_stage = pipeline_config["mlflow_params"]["model_registry_stage"]
 model_uri = f"models:/{model_name}/{model_registry_stage}"
 
@@ -49,7 +48,7 @@ model_inference = ModelInferenceBatch(
     output_table=MetastoreTable(
         catalog=env_vars["cali_catalog"],
         schema=env_vars["cali_schema"],
-        table=pipeline_config["predictions"],
+        table=pipeline_config["data_output"]["table_name"],
     ),
 )
 

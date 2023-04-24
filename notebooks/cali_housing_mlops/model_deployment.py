@@ -14,13 +14,13 @@ dbutils.widgets.dropdown("env", "dev", ["dev", "staging", "prod"], "Environment 
 
 # COMMAND ----------
 # DBTITLE 1,Module Imports
+from src.common import MetastoreTable
+from src.utils.notebook_utils import load_and_set_env_vars, load_config
 from src.mlops.model_deployment import (
     ModelDeployment,
     ModelDeploymentConfig,
 )
 from src.mlops.mlflow_utils import MLflowTrackingConfig
-from src.utils.notebook_utils import load_and_set_env_vars, load_config
-from src.common import MetastoreTable
 
 # COMMAND ----------
 # DBTITLE 1,Load Config
@@ -29,7 +29,7 @@ env_vars = load_and_set_env_vars(env=dbutils.widgets.get("env"))
 
 # Load pipeline config from config file (`conf/pipeline_config/` dir)
 pipeline_config = load_config(
-    config_name="model_deployment_cfg",
+    pipeline_name="model_deployment_cfg",
     project="cali_housing_mlops",
 )
 
@@ -37,8 +37,8 @@ pipeline_config = load_config(
 # DBTITLE 1,Setup Pipeline Config
 mlflow_tracking_cfg = MLflowTrackingConfig(
     run_name="staging_vs_prod_comparison",
-    experiment_path=env_vars["cali_deploy_exper_path"],
-    model_name=f"{pipeline_config['model_name']}_{env_vars['env']}",
+    experiment_path=env_vars["cali_model_deploy_exper_path"],
+    model_name=env_vars["cali_model_name"],
 )
 
 model_deployment_cfg = ModelDeploymentConfig(

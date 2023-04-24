@@ -16,7 +16,7 @@ from src.utils.get_spark import spark
 _logger = get_logger()
 
 
-class MetastoreTable:
+class MetastoreTable:  # TODO: Add tests, add shallow/deep delta clone function
     """
     Class representing a table in the Unity Catalog Metastore. This class is used to reference tables,
     and perform operations on them. It is not a Spark DataFrame, a PySpark DataFrame, or a Pandas DataFrame.
@@ -163,7 +163,7 @@ class MetastoreCatalog:
         except Exception as e:
             return False
 
-    def create(self, comment: str = "") -> None:
+    def create_if_not_exists(self, comment: str = "") -> None:
         """
         Function to create a catalog in Unity Metastore.
         """
@@ -294,7 +294,7 @@ class MetastoreSchema:
         except Exception as e:
             return False
 
-    def create(self, comment: str = "") -> None:
+    def create_if_not_exists(self, comment: str = "") -> None:
         """
         Function to create a schema in Unity Metastore.
         """

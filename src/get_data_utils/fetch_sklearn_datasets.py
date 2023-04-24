@@ -7,7 +7,7 @@ import pandas as pd
 
 from src.utils.logger_utils import get_logger
 from src.utils.get_spark import spark
-from src.utils.notebook_utils import load_and_set_env_vars, load_config
+from src.utils.notebook_utils import load_and_set_env_vars, load_config_no_proj
 
 _logger = get_logger()
 
@@ -83,7 +83,7 @@ if __name__ == "__main__":
     # if loading from files
     task_name = "fetch_sklearn_datasets"
     env_vars = load_and_set_env_vars(env="dev")  # unused
-    task_cfg = load_config(task_name)
+    task_cfg = load_config_no_proj(task_name)
 
     # if loading from notebook
     fetcher = SklearnDataFetcher(cfg=cfg)
