@@ -69,6 +69,8 @@ class CaliHousingDataSetup:
     def run(self):
         _logger.info("==========Setting up CaliHousing MLOps data assets ==========")
 
+        self._setup_metastore_objects()
+
         # Check if fetch is needed
         fetch_needed = self._check_fetch_needed(self.cfg.train_table) or self._check_fetch_needed(
             self.cfg.holdout_table
@@ -76,8 +78,6 @@ class CaliHousingDataSetup:
 
         if fetch_needed:
             _logger.info("Fetch needed...")
-
-            self._setup_metastore_objects()
 
             data = self._fetch_data()
             train_data, holdout_data = self._separate_holdout_set(data)
