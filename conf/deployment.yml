@@ -11,117 +11,6 @@ custom:
       node_type_id: "i3.xlarge"
 
 environments:
-  default:
-    workflows:
-      #######################################################################################
-      #   Example workflow for integration tests                                            #
-      #######################################################################################
-      - name: "packaged-poc-mlops-sample-tests"
-        tasks:
-          - task_key: "main"
-            <<: *basic-static-cluster
-            spark_python_task:
-                python_file: "file://tests/entrypoint.py"
-                # this call supports all standard pytest arguments
-                parameters: ["file:fuse://tests/integration", "--cov=packaged_poc"]
-      #######################################################################################
-      # this is an example job with single ETL task based on 2.1 API and wheel_task format #
-      ######################################################################################
-      - name: "packaged-poc-mlops-sample-etl"
-        tasks:
-          - task_key: "main"
-            <<: *basic-static-cluster
-            python_wheel_task:
-              package_name: "packaged_poc"
-              entry_point: "etl" # take a look at the setup.py entry_points section for details on how to define an entrypoint
-              parameters: ["--conf-file", "file:fuse://conf/tasks/sample_etl_config.yml"]
-      #############################################################
-      # this is an example multitask job with notebook task       #
-      #############################################################
-      - name: "packaged-poc-mlops-sample-multitask"
-        job_clusters:
-          - job_cluster_key: "default"
-            <<: *basic-static-cluster
-        tasks:
-          - task_key: "etl"
-            job_cluster_key: "default"
-            spark_python_task:
-              python_file: "file://packaged_poc/tasks/sample_etl_task.py"
-              parameters: [ "--conf-file", "file:fuse://conf/tasks/sample_etl_config.yml" ]
-          - task_key: "ml"
-            depends_on:
-              - task_key: "etl"
-            job_cluster_key: "default"
-            python_wheel_task:
-              package_name: "packaged_poc"
-              entry_point: "ml"
-              parameters: [ "--conf-file", "file:fuse://conf/tasks/sample_ml_config.yml" ]
-          ###############################################################################
-          # this is an example task based on the notebook                               #
-          # Please note that first you'll need to add a Repo and commit notebook to it. #
-          ###############################################################################
-          - task_key: "notebook"
-            deployment_config:
-              no_package: true # we omit using package since code will be shipped directly from the Repo
-            depends_on:
-              - task_key: "ml"
-            job_cluster_key: "default"
-            notebook_task:
-              notebook_path: "/Repos/Staging/packaged_poc/notebooks/sample_notebook"
-      - name: "cali_housing_setup_data"
-        git_source:
-          git_url: https://github.com/Zaxier/packaged-poc-mlops 
-          git_provider: "github"
-          git_branch: "master"
-        tasks:
-          - task_key: "main"
-            description: "Workflow to setup data for the project"
-            existing_cluster_id: "0420-014219-930j61s2"
-            # <<: *basic-static-cluster
-            deployment_config:
-              no_package: true # we omit using package since code will be shipped directly from the Repo
-            notebook_task:
-              notebook_path: "notebooks/cali_housing_mlops/data_setup"
-              parameters: ['--base-data-params': 'file:fuse://conf/.base_data_params.env',
-                           '--env', 'file:fuse://conf/staging/.staging.env',
-                           '--conf-file', 'file:fuse://conf/pipeline_configs/cali_housing_mlops/data_setup_cfg.yml']
-              base_parameters: {"env" : "staging", "job-id" : "{{job_id}}", "start-time" : "{{start_time}}" }
-      - name: "cali_housing_model_train"
-        git_source:
-          git_url: https://github.com/Zaxier/packaged-poc-mlops
-          git_provider: "github"
-          git_branch: "master"
-        tasks:
-          - task_key: "main"
-            description: "Workflow for model-train pipeline"
-            existing_cluster_id: "0420-014219-930j61s2"
-            # existing_cluster_id: "<existing_cluster_id>"
-            deployment_config:
-              no_package: true # we omit using package since code will be shipped directly from the Repo
-            notebook_task:
-              notebook_path: "notebooks/cali_housing_mlops/model_train"
-              parameters: ['--base-data-params': 'file:fuse://conf/.base_data_params.env',
-                           '--env', 'file:fuse://conf/dev/.dev.env',
-                           '--conf-file', 'file:fuse://conf/pipeline_configs/cali_housing_mlops/model_train_cfg.yml']
-              base_parameters: {"env" : "staging", "job-id" : "{{job_id}}", "start-time" : "{{start_time}}" } # TODO: Determine if we can add back in "env": "dev" etc         
-      - name: "cali_housing_model_deployment"
-        git_source:
-          git_url: https://github.com/Zaxier/packaged-poc-mlops
-          git_provider: "github"
-          git_branch: "master"
-        tasks:
-          - task_key: "main"
-            description: "Workflow for model-deployment pipeline"
-            existing_cluster_id: "0420-014219-930j61s2"
-            # existing_cluster_id: "<existing_cluster_id>"
-            deployment_config:
-              no_package: true # we omit using package since code will be shipped directly from the Repo
-            notebook_task:
-              notebook_path: "notebooks/cali_housing_mlops/model_deployment"
-              parameters: ['--base-data-params': 'file:fuse://conf/.base_data_params.env',
-                           '--env', 'file:fuse://conf/dev/.dev.env',
-                           '--conf-file', 'file:fuse://conf/pipeline_configs/cali_housing_mlops/model_deployment_cfg.yml']
-              base_parameters: {"env" : "staging", "job-id" : "{{job_id}}", "start-time" : "{{start_time}}" } # TODO: Determine if we can add back in "env": "dev" etc
   dev:
     workflows:
       - name: "cali_housing_setup_data"
@@ -174,8 +63,7 @@ environments:
         tasks:
           - task_key: "main"
             description: "Workflow for model-train pipeline"
-            existing_cluster_id: "0420-014219-930j61s2"
-            # existing_cluster_id: "<existing_cluster_id>"
+            <<: *basic-static-cluster
             deployment_config:
               no_package: true # we omit using package since code will be shipped directly from the Repo
             notebook_task:
@@ -195,8 +83,7 @@ environments:
         tasks:
           - task_key: "main"
             description: "Workflow for model-train pipeline"
-            existing_cluster_id: "0420-014219-930j61s2"
-            # existing_cluster_id: "<existing_cluster_id>"
+            <<: *basic-static-cluster
             deployment_config:
               no_package: true # we omit using package since code will be shipped directly from the Repo
             notebook_task:
