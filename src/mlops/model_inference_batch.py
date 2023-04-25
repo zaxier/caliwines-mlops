@@ -1,6 +1,7 @@
 import pyspark.sql.dataframe
 from pyspark.sql.functions import col, struct, lit
 import mlflow
+from mlflow import MlflowClient
 
 from src.utils.get_spark import spark
 from src.utils.logger_utils import get_logger
@@ -55,7 +56,21 @@ class ModelInferenceBatch:
         int
             Model version
         """
-        return mlflow.get_registry_client().get_model_version(self.model_uri).version
+        url = self.model_uri
+        if url.startswith("models://") and url.split("models://")[1].split("/")[1] in [
+            "None",
+            "Archive",
+            "Staging",
+            "Production",
+        ]:
+            model_name = url.split("models://")[1].split("/")[0]
+            model_stage = url.split("models://")[1].split("/")[1]
+
+        else:
+            raise ValueError("Invalid URL format")
+
+        client = MlflowClient()
+        return client.get_latest_versions(name=model_name, stages=[model_stage])[0]
 
     def score_batch(self, df: pyspark.sql.DataFrame) -> pyspark.sql.DataFrame:
         """
