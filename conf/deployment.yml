@@ -301,7 +301,6 @@ environments:
                            '--conf-file', 'file:fuse://conf/pipeline_configs/cali_housing_mlops/model_deployment_cfg.yml']
               base_parameters: {"env" : "staging", "job-id" : "{{job_id}}", "start-time" : "{{start_time}}" }
 
-
   prod:
     workflows:
       - name: "cali-housing-PROD-data-setup"
