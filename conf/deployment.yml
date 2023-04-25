@@ -52,7 +52,7 @@ environments:
                            '--conf-file', 'file:fuse://conf/pipeline_configs/cali_housing_mlops/model_train_cfg.yml']
               base_parameters: {"env" : "dev", "job-id" : "{{job_id}}", "start-time" : "{{start_time}}" }         
 
-      - name: "cali-housing-DEV-model-deployment"
+      - name: "cali-housing-DEV-model-deploy"
         git_source:
           git_url: https://github.com/Zaxier/packaged-poc-mlops
           git_provider: "github"
