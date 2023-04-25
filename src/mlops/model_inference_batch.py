@@ -72,7 +72,7 @@ class ModelInferenceBatch:
         client = MlflowClient()
         version = client.get_latest_versions(name=model_name, stages=[model_stage])[0]
         _logger.info(f"Using model version: {version}")
-        return version
+        return version.version
 
     def score_batch(self, df: pyspark.sql.DataFrame) -> pyspark.sql.DataFrame:
         """
