@@ -6,7 +6,7 @@
 # MAGIC Optionally, the resulting model will be registered to MLflow Model Registry if provided.
 
 # COMMAND ----------
-# DBTITLE 1,install requirement here if necessary
+# DBTITLE 1,Install requirements
 # MAGIC %pip install -r ../../requirements.txt
 
 # COMMAND ----------

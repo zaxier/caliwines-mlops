@@ -5,7 +5,7 @@
 # MAGIC Pipeline to setup data that we will use for our ML experiment.
 
 # COMMAND ----------
-# DBTITLE 1,install requirement here if necessary
+# DBTITLE 1,Install requirements
 # MAGIC %pip install -r ../../requirements.txt
 
 # COMMAND ----------

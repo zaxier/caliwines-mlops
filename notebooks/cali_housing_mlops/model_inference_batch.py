@@ -5,7 +5,7 @@
 # MAGIC Pipeline to execute model inference. Model will be loaded from MLflow Model Registry and used to make predictions on a holdout dataset.
 
 # COMMAND ----------
-# DBTITLE 1,install requirement here if necessary
+# DBTITLE 1,Install requirements
 # MAGIC %pip install -r ../../requirements.txt
 
 # COMMAND ----------

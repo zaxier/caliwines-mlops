@@ -5,7 +5,7 @@
 # MAGIC Pipeline to execute model deployment. Model will be loaded from MLflow Model Registry and deployed.
 
 # COMMAND ----------
-# DBTITLE 1,install requirement here if necessary
+# DBTITLE 1,Install requirements
 # MAGIC %pip install -r ../../requirements.txt
 
 # COMMAND ----------
