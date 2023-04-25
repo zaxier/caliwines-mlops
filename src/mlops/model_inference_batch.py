@@ -70,7 +70,9 @@ class ModelInferenceBatch:
             raise ValueError(f"Invalid URL format. Must be models:/<model_name>/<model_stage>. Your URL: {url}")
 
         client = MlflowClient()
-        return client.get_latest_versions(name=model_name, stages=[model_stage])[0]
+        version = client.get_latest_versions(name=model_name, stages=[model_stage])[0]
+        _logger.info(f"Using model version: {version}")
+        return version
 
     def score_batch(self, df: pyspark.sql.DataFrame) -> pyspark.sql.DataFrame:
         """
