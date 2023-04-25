@@ -5,4 +5,4 @@ data_input:
   table_name: 'holdout' 
 data_output:
   table_name: 'predictions'
-  mode: 'overwrite'
+  mode: 'append'
