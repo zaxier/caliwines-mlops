@@ -130,6 +130,6 @@ class ModelInferenceBatch:
 
         _logger.info(f"Predictions written to {self.output_table.ref} table")
 
-        pred_df.write.format("delta").mode(mode).saveAsTable(self.output_table.ref)
+        pred_df.write.format("delta").mode(mode).option("mergeSchema", True).saveAsTable(self.output_table.ref)
 
         _logger.info("==========Batch model inference completed==========")
