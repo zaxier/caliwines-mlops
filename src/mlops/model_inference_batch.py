@@ -91,7 +91,7 @@ class ModelInferenceBatch:
         # loaded_model = mlflow.pyfunc.spark_udf(spark, model_uri=self.model_uri, result_type="double", env_manager="conda")
         return (
             df.withColumn("prediction", loaded_model(struct([col(c) for c in df.columns])))
-            .withColumn("model_uri", self.model_uri)
+            .withColumn("model_uri", lit(self.model_uri))
             .withColumn("model_version", lit(model_version))
         )
 
