@@ -1,7 +1,6 @@
 import pyspark.sql.dataframe
-from pyspark.sql.functions import col, struct
+from pyspark.sql.functions import col, struct, lit
 import mlflow
-
 
 from src.utils.get_spark import spark
 from src.utils.logger_utils import get_logger
@@ -47,6 +46,17 @@ class ModelInferenceBatch:
         """
         return spark.table(self.input_table.ref)
 
+    def _get_model_version(self) -> int:
+        """
+        Get model version from MLflow Model Registry
+
+        Returns
+        -------
+        int
+            Model version
+        """
+        return mlflow.get_registry_client().get_model_version(self.model_uri).version
+
     def score_batch(self, df: pyspark.sql.DataFrame) -> pyspark.sql.DataFrame:
         """
         Load and apply model from MLflow Model Registry to Spark DataFrame.
@@ -61,9 +71,14 @@ class ModelInferenceBatch:
         pyspark.sql.DataFrame
             Spark DataFrame with predictions column added.
         """
+        model_version = self._get_model_version()
         loaded_model = mlflow.pyfunc.spark_udf(spark, model_uri=self.model_uri, result_type="double")
         # loaded_model = mlflow.pyfunc.spark_udf(spark, model_uri=self.model_uri, result_type="double", env_manager="conda")
-        return df.withColumn("prediction", loaded_model(struct([col(c) for c in df.columns])))
+        return (
+            df.withColumn("prediction", loaded_model(struct([col(c) for c in df.columns])))
+            .withColumn("model_uri", self.model_uri)
+            .withColumn("model_version", lit(model_version))
+        )
 
     def run_batch(self) -> pyspark.sql.DataFrame:
         """
