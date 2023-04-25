@@ -20,7 +20,7 @@ environments:
           git_provider: "github"
           git_branch: "dev"
         tasks:
-          - task_key: "data-setup-notebook_task"
+          - task_key: "data_setup"
             description: "Workflow to setup data for the project"
             existing_cluster_id: "0420-014219-930j61s2"
             # <<: *basic-static-cluster
@@ -40,7 +40,7 @@ environments:
           git_provider: "github"
           git_branch: "dev"
         tasks:
-          - task_key: "model-train-notebook_task"
+          - task_key: "model_train"
             description: "Workflow for model-train pipeline"
             existing_cluster_id: "0420-014219-930j61s2"
             # existing_cluster_id: "<existing_cluster_id>"
@@ -59,7 +59,7 @@ environments:
           git_provider: "github"
           git_branch: "dev"
         tasks:
-          - task_key: "model-deployment-notebook_task"
+          - task_key: "model_deployment"
             description: "Workflow for model deployment pipeline"
             existing_cluster_id: "0420-014219-930j61s2"
             # existing_cluster_id: "<existing_cluster_id>"
@@ -78,7 +78,7 @@ environments:
           git_provider: "github"
           git_branch: "dev"
         tasks:
-          - task_key: "model-inference-batch-notebook_task"
+          - task_key: "model_inference_batch"
             description: "Workflow for model inference batch pipeline"
             existing_cluster_id: "0420-014219-930j61s2"
             # existing_cluster_id: "<existing_cluster_id>"
@@ -97,7 +97,7 @@ environments:
           git_provider: "github"
           git_branch: "dev"
         tasks:
-          - task_key: "data-setup-notebook_task"
+          - task_key: "data_setup"
             description: "Workflow to setup data for the project"
             existing_cluster_id: "0420-014219-930j61s2"
             deployment_config:
@@ -108,10 +108,10 @@ environments:
                            '--env', 'file:fuse://conf/staging/.staging.env',
                            '--conf-file', 'file:fuse://conf/pipeline_configs/cali_housing_mlops/data_setup_cfg.yml']
               base_parameters: {"env" : "staging", "job-id" : "{{job_id}}", "start-time" : "{{start_time}}" }
-          - task_key: "model-train-notebook_task"
+          - task_key: "model_train"
             description: "Workflow for model-train pipeline"
             depends_on: 
-              - task_key: "data-setup-notebook_task"
+              - task_key: "data_setup"
             existing_cluster_id: "0420-014219-930j61s2"
             deployment_config:
               no_package: true # we omit using package since code will be shipped directly from the Repo
@@ -129,7 +129,7 @@ environments:
           git_provider: "github"
           git_branch: "dev"
         tasks:
-          - task_key: "model-train-notebook_task"
+          - task_key: "model_train"
             description: "Task for model train pipeline"
             existing_cluster_id: "0420-014219-930j61s2"
             # existing_cluster_id: "<existing_cluster_id>"
@@ -141,10 +141,10 @@ environments:
                            '--env', 'file:fuse://conf/dev/.dev.env',
                            '--conf-file', 'file:fuse://conf/pipeline_configs/cali_housing_mlops/model_train_cfg.yml']
               base_parameters: {"env" : "dev", "job-id" : "{{job_id}}", "start-time" : "{{start_time}}" }
-          - task_key: "model-deployment-notebook_task"
+          - task_key: "model_deployment"
             description: "Task for model deploy pipeline"
             depends_on: 
-              - task_key: "model-train-notebook_task"
+              - task_key: "model_train"
             existing_cluster_id: "0420-014219-930j61s2"
             # existing_cluster_id: "<existing_cluster_id>"
             deployment_config:
@@ -165,7 +165,7 @@ environments:
           git_provider: "github"
           git_branch: "master"
         tasks:
-          - task_key: "data-setup-notebook_task"
+          - task_key: "data_setup"
             description: "Workflow to setup data for the project"
             <<: *basic-static-cluster
             deployment_config:
@@ -184,7 +184,7 @@ environments:
           git_provider: "github"
           git_branch: "master"
         tasks:
-          - task_key: "model-train-notebook_task"
+          - task_key: "model_train"
             description: "Workflow for model-train pipeline"
             <<: *basic-static-cluster
             deployment_config:
@@ -202,7 +202,7 @@ environments:
           git_provider: "github"
           git_branch: "master"
         tasks:
-          - task_key: "model-deployment-notebook_task"
+          - task_key: "model_deployment"
             description: "Workflow for model deployment pipeline"
             <<: *basic-static-cluster
             deployment_config:
@@ -220,7 +220,7 @@ environments:
           git_provider: "github"
           git_branch: "master"
         tasks:
-          - task_key: "model-inference-batch-notebook_task"
+          - task_key: "model_inference_batch"
             description: "Workflow for model inference batch pipeline"
             <<: *basic-static-cluster
             deployment_config:
@@ -241,7 +241,7 @@ environments:
           - job_cluster_key: "cluster-1"
             <<: *basic-static-cluster
         tasks:
-          - task_key: "data-setup-notebook_task"
+          - task_key: "data_setup"
             description: "Workflow to setup data for the project"
             job_cluster_key: "cluster-1"
             deployment_config:
@@ -252,10 +252,10 @@ environments:
                            '--env', 'file:fuse://conf/staging/.staging.env',
                            '--conf-file', 'file:fuse://conf/pipeline_configs/cali_housing_mlops/data_setup_cfg.yml']
               base_parameters: {"env" : "staging", "job-id" : "{{job_id}}", "start-time" : "{{start_time}}" }
-          - task_key: "model-train-notebook_task"
+          - task_key: "model_train"
             description: "Workflow for model-train pipeline"
             depends_on: 
-              - task_key: "data-setup-notebook_task"
+              - task_key: "data_setup"
             job_cluster_key: "cluster-1"
             deployment_config:
               no_package: true # we omit using package since code will be shipped directly from the Repo
@@ -276,7 +276,7 @@ environments:
           - job_cluster_key: "cluster-1"
             <<: *basic-static-cluster
         tasks:
-          - task_key: "model-train-notebook_task"
+          - task_key: "model_train"
             description: "Task for model train pipeline"
             job_cluster_key: "cluster-1"
             deployment_config:
@@ -287,11 +287,11 @@ environments:
                            '--env', 'file:fuse://conf/staging/.staging.env',
                            '--conf-file', 'file:fuse://conf/pipeline_configs/cali_housing_mlops/model_train_cfg.yml']
               base_parameters: {"env" : "staging", "job-id" : "{{job_id}}", "start-time" : "{{start_time}}" }
-          - task_key: "model-deployment-notebook_task"
+          - task_key: "model_deployment"
             description: "Task for model deploy pipeline"
             job_cluster_key: "cluster-1"
             depends_on: 
-              - task_key: "model-train-notebook_task"
+              - task_key: "model_train"
             deployment_config:
               no_package: true # we omit using package since code will be shipped directly from the Repo
             notebook_task:
@@ -309,7 +309,7 @@ environments:
           git_provider: "github"
           git_branch: "master"
         tasks:
-          - task_key: "data-setup-notebook_task"
+          - task_key: "data_setup"
             description: "Workflow to setup data for the project"
             <<: *basic-static-cluster
             deployment_config:
@@ -328,7 +328,7 @@ environments:
           git_provider: "github"
           git_branch: "master"
         tasks:
-          - task_key: "model-train-notebook_task"
+          - task_key: "model_train"
             description: "Workflow for model-train pipeline"
             <<: *basic-static-cluster
             deployment_config:
@@ -346,7 +346,7 @@ environments:
           git_provider: "github"
           git_branch: "master"
         tasks:
-          - task_key: "model-deployment-notebook_task"
+          - task_key: "model_deployment"
             description: "Workflow for model deployment pipeline"
             <<: *basic-static-cluster
             deployment_config:
@@ -364,7 +364,7 @@ environments:
           git_provider: "github"
           git_branch: "master"
         tasks:
-          - task_key: "model-inference-batch-notebook_task"
+          - task_key: "model_inference_batch"
             description: "Workflow for model inference batch pipeline"
             <<: *basic-static-cluster
             deployment_config:
@@ -385,7 +385,7 @@ environments:
           - job_cluster_key: "cluster-1"
             <<: *basic-static-cluster
         tasks:
-          - task_key: "data-setup-notebook_task"
+          - task_key: "data_setup"
             description: "Workflow to setup data for the project"
             job_cluster_key: "cluster-1"
             deployment_config:
@@ -396,10 +396,10 @@ environments:
                            '--env', 'file:fuse://conf/prod/.prod.env',
                            '--conf-file', 'file:fuse://conf/pipeline_configs/cali_housing_mlops/data_setup_cfg.yml']
               base_parameters: {"env" : "prod", "job-id" : "{{job_id}}", "start-time" : "{{start_time}}" }
-          - task_key: "model-train-notebook_task"
+          - task_key: "model_train"
             description: "Workflow for model-train pipeline"
             depends_on: 
-              - task_key: "data-setup-notebook_task"
+              - task_key: "data_setup"
             job_cluster_key: "cluster-1"
             deployment_config:
               no_package: true # we omit using package since code will be shipped directly from the Repo
@@ -420,7 +420,7 @@ environments:
           - job_cluster_key: "cluster-1"
             <<: *basic-static-cluster
         tasks:
-          - task_key: "model-train-notebook_task"
+          - task_key: "model_train"
             description: "Task for model train pipeline"
             job_cluster_key: "cluster-1"
             deployment_config:
@@ -431,11 +431,11 @@ environments:
                            '--env', 'file:fuse://conf/prod/.prod.env',
                            '--conf-file', 'file:fuse://conf/pipeline_configs/cali_housing_mlops/model_train_cfg.yml']
               base_parameters: {"env" : "prod", "job-id" : "{{job_id}}", "start-time" : "{{start_time}}" }
-          - task_key: "model-deployment-notebook_task"
+          - task_key: "model_deployment"
             description: "Task for model deploy pipeline"
             job_cluster_key: "cluster-1"
             depends_on: 
-              - task_key: "model-train-notebook_task"
+              - task_key: "model_train"
             deployment_config:
               no_package: true # we omit using package since code will be shipped directly from the Repo
             notebook_task:
