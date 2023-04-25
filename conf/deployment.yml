@@ -13,7 +13,7 @@ custom:
 environments:
   dev:
     workflows:
-      - name: "cali_housing_setup_data"
+      - name: "cali-housing-DEV-data-setup"
         git_source:
           git_url: https://github.com/Zaxier/packaged-poc-mlops 
           git_provider: "github"
@@ -33,7 +33,7 @@ environments:
               base_parameters: {"env" : "dev", "job-id" : "{{job_id}}", "start-time" : "{{start_time}}" }
               # base_parameters: {"job-id" : "{{job_id}}", "start-time" : "{{start_time}}" }
 
-      - name: "cali_housing_model_train"
+      - name: "cali-housing-DEV-model-train"
         git_source:
           git_url: https://github.com/Zaxier/packaged-poc-mlops
           git_provider: "github"
@@ -52,7 +52,7 @@ environments:
                            '--conf-file', 'file:fuse://conf/pipeline_configs/cali_housing_mlops/model_train_cfg.yml']
               base_parameters: {"env" : "dev", "job-id" : "{{job_id}}", "start-time" : "{{start_time}}" }         
 
-      - name: "cali_housing_model_deployment"
+      - name: "cali-housing-DEV-model-deployment"
         git_source:
           git_url: https://github.com/Zaxier/packaged-poc-mlops
           git_provider: "github"
@@ -70,7 +70,7 @@ environments:
                            '--env', 'file:fuse://conf/dev/.dev.env',
                            '--conf-file', 'file:fuse://conf/pipeline_configs/cali_housing_mlops/model_deployment_cfg.yml']
               base_parameters: {"env" : "dev", "job-id" : "{{job_id}}", "start-time" : "{{start_time}}" }
-      - name: "cali_housing_model_inference_batch"
+      - name: "cali-housing-DEV-model-inference-batch"
         git_source:
           git_url: https://github.com/Zaxier/packaged-poc-mlops
           git_provider: "github"
@@ -88,7 +88,7 @@ environments:
                            '--env', 'file:fuse://conf/dev/.dev.env',
                            '--conf-file', 'file:fuse://conf/pipeline_configs/cali_housing_mlops/model_inference_batch_cfg.yml']
               base_parameters: {"env" : "dev", "job-id" : "{{job_id}}", "start-time" : "{{start_time}}" }
-      - name: "cali_housing_model_train_and_deploy"
+      - name: "cali-housing-DEV-model-train-deploy"
         description: "Workflow for model train and model deploy pipeline"
         git_source:
           git_url: https://github.com/Zaxier/packaged-poc-mlops
