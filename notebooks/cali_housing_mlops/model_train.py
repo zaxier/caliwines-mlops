@@ -39,7 +39,7 @@ pipeline_config = load_config(
 # DBTITLE 1,Setup Pipeline Config
 mlflow_tracking_cfg = MLflowTrackingConfig(
     run_name=pipeline_config["mlflow_params"]["run_name"],
-    experiment_path=env_vars["cali_model_train_exper_path"],
+    experiment_path=env_vars["cali_train_exper_path"],
     model_name=env_vars["cali_model_name"],
 )
 
