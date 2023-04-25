@@ -18,7 +18,7 @@ environments:
         git_source:
           git_url: https://github.com/Zaxier/packaged-poc-mlops 
           git_provider: "github"
-          git_branch: "master"
+          git_branch: "dev"
         tasks:
           - task_key: "main"
             description: "Workflow to setup data for the project"
@@ -38,7 +38,7 @@ environments:
         git_source:
           git_url: https://github.com/Zaxier/packaged-poc-mlops
           git_provider: "github"
-          git_branch: "master"
+          git_branch: "dev"
         tasks:
           - task_key: "main"
             description: "Workflow for model-train pipeline"
@@ -57,7 +57,7 @@ environments:
         git_source:
           git_url: https://github.com/Zaxier/packaged-poc-mlops
           git_provider: "github"
-          git_branch: "master"
+          git_branch: "dev"
         tasks:
           - task_key: "main"
             description: "Workflow for model deployment pipeline"
@@ -76,7 +76,7 @@ environments:
         git_source:
           git_url: https://github.com/Zaxier/packaged-poc-mlops
           git_provider: "github"
-          git_branch: "master"
+          git_branch: "dev"
         tasks:
           - task_key: "main"
             description: "Workflow for model inference batch pipeline"
@@ -95,7 +95,7 @@ environments:
         git_source:
           git_url: https://github.com/Zaxier/packaged-poc-mlops 
           git_provider: "github"
-          git_branch: "master"
+          git_branch: "dev"
         tasks:
           - task_key: "data_setup"
             description: "Workflow to setup data for the project"
@@ -125,7 +125,7 @@ environments:
         git_source:
           git_url: https://github.com/Zaxier/packaged-poc-mlops
           git_provider: "github"
-          git_branch: "master"
+          git_branch: "dev"
         tasks:
           - task_key: "train"
             description: "Task for model train pipeline"
