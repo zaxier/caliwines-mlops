@@ -91,6 +91,35 @@ environments:
                            '--conf-file', 'file:fuse://conf/pipeline_configs/cali_housing_mlops/model_inference_batch_cfg.yml']
               base_parameters: {"env" : "dev", "job-id" : "{{job_id}}", "start-time" : "{{start_time}}" }
 
+      - name: "cali-housing-DEV-data-setup-train"
+        git_source:
+          git_url: https://github.com/Zaxier/packaged-poc-mlops 
+          git_provider: "github"
+          git_branch: "master"
+        tasks:
+          - task_key: "data_setup"
+            description: "Workflow to setup data for the project"
+            existing_cluster_id: "0420-014219-930j61s2"
+            deployment_config:
+              no_package: true # we omit using package since code will be shipped directly from the Repo
+            notebook_task:
+              notebook_path: "notebooks/cali_housing_mlops/data_setup"
+              parameters: ['--base-data-params': 'file:fuse://conf/.base_data_params.env',
+                           '--env', 'file:fuse://conf/staging/.staging.env',
+                           '--conf-file', 'file:fuse://conf/pipeline_configs/cali_housing_mlops/data_setup_cfg.yml']
+              base_parameters: {"env" : "staging", "job-id" : "{{job_id}}", "start-time" : "{{start_time}}" }
+          - task_key: "train"
+            description: "Workflow for model-train pipeline"
+            existing_cluster_id: "0420-014219-930j61s2"
+            deployment_config:
+              no_package: true # we omit using package since code will be shipped directly from the Repo
+            notebook_task:
+              notebook_path: "notebooks/cali_housing_mlops/model_train"
+              parameters: ['--base-data-params': 'file:fuse://conf/.base_data_params.env',
+                           '--env', 'file:fuse://conf/staging/.staging.env',
+                           '--conf-file', 'file:fuse://conf/pipeline_configs/cali_housing_mlops/model_train_cfg.yml']
+              base_parameters: {"env" : "staging", "job-id" : "{{job_id}}", "start-time" : "{{start_time}}" }         
+
       - name: "cali-housing-DEV-model-train-deploy"
         description: "Workflow for model train and model deploy pipeline"
         git_source:
