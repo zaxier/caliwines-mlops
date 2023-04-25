@@ -67,7 +67,7 @@ class ModelInferenceBatch:
             model_stage = url.split("models://")[1].split("/")[1]
 
         else:
-            raise ValueError("Invalid URL format")
+            raise ValueError(f"Invalid URL format. Must be models://<model_name>/<model_stage>. Your URL: {url}")
 
         client = MlflowClient()
         return client.get_latest_versions(name=model_name, stages=[model_stage])[0]
