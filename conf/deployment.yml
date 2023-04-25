@@ -110,6 +110,8 @@ environments:
               base_parameters: {"env" : "staging", "job-id" : "{{job_id}}", "start-time" : "{{start_time}}" }
           - task_key: "model-train-notebook_task"
             description: "Workflow for model-train pipeline"
+            depends_on: 
+              - task_key: "data-setup-notebook_task"
             existing_cluster_id: "0420-014219-930j61s2"
             deployment_config:
               no_package: true # we omit using package since code will be shipped directly from the Repo
@@ -127,7 +129,7 @@ environments:
           git_provider: "github"
           git_branch: "dev"
         tasks:
-          - task_key: "model-training-notebook_task"
+          - task_key: "model-train-notebook_task"
             description: "Task for model train pipeline"
             existing_cluster_id: "0420-014219-930j61s2"
             # existing_cluster_id: "<existing_cluster_id>"
@@ -142,7 +144,7 @@ environments:
           - task_key: "model-deployment-notebook_task"
             description: "Task for model deploy pipeline"
             depends_on: 
-              - task_key: "train"
+              - task_key: "model-train-notebook_task"
             existing_cluster_id: "0420-014219-930j61s2"
             # existing_cluster_id: "<existing_cluster_id>"
             deployment_config:
@@ -252,6 +254,8 @@ environments:
               base_parameters: {"env" : "staging", "job-id" : "{{job_id}}", "start-time" : "{{start_time}}" }
           - task_key: "model-train-notebook_task"
             description: "Workflow for model-train pipeline"
+            depends_on: 
+              - task_key: "data-setup-notebook_task"
             job_cluster_key: "cluster-1"
             deployment_config:
               no_package: true # we omit using package since code will be shipped directly from the Repo
@@ -287,7 +291,7 @@ environments:
             description: "Task for model deploy pipeline"
             job_cluster_key: "cluster-1"
             depends_on: 
-              - task_key: "train"
+              - task_key: "model-train-notebook_task"
             deployment_config:
               no_package: true # we omit using package since code will be shipped directly from the Repo
             notebook_task:
@@ -395,6 +399,8 @@ environments:
               base_parameters: {"env" : "prod", "job-id" : "{{job_id}}", "start-time" : "{{start_time}}" }
           - task_key: "model-train-notebook_task"
             description: "Workflow for model-train pipeline"
+            depends_on: 
+              - task_key: "data-setup-notebook_task"
             job_cluster_key: "cluster-1"
             deployment_config:
               no_package: true # we omit using package since code will be shipped directly from the Repo
@@ -430,7 +436,7 @@ environments:
             description: "Task for model deploy pipeline"
             job_cluster_key: "cluster-1"
             depends_on: 
-              - task_key: "train"
+              - task_key: "model-train-notebook_task"
             deployment_config:
               no_package: true # we omit using package since code will be shipped directly from the Repo
             notebook_task:
