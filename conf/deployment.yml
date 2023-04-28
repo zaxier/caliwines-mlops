@@ -444,6 +444,3 @@ environments:
                            '--env', 'file:fuse://conf/prod/.prod.env',
                            '--conf-file', 'file:fuse://conf/pipeline_configs/cali_housing_mlops/model_deployment_cfg.yml']
               base_parameters: {"env" : "prod", "job-id" : "{{job_id}}", "start-time" : "{{start_time}}" }
-
-
-

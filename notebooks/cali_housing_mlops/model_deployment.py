@@ -1,7 +1,6 @@
 # Databricks notebook source
 # MAGIC %md
 # MAGIC # `model_deployment`
-# MAGIC
 # MAGIC Pipeline to execute model deployment. Model will be loaded from MLflow Model Registry and deployed.
 
 # COMMAND ----------
