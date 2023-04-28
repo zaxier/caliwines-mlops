@@ -6,7 +6,7 @@ import mlflow
 from mlflow import MlflowClient
 import pandas as pd
 
-from databricks_common import MetastoreTable
+from databricks_common.common import MetastoreTable
 from src.mlops.model_train import MLflowTrackingConfig
 from src.mlops.model_inference_batch import ModelInferenceBatch
 from src.mlops.evaluation_utils import ModelEvaluation

@@ -14,7 +14,7 @@ dbutils.widgets.dropdown("env", "dev", ["dev", "staging", "prod"], "Environment 
 
 # COMMAND ----------
 # DBTITLE 1,Module Imports
-from databricks_common import MetastoreTable
+from databricks_common.common import MetastoreTable
 from src.utils.notebook_utils import load_config, load_and_set_env_vars
 from src.get_data_utils.cali_housing_data_setup import (
     SetupCaliHousingConfig,

@@ -10,7 +10,7 @@ import mlflow
 from mlflow.models import infer_signature
 from mlflow.tracking import MlflowClient
 
-from databricks_common import MetastoreTable
+from databricks_common.common import MetastoreTable
 from src.utils.logger_utils import get_logger
 from src.utils.get_spark import spark
 from src.mlops.mlflow_utils import MLflowTrackingConfig
