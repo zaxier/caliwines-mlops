@@ -45,3 +45,7 @@ mlruns/
 
 venv1/
 venv2/
+
+.terraform/
+.terraform.lock*
+*.tfstate*
