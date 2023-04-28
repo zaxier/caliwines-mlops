@@ -44,9 +44,9 @@ mlflow_tracking_cfg = MLflowTrackingConfig(
 )
 
 train_table = MetastoreTable(
+    name=env_vars["cali_train_table"],
     catalog=env_vars["cali_catalog"],
     schema=env_vars["cali_schema"],
-    table=env_vars["cali_train_table"],
 )
 
 model_pipeline = CaliHousingPipeline.create_rf_pipeline_v2(model_params=pipeline_config["model_params"])

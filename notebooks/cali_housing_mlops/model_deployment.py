@@ -44,9 +44,9 @@ mlflow_tracking_cfg = MLflowTrackingConfig(
 model_deployment_cfg = ModelDeploymentConfig(
     mlflow_tracking_cfg=mlflow_tracking_cfg,
     reference_data=MetastoreTable(
+        name=env_vars["cali_reference_table"],
         catalog=env_vars["cali_catalog"],
         schema=env_vars["cali_schema"],
-        table=env_vars["cali_reference_table"],
     ),
     comparison_metric=pipeline_config["model_comparison_params"]["metric"],
     higher_is_better=pipeline_config["model_comparison_params"]["higher_is_better"],
