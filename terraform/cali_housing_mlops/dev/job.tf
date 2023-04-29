@@ -4,7 +4,7 @@ variable "job_name" {
   default     = "My Job"
 }
 
-resource "databricks_job" "this" {
+resource "databricks_job" "data_setup" {
   name = var.job_name
   existing_cluster_id = databricks_cluster.zaxier-ml.id
 
@@ -29,5 +29,5 @@ resource "databricks_job" "this" {
 }
 
 output "job_url" {
-  value = databricks_job.this.url
+  value = databricks_job.data_setup.url
 }
