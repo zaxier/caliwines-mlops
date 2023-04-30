@@ -1,6 +1,7 @@
 import pyspark.sql.dataframe
 from pyspark.sql.functions import col, struct, lit
 import mlflow
+from mlflow import MlflowClient
 
 from src.utils.get_spark import spark
 from src.utils.logger_utils import get_logger
@@ -55,7 +56,8 @@ class ModelInferenceBatch:
         int
             Model version
         """
-        return mlflow.get_registry_client().get_model_version(self.model_uri).version
+        client = MlflowClient()
+        return client.get_registry_client().get_model_version(self.model_uri).version
 
     def score_batch(self, df: pyspark.sql.DataFrame) -> pyspark.sql.DataFrame:
         """
