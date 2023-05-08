@@ -15,7 +15,7 @@ dbutils.widgets.dropdown("env", "dev", ["dev", "staging", "prod"], "Environment 
 
 # COMMAND ----------
 # DBTITLE 1,Module Imports
-from src.common import MetastoreTable
+from databricks_common.common import MetastoreTable
 from src.utils.notebook_utils import load_and_set_env_vars, load_config
 from src.mlops.model_train import (
     ModelTrain,
@@ -44,9 +44,9 @@ mlflow_tracking_cfg = MLflowTrackingConfig(
 )
 
 train_table = MetastoreTable(
+    name=env_vars["cali_train_table"],
     catalog=env_vars["cali_catalog"],
     schema=env_vars["cali_schema"],
-    table=env_vars["cali_train_table"],
 )
 
 model_pipeline = CaliHousingPipeline.create_rf_pipeline_v2(model_params=pipeline_config["model_params"])
