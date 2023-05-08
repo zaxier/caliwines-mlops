@@ -14,7 +14,7 @@ dbutils.widgets.dropdown("env", "dev", ["dev", "staging", "prod"], "Environment 
 
 # COMMAND ----------
 # DBTITLE 1,Module Imports
-from src.common import MetastoreTable
+from databricks_common.common import MetastoreTable
 from src.utils.notebook_utils import load_config, load_and_set_env_vars
 from src.get_data_utils.cali_housing_data_setup import (
     SetupCaliHousingConfig,
@@ -36,14 +36,14 @@ pipeline_config = load_config(
 # DBTITLE 1,Setup Pipeline Config
 setup_cali_housing_mlops_cfg = SetupCaliHousingConfig(
     train_table=MetastoreTable(
+        name=env_vars["cali_train_table"],
         catalog=env_vars["cali_catalog"],
         schema=env_vars["cali_schema"],
-        table=env_vars["cali_train_table"],
     ),
     holdout_table=MetastoreTable(
+        name=env_vars["cali_holdout_table"],
         catalog=env_vars["cali_catalog"],
         schema=env_vars["cali_schema"],
-        table=env_vars["cali_holdout_table"],
     ),
     holdout_pct=pipeline_config["holdout_params"]["holdout_pct"],
     random_seed=pipeline_config["holdout_params"]["random_seed"],

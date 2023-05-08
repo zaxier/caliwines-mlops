@@ -5,7 +5,7 @@ from mlflow import MlflowClient
 
 from src.utils.get_spark import spark
 from src.utils.logger_utils import get_logger
-from src.common import MetastoreTable
+from databricks_common.common import MetastoreTable
 
 _logger = get_logger()
 
