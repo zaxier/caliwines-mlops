@@ -95,6 +95,8 @@ class ModelInferenceBatch:
             df.withColumn("prediction", loaded_model(struct([col(c) for c in df.columns])))
             .withColumn("model_uri", lit(self.model_uri))
             .withColumn("model_version", lit(model_version))
+            .withColumn("model_details", struct(["model_uri", "model_version"]))
+            .drop("model_uri", "model_version")
         )
 
     def run_batch(self) -> pyspark.sql.DataFrame:
