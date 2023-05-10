@@ -43,9 +43,10 @@ mlruns/
 # Backup files
 .bak
 
-venv1/
-venv2/
-
+# Terraform state files
 .terraform/
 .terraform.lock*
 *.tfstate*
+
+# Venv dirs
+dbx/
