@@ -15,3 +15,9 @@ $ code .
 python -m venv dbx
 source dbx/bin/activate
 ```
+
+```
+cd terraform/cali_housing_mlops/jobs-existing-cluster
+terraform init
+```
+
