@@ -11,6 +11,8 @@
 # COMMAND ----------
 # DBTITLE 1,Set env
 dbutils.widgets.dropdown("env", "dev", ["dev", "staging", "prod"], "Environment Name")
+dbutils.widgets.text("job-id", "", "Job ID")
+dbutils.widgets.text("start-time", "", "Start Time")
 
 # COMMAND ----------
 # DBTITLE 1,Module Imports
@@ -23,6 +25,9 @@ from src.mlops.model_inference_batch import ModelInferenceBatch
 
 # Load env vars from config file (`conf/env_name/` dir)
 env_vars = load_and_set_env_vars(env=dbutils.widgets.get("env"))
+job_id = dbutils.widgets.get(
+    "job-id"
+)  # TODO: add a generic job metadata dict/class to pass to pipeline add job_id to metadata pulled from model version etc.
 
 # Load pipeline config from config file (`conf/pipeline_config/` dir)
 pipeline_config = load_config(
