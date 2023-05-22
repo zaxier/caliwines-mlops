@@ -1,7 +1,6 @@
 # Databricks notebook source
 # MAGIC %md
 # MAGIC # `model_train`
-# MAGIC
 # MAGIC Pipeline to execute model training. Params, metrics and model artifacts will be tracked to MLflow Tracking.
 # MAGIC Optionally, the resulting model will be registered to MLflow Model Registry if provided.
 
@@ -22,34 +21,36 @@ from src.mlops.model_train import (
     ModelTrainConfig,
     MLflowTrackingConfig,
 )
-from src.model_pipelines.cali_housing_pipeline import CaliHousingPipeline
+from src.model_pipelines.random_forest import RandomForestPipelines
 
 # COMMAND ----------
 # DBTITLE 1,Load Config
 # Load env vars from config file (`conf/env_name/` dir)
-env_vars = load_and_set_env_vars(env=dbutils.widgets.get("env"))
+env_vars = load_and_set_env_vars(env=dbutils.widgets.get("env"), project="cali_mlops")
+# TODO: print out environment variables
 
 # Load pipeline config from config file (`conf/pipeline_config/` dir)
 pipeline_config = load_config(
     pipeline_name="model_train_cfg",
-    project="cali_housing_mlops",
+    project="cali_mlops",
 )
+# TODO: print out pipeline_config
 
 # COMMAND ----------
 # DBTITLE 1,Setup Pipeline Config
-mlflow_tracking_cfg = MLflowTrackingConfig(
-    run_name=pipeline_config["mlflow_params"]["run_name"],
-    experiment_path=env_vars["cali_train_exper_path"],
-    model_name=env_vars["cali_model_name"],
-)
-
 train_table = MetastoreTable(
     name=env_vars["cali_train_table"],
     catalog=env_vars["cali_catalog"],
     schema=env_vars["cali_schema"],
 )
 
-model_pipeline = CaliHousingPipeline.create_rf_pipeline_v2(model_params=pipeline_config["model_params"])
+model_pipeline = RandomForestPipelines.simple_rf_regressor(model_params=pipeline_config["model_params"])
+
+mlflow_tracking_cfg = MLflowTrackingConfig(
+    run_name=pipeline_config["mlflow_params"]["run_name"],  # TODO: change to random name?
+    experiment_path=env_vars["cali_train_exper_path"],
+    model_name=env_vars["cali_model_name"],
+)
 
 model_train_cfg = ModelTrainConfig(
     mlflow_tracking_cfg=mlflow_tracking_cfg,

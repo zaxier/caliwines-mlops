@@ -2,12 +2,12 @@ from sklearn.compose import make_column_selector as selector, ColumnTransformer
 from sklearn.impute import SimpleImputer
 from sklearn.pipeline import Pipeline
 from sklearn.preprocessing import OneHotEncoder, StandardScaler
-from sklearn.ensemble import RandomForestRegressor
+from sklearn.ensemble import RandomForestRegressor, RandomForestClassifier
 
 
-class CaliHousingPipeline:
+class RandomForestPipelines:
     @classmethod
-    def create_rf_pipeline_v1(cls, model_params: dict) -> Pipeline:
+    def simple_rf_classifier(cls, model_params: dict) -> Pipeline:
         preprocessor = ColumnTransformer(
             transformers=[
                 (
@@ -37,9 +37,9 @@ class CaliHousingPipeline:
         return pipeline
 
     @classmethod
-    def create_rf_pipeline_v2(cls, model_params: dict) -> Pipeline:
+    def simple_rf_regressor(cls, model_params: dict) -> Pipeline:
         """
-        Create a pipeline for training a model.
+        Returns a model training pipeline for training random forest regressor.
         """
         numeric_transformer = Pipeline(
             steps=[

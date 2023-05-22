@@ -10,7 +10,7 @@ from databricks_common.common import MetastoreTable
 _logger = get_logger()
 
 
-class ModelInferenceBatch:
+class ModelInferenceBatchPipeline:
     """
     Class to execute model inference.
     Apply the model at the specified URI for batch inference on the table with name input_table_name,
@@ -67,7 +67,9 @@ class ModelInferenceBatch:
             model_stage = url.split("models:/")[1].split("/")[1]
 
         else:
-            raise ValueError(f"Invalid URL format. Must be models:/<model_name>/<model_stage>. Your URL: {url}")
+            raise ValueError(
+                f"Invalid URL format. Must be models:/<model_name>/<model_stage>. Your URL: {url}"
+            )
 
         client = MlflowClient()
         version = client.get_latest_versions(name=model_name, stages=[model_stage])[0]
@@ -89,10 +91,14 @@ class ModelInferenceBatch:
             Spark DataFrame with predictions column added.
         """
         model_version = self._get_model_version()
-        loaded_model = mlflow.pyfunc.spark_udf(spark, model_uri=self.model_uri, result_type="double")
+        loaded_model = mlflow.pyfunc.spark_udf(
+            spark, model_uri=self.model_uri, result_type="double"
+        )
         # loaded_model = mlflow.pyfunc.spark_udf(spark, model_uri=self.model_uri, result_type="double", env_manager="conda")
         return (
-            df.withColumn("prediction", loaded_model(struct([col(c) for c in df.columns])))
+            df.withColumn(
+                "prediction", loaded_model(struct([col(c) for c in df.columns]))
+            )
             .withColumn("model_uri", lit(self.model_uri))
             .withColumn("model_version", lit(model_version))
             .withColumn("model_details", struct(["model_uri", "model_version"]))
@@ -132,6 +138,8 @@ class ModelInferenceBatch:
 
         _logger.info(f"Predictions written to {self.output_table.ref} table")
 
-        pred_df.write.format("delta").mode(mode).option("mergeSchema", True).saveAsTable(self.output_table.ref)
+        pred_df.write.format("delta").mode(mode).option(
+            "mergeSchema", True
+        ).saveAsTable(self.output_table.ref)
 
         _logger.info("==========Batch model inference completed==========")

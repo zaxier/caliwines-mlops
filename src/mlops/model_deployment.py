@@ -8,7 +8,7 @@ import pandas as pd
 
 from databricks_common.common import MetastoreTable
 from src.mlops.model_train import MLflowTrackingConfig
-from src.mlops.model_inference_batch import ModelInferenceBatch
+from src.mlops.model_inference_batch import ModelInferenceBatchPipeline
 from src.mlops.evaluation_utils import ModelEvaluation
 from src.utils.get_spark import spark
 from src.utils.logger_utils import get_logger
@@ -68,10 +68,14 @@ class ModelDeployment:
             _logger.info(f"MLflow experiment_id: {mlflow_tracking_cfg.experiment_id}")
             mlflow.set_experiment(experiment_id=mlflow_tracking_cfg.experiment_id)
         elif mlflow_tracking_cfg.experiment_path is not None:
-            _logger.info(f"MLflow experiment_path: {mlflow_tracking_cfg.experiment_path}")
+            _logger.info(
+                f"MLflow experiment_path: {mlflow_tracking_cfg.experiment_path}"
+            )
             mlflow.set_experiment(experiment_name=mlflow_tracking_cfg.experiment_path)
         else:
-            raise RuntimeError("MLflow experiment_id or experiment_path must be set in mlflow_params")
+            raise RuntimeError(
+                "MLflow experiment_id or experiment_path must be set in mlflow_params"
+            )
 
     def _get_model_uri_by_stage(self, stage: str):
         return f"models:/{self.cfg.mlflow_tracking_cfg.model_name}/{stage}"
@@ -97,12 +101,16 @@ class ModelDeployment:
         model_uri = self._get_model_uri_by_stage(stage=stage)
         _logger.info(f"Computing batch inference using: {model_uri}")
         _logger.info(f"Reference data: {self.cfg.reference_data}")
-        model_inference = ModelInferenceBatch(model_uri=model_uri, input_table=self.cfg.reference_data)
+        model_inference = ModelInferenceBatchPipeline(
+            model_uri=model_uri, input_table=self.cfg.reference_data
+        )
 
         return model_inference.run_batch()
 
     @staticmethod
-    def _get_evaluation_metric(y_true: pd.Series, y_score: pd.Series, metric: str, stage: str) -> float:
+    def _get_evaluation_metric(
+        y_true: pd.Series, y_score: pd.Series, metric: str, stage: str
+    ) -> float:
         """
         Trigger evaluation, and return evaluation specified. A dictionary of evaluation metrics will be tracked to
         MLflow tracking.
@@ -123,13 +131,17 @@ class ModelDeployment:
         Evaluation metric
         """
         metric_prefix = stage + "_"
-        eval_dict = ModelEvaluation().evaluate(y_true, y_score, metric_prefix=metric_prefix)
+        eval_dict = ModelEvaluation().evaluate(
+            y_true, y_score, metric_prefix=metric_prefix
+        )
         mlflow.log_metrics(eval_dict)
         eval_metric = eval_dict[metric_prefix + metric]
 
         return eval_metric
 
-    def _run_promotion_logic(self, staging_eval_metric: float, production_eval_metric: float):
+    def _run_promotion_logic(
+        self, staging_eval_metric: float, production_eval_metric: float
+    ):
         """
         Basic logic to either promote a candidate Staging model performing better than the current Production model,
         or alternatively archive the Staging model if not outperforming Production model.
@@ -143,14 +155,20 @@ class ModelDeployment:
         """
         client = MlflowClient()
         model_name = self.cfg.mlflow_tracking_cfg.model_name
-        staging_model_version = client.get_latest_versions(name=model_name, stages=["staging"])[0]
+        staging_model_version = client.get_latest_versions(
+            name=model_name, stages=["staging"]
+        )[0]
 
         _logger.info(f"metric={self.cfg.comparison_metric}")
         _logger.info(f"higher_is_better={self.cfg.higher_is_better}")
         if self.cfg.higher_is_better:
             if staging_eval_metric <= production_eval_metric:
-                _logger.info("Candidate Staging model DOES NOT perform better than current Production model")
-                _logger.info('Transition candidate model from stage="staging" to stage="archived"')
+                _logger.info(
+                    "Candidate Staging model DOES NOT perform better than current Production model"
+                )
+                _logger.info(
+                    'Transition candidate model from stage="staging" to stage="archived"'
+                )
                 client.transition_model_version_stage(
                     name=model_name,
                     version=staging_model_version.version,
@@ -158,8 +176,12 @@ class ModelDeployment:
                 )
 
             elif staging_eval_metric > production_eval_metric:
-                _logger.info("Candidate Staging model DOES perform better than current Production model")
-                _logger.info('Transition candidate model from stage="staging" to stage="production"')
+                _logger.info(
+                    "Candidate Staging model DOES perform better than current Production model"
+                )
+                _logger.info(
+                    'Transition candidate model from stage="staging" to stage="production"'
+                )
                 _logger.info("Existing Production model will be archived")
                 client.transition_model_version_stage(
                     name=model_name,
@@ -170,8 +192,12 @@ class ModelDeployment:
 
         else:
             if staging_eval_metric >= production_eval_metric:
-                _logger.info("Candidate Staging model DOES NOT perform better than current Production model")
-                _logger.info('Transition candidate model from stage="staging" to stage="archived"')
+                _logger.info(
+                    "Candidate Staging model DOES NOT perform better than current Production model"
+                )
+                _logger.info(
+                    'Transition candidate model from stage="staging" to stage="archived"'
+                )
                 client.transition_model_version_stage(
                     name=model_name,
                     version=staging_model_version.version,
@@ -179,8 +205,12 @@ class ModelDeployment:
                 )
 
             elif staging_eval_metric < production_eval_metric:
-                _logger.info("Candidate Staging model DOES perform better than current Production model")
-                _logger.info('Transition candidate model from stage="staging" to stage="production"')
+                _logger.info(
+                    "Candidate Staging model DOES perform better than current Production model"
+                )
+                _logger.info(
+                    'Transition candidate model from stage="staging" to stage="production"'
+                )
                 _logger.info("Existing Production model will be archived")
                 client.transition_model_version_stage(
                     name=model_name,
@@ -241,7 +271,9 @@ class ModelDeployment:
                 f'Current Production model (stage="production") {self.cfg.comparison_metric}: {production_eval_metric}'
             )
 
-            _logger.info("==========Model comparison: candidate staging model vs current production model==========")
+            _logger.info(
+                "==========Model comparison: candidate staging model vs current production model=========="
+            )
             self._run_promotion_logic(staging_eval_metric, production_eval_metric)
 
             _logger.info("==========Model deployment completed==========")
