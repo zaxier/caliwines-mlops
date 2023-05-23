@@ -7,4 +7,4 @@ git_provider = "github"
 repo_url = "https://github.com/Zaxier/packaged-poc-mlops"
 branch   = "gen-dev"
 
-project_name = "cali_housing"
+project_name = "mlops"

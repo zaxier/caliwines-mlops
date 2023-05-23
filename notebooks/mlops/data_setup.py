@@ -24,7 +24,7 @@ from src.utils.notebook_utils import load_and_set_env_vars
 # COMMAND ----------
 # DBTITLE 1,Load Config
 # Load env vars from config file (`conf/env_name/` dir)
-env_vars = load_and_set_env_vars(env=dbutils.widgets.get("env"), project="cali_mlops")
+env_vars = load_and_set_env_vars(env=dbutils.widgets.get("env"), project="mlops")
 
 holdout_pct = 20
 random_seed = 42

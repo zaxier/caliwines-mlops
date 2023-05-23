@@ -24,13 +24,13 @@ from src.mlops.mlflow_utils import MLflowTrackingConfig
 # COMMAND ----------
 # DBTITLE 1,Load Config
 # Load env vars from config file (`conf/env_name/` dir)
-env_vars = load_and_set_env_vars(env=dbutils.widgets.get("env"), project="cali_mlops")
+env_vars = load_and_set_env_vars(env=dbutils.widgets.get("env"), project="mlops")
 print(env_vars)
 
 # Load pipeline config from config file (`conf/pipeline_config/` dir)
 pipeline_config = load_config(
-    pipeline_name="model_deployment_cfg",
-    project="cali_mlops",
+    pipeline_name="cali_housing_model_deployment_cfg",
+    project="mlops",
 )
 print(pipeline_config)
 
@@ -49,6 +49,7 @@ model_deployment_cfg = ModelDeploymentConfig(
         catalog=env_vars["cali_catalog"],
         schema=env_vars["cali_schema"],
     ),
+    label_col=env_vars["cali_label_col"],
     comparison_metric=pipeline_config["model_comparison_params"]["metric"],
     higher_is_better=pipeline_config["model_comparison_params"]["higher_is_better"],
 )

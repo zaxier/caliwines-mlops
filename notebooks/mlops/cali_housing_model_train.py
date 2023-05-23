@@ -22,19 +22,19 @@ from src.mlops.model_train import (
     MLflowTrackingConfig,
 )
 from src.model_pipelines.random_forest import RandomForestPipelines
+from src.mlops.evaluation_utils import ModelEvaluation
+from src.mlops.plot_utils import PlotGenerator
 
 # COMMAND ----------
 # DBTITLE 1,Load Config
 # Load env vars from config file (`conf/env_name/` dir)
-env_vars = load_and_set_env_vars(env=dbutils.widgets.get("env"), project="cali_mlops")
-# TODO: print out environment variables
+env_vars = load_and_set_env_vars(env=dbutils.widgets.get("env"), project="mlops")
 
 # Load pipeline config from config file (`conf/pipeline_config/` dir)
 pipeline_config = load_config(
-    pipeline_name="model_train_cfg",
-    project="cali_mlops",
+    pipeline_name="cali_housing_model_train_cfg",
+    project="mlops",
 )
-# TODO: print out pipeline_config
 
 # COMMAND ----------
 # DBTITLE 1,Setup Pipeline Config
@@ -45,6 +45,8 @@ train_table = MetastoreTable(
 )
 
 model_pipeline = RandomForestPipelines.simple_rf_regressor(model_params=pipeline_config["model_params"])
+model_evaluation = ModelEvaluation(model_type="regression")
+plot_generator = PlotGenerator(model_type="regression")
 
 mlflow_tracking_cfg = MLflowTrackingConfig(
     run_name=pipeline_config["mlflow_params"]["run_name"],  # TODO: change to random name?
@@ -61,6 +63,8 @@ model_train_cfg = ModelTrainConfig(
     preproc_params=pipeline_config["preproc_params"],
     conf=pipeline_config,
     env_vars=env_vars,
+    model_evaluation=model_evaluation,
+    plot_generator=plot_generator,
 )
 
 # COMMAND ----------

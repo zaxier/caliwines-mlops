@@ -21,3 +21,24 @@ resource "databricks_cluster" "all_purpose_cluster" {
   num_workers             = var.cluster_num_workers
   data_security_mode      = var.cluster_data_security_mode
 }
+
+resource "databricks_library" "databricks_common" {
+  cluster_id = databricks_cluster.all_purpose_cluster.id
+  pypi {
+    package = "databricks-common==0.1.7"
+  }
+}
+
+resource "databricks_library" "pyyaml" {
+  cluster_id = databricks_cluster.all_purpose_cluster.id
+  pypi {
+    package = "pyyaml==6.0"
+  }
+}
+
+resource "databricks_library" "python-dotenv" {
+  cluster_id = databricks_cluster.all_purpose_cluster.id
+  pypi {
+    package = "python-dotenv==0.21.1"
+  }
+}

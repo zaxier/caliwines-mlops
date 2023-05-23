@@ -14,6 +14,8 @@ from databricks_common.common import MetastoreTable
 from src.utils.logger_utils import get_logger
 from src.utils.get_spark import spark
 from src.mlops.mlflow_utils import MLflowTrackingConfig
+from src.mlops.evaluation_utils import ModelEvaluation
+from src.mlops.plot_utils import PlotGenerator
 
 _logger = get_logger()
 
@@ -40,6 +42,8 @@ class ModelTrainConfig:
         env_vars (dict):
             [Optional] dictionary of environment variables to trigger pipeline. If provided will be tracked as a yml
             file to MLflow tracking.
+
+        TODO: keep up to date
     """
 
     mlflow_tracking_cfg: MLflowTrackingConfig
@@ -50,6 +54,8 @@ class ModelTrainConfig:
     preproc_params: Dict[str, Any]
     conf: Dict[str, Any] = None
     env_vars: Dict[str, str] = None
+    model_evaluation: ModelEvaluation = None
+    plot_generator: PlotGenerator = None
 
 
 class ModelTrain:  # TODO make completely generic
@@ -130,7 +136,7 @@ class ModelTrain:  # TODO make completely generic
         train_table: MetastoreTable = self.cfg.train_table
 
         self._set_experiment(mlflow_tracking_cfg)
-        mlflow.sklearn.autolog(log_input_examples=True, silent=True)
+        # mlflow.sklearn.autolog(log_input_examples=True, silent=True)
 
         _logger.info("Starting MLflow run...")
         with mlflow.start_run(run_name=mlflow_tracking_cfg.run_name) as run:
@@ -142,6 +148,9 @@ class ModelTrain:  # TODO make completely generic
             if self.cfg.env_vars is not None:
                 mlflow.log_dict(self.cfg.env_vars, artifact_file="model_train_env_vars.yml")
 
+            # Log model params
+            mlflow.log_params(self.cfg.model_params)
+
             # Load data
             _logger.info(f"Loading data from table: '{train_table.ref}'")
             data = spark.table(train_table.ref).toPandas()
@@ -152,6 +161,25 @@ class ModelTrain:  # TODO make completely generic
             # Fit pipeline
             model = self.fit_pipeline(X_train, y_train)
 
+            y_train_pred = model.predict(X_train)
+            y_test_pred = model.predict(X_test)
+
+            if self.cfg.model_evaluation:
+                # Log train metrics
+                eval_dict = self.cfg.model_evaluation.evaluate(y_train, y_train_pred, metric_prefix="train_")
+                mlflow.log_metrics(eval_dict)
+
+                # Log test metrics
+                eval_dict = self.cfg.model_evaluation.evaluate(y_test, y_test_pred, metric_prefix="test_")
+                mlflow.log_metrics(eval_dict)
+
+            if self.cfg.plot_generator:
+                # Log plots
+                train_plots = self.cfg.plot_generator.run(y_train, y_train_pred, filename_prefix="train_")
+                test_plots = self.cfg.plot_generator.run(y_test, y_test_pred, filename_prefix="test_")
+                for plot in train_plots + test_plots:
+                    mlflow.log_artifact(plot)
+
             # Log model
             mlflow.sklearn.log_model(
                 model,
@@ -159,12 +187,6 @@ class ModelTrain:  # TODO make completely generic
                 input_example=X_train.iloc[:10],
                 signature=infer_signature(X_train, y_train),
             )
-
-            # Log model params
-            mlflow.log_params(self.cfg.model_params)
-
-            # Log model metrics
-            mlflow.log_metrics({"test_r2": model.score(X_test, y_test)})
 
             # Register model to MLflow Model Registry if provided
             if self.cfg.mlflow_tracking_cfg.model_name is not None:
