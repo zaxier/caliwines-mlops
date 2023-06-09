@@ -37,7 +37,7 @@ class ModelDeploymentConfig:
     mlflow_tracking_cfg: MLflowTrackingConfig
     reference_data: Table
     label_col: str
-    model_evaluation: Evaluation = None
+    model_evaluation: Evaluation
     comparison_metric: str
     higher_is_better: bool
 
