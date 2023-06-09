@@ -10,7 +10,8 @@ class Evaluation(ABC):
     """
 
     @abstractmethod
-    def evaluate(self, y_true: pd.Series, y_score: pd.Series, metric_prefix: str = "") -> Dict:
+    @staticmethod
+    def evaluate(y_true: pd.Series, y_score: pd.Series, metric_prefix: str = "") -> Dict:
         """
         Parameters
         ----------
@@ -34,7 +35,7 @@ class RegressionEvaluation(Evaluation):
     """
 
     @staticmethod
-    def evaluate(self, y_true: pd.Series, y_score: pd.Series, metric_prefix: str = "") -> Dict:
+    def evaluate(y_true: pd.Series, y_score: pd.Series, metric_prefix: str = "") -> Dict:
         """
         Parameters
         ----------
@@ -60,7 +61,7 @@ class RegressionEvaluation(Evaluation):
 
 class ClassificationEvaluation(Evaluation):
     @staticmethod
-    def evaluate(self, y_true: pd.Series, y_score: pd.Series, metric_prefix: str = "") -> Dict:
+    def evaluate(y_true: pd.Series, y_score: pd.Series, metric_prefix: str = "") -> Dict:
         """
         Evaluate model performance on validation data.
 

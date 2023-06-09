@@ -125,7 +125,7 @@ class ModelDeployment:
         Evaluation metric
         """
         metric_prefix = stage + "_"
-        eval_dict = self.cfg.model_evaluation().evaluate(y_true, y_score, metric_prefix=metric_prefix)
+        eval_dict = self.cfg.model_evaluation.evaluate(y_true, y_score, metric_prefix=metric_prefix)
         mlflow.log_metrics(eval_dict)
         eval_metric = eval_dict[metric_prefix + metric]
 
