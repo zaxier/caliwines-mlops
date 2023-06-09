@@ -18,7 +18,9 @@ def load_and_set_env_vars(env: str, project: str) -> Dict[str, Any]:
     Parameters
     ----------
     env : str
-        Name of deployment environment. One of
+        Name of deployment environment. One of `dev`, `staging`, or `prod`
+    project : str
+        Name of project
     Returns
     -------
     Dictionary of set environment variables

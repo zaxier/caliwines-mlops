@@ -10,7 +10,7 @@ dbutils.widgets.dropdown("env", "dev", ["dev", "staging", "prod"], "Environment 
 
 # COMMAND ----------
 # DBTITLE 1,Module Imports
-from databricks_common.common import MetastoreTable
+from src.common import Table
 from src.utils.notebook_utils import load_and_set_env_vars, load_config
 from src.mlops.model_train import (
     ModelTrain,
@@ -34,7 +34,7 @@ pipeline_config = load_config(
 
 # COMMAND ----------
 # DBTITLE 1,Setup Pipeline Config
-train_table = MetastoreTable(
+train_table = Table(
     name=env_vars["wine_train_table"],
     catalog=env_vars["wine_catalog"],
     schema=env_vars["wine_schema"],

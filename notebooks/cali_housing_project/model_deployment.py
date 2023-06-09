@@ -13,7 +13,7 @@ dbutils.widgets.dropdown("env", "dev", ["dev", "staging", "prod"], "Environment 
 
 # COMMAND ----------
 # DBTITLE 1,Module Imports
-from databricks_common.common import MetastoreTable
+from src.common import Table
 from src.utils.notebook_utils import load_and_set_env_vars, load_config
 from src.mlops.model_deployment import (
     ModelDeployment,
@@ -44,7 +44,7 @@ mlflow_tracking_cfg = MLflowTrackingConfig(
 
 model_deployment_cfg = ModelDeploymentConfig(
     mlflow_tracking_cfg=mlflow_tracking_cfg,
-    reference_data=MetastoreTable(
+    reference_data=Table(
         name=env_vars["cali_reference_table"],
         catalog=env_vars["cali_catalog"],
         schema=env_vars["cali_schema"],
@@ -57,4 +57,4 @@ model_deployment_cfg = ModelDeploymentConfig(
 # COMMAND ----------
 # DBTITLE 1,Execute Pipeline
 model_deployment = ModelDeployment(cfg=model_deployment_cfg)
-model_deployment.run()
+model_deployment.run_wo_comparison()

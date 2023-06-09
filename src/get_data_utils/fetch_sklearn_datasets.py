@@ -21,9 +21,9 @@ def clean_column_names_pandas(df: pd.DataFrame) -> pd.DataFrame:
 
 
 def fetch_sklearn_cali_housing() -> pyspark.sql.DataFrame:
-    _data: pd.DataFrame = fetch_california_housing(as_frame=True).frame
+    df: pd.DataFrame = fetch_california_housing(as_frame=True).frame
     df = clean_column_names_pandas(df)
-    return spark.createDataFrame(_data)
+    return spark.createDataFrame(df)
 
 
 def fetch_sklearn_iris() -> pyspark.sql.DataFrame:

@@ -5,6 +5,8 @@ cluster_data_security_mode      = "SINGLE_USER"
 
 git_provider = "github"
 repo_url = "https://github.com/Zaxier/packaged-poc-mlops"
-branch   = "gen-dev"
+branch   = "dev"
+
+repo_root = "/Repos/${data.databricks_current_user.me.user_name}/packaged_poc_mlops"
 
 project_name = "mlops"

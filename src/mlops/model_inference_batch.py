@@ -5,7 +5,7 @@ from mlflow import MlflowClient
 
 from src.utils.get_spark import spark
 from src.utils.logger_utils import get_logger
-from databricks_common.common import MetastoreTable
+from src.common import Table
 
 _logger = get_logger()
 
@@ -20,15 +20,15 @@ class ModelInferenceBatchPipeline:
     def __init__(
         self,
         model_uri: str,
-        input_table: MetastoreTable,
-        output_table: MetastoreTable = None,
+        input_table: Table,
+        output_table: Table = None,
     ):
         """
         Parameters
         ----------
         model_uri : str
             MLflow model uri. Model model must have been logged using the Feature Store API.
-        input_table : MetastoreTable
+        input_table : Table
             Table to load as a Spark DataFrame to score the model on.
         output_table : str
             Output table to write results to.

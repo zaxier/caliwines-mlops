@@ -15,7 +15,7 @@ dbutils.widgets.text("start-time", "", "Start Time")  # TODO
 
 # COMMAND ----------
 # DBTITLE 1,Module Imports
-from databricks_common.common import MetastoreTable
+from src.common import Table
 from src.utils.notebook_utils import load_config, load_and_set_env_vars
 from src.mlops.model_inference_batch import ModelInferenceBatchPipeline
 
@@ -39,13 +39,13 @@ model_name = env_vars["cali_model_name"]
 model_registry_stage = pipeline_config["mlflow_params"]["model_registry_stage"]
 model_uri = f"models:/{model_name}/{model_registry_stage}"
 
-input_table = MetastoreTable(
+input_table = Table(
     name=pipeline_config["data_input"]["table_name"],
     catalog=env_vars["cali_catalog"],
     schema=env_vars["cali_schema"],
 )
 
-output_table = MetastoreTable(
+output_table = Table(
     name=pipeline_config["data_output"]["table_name"],
     catalog=env_vars["cali_catalog"],
     schema=env_vars["cali_schema"],

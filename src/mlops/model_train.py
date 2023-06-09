@@ -10,7 +10,7 @@ import mlflow
 from mlflow.models import infer_signature
 from mlflow.tracking import MlflowClient
 
-from databricks_common.common import MetastoreTable
+from src.common import Table
 from src.utils.logger_utils import get_logger
 from src.utils.get_spark import spark
 from src.mlops.mlflow_utils import MLflowTrackingConfig
@@ -47,15 +47,15 @@ class ModelTrainConfig:
     """
 
     mlflow_tracking_cfg: MLflowTrackingConfig
-    train_table: MetastoreTable
+    train_table: Table
     label_col: str
     model_pipeline: sklearn.pipeline.Pipeline
     model_params: Dict[str, Any]
     preproc_params: Dict[str, Any]
-    conf: Dict[str, Any] = None
-    env_vars: Dict[str, str] = None
     model_evaluation: ModelEvaluation = None
     plot_generator: PlotGenerator = None
+    conf: Dict[str, Any] = None
+    env_vars: Dict[str, str] = None
 
 
 class ModelTrain:  # TODO make completely generic
@@ -133,7 +133,7 @@ class ModelTrain:  # TODO make completely generic
 
         _logger.info("Setting MLflow experiment...")
         mlflow_tracking_cfg: MLflowTrackingConfig = self.cfg.mlflow_tracking_cfg
-        train_table: MetastoreTable = self.cfg.train_table
+        train_table: Table = self.cfg.train_table
 
         self._set_experiment(mlflow_tracking_cfg)
         # mlflow.sklearn.autolog(log_input_examples=True, silent=True)

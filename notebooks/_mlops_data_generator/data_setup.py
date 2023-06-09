@@ -1,0 +1,89 @@
+# Databricks notebook source
+# MAGIC %md
+# MAGIC # `setup_data`
+# MAGIC Pipeline to setup data that we will use for our ML experiment.
+
+# COMMAND ----------
+# DBTITLE 1,Install requirements
+# MAGIC %pip install -r ../../requirements.txt
+
+# COMMAND ----------
+# DBTITLE 1,Set env
+dbutils.widgets.dropdown("env", "dev", ["dev", "staging", "prod"], "Environment Name")
+
+# COMMAND ----------
+# DBTITLE 1,Module Imports
+from src.common import Table, Schema
+from src.get_data_utils.fetch_sklearn_datasets import (
+    fetch_sklearn_cali_housing,
+    fetch_sklearn_iris,
+    fetch_sklearn_wine,
+)
+from src.utils.notebook_utils import load_and_set_env_vars
+
+# COMMAND ----------
+# Dev imports
+from src.utils.logger_utils import get_logger
+from src.utils.get_spark import spark
+
+_logger = get_logger()
+
+# COMMAND ----------
+# DBTITLE 1,Load Config
+# Load env vars from config file (`conf/env_name/` dir)
+env_vars = load_and_set_env_vars(env=dbutils.widgets.get("env"), project="mlops")
+
+# COMMAND ----------
+# DBTITLE 1,Set Variables
+holdout_pct = 20
+random_seed = 42
+
+cali_schema = Schema(
+    name=env_vars["cali_schema"],
+    catalog=env_vars["cali_catalog"],
+)
+
+iris_schema = Schema(
+    name=env_vars["iris_schema"],
+    catalog=env_vars["iris_catalog"],
+)
+
+wine_schema = Schema(
+    name=env_vars["wine_schema"],
+    catalog=env_vars["wine_catalog"],
+)
+
+cali_schema.create_if_not_exists()  # TODO : implement as create parents
+iris_schema.create_if_not_exists()
+wine_schema.create_if_not_exists()
+
+
+# COMMAND ----------
+def setup_data(fn, schema: Schema) -> None:
+    """
+    Setup data for ML experiment.
+    """
+    train_table = Table.from_string(schema.ref + ".train")
+    _logger.debug(f"schema.ref: {schema.ref}")
+    _logger.debug(f"table.ref: {schema.ref}.train")
+    _logger.debug(f"train_table.ref: {train_table.ref}")
+
+    holdout_table = Table.from_string(schema.ref + ".holdout")
+    _logger.info(f"schema.ref: {schema.ref}")
+    _logger.info(f"table.ref: {schema.ref}.holdout")
+    _logger.info(f"holdout_table.ref: {holdout_table.ref}")
+
+    df = fn()
+
+    # Separate holdout set
+    holdout_decimal = holdout_pct / 100
+    train_df, holdout_df = df.randomSplit([(1 - holdout_decimal), holdout_decimal], seed=random_seed)
+
+    # Write to metastore
+    train_df.write.mode("overwrite").format("delta").saveAsTable(train_table.ref)
+    holdout_df.write.mode("overwrite").format("delta").saveAsTable(holdout_table.ref)
+
+
+setup_data(fetch_sklearn_cali_housing, cali_schema)
+setup_data(fetch_sklearn_iris, iris_schema)
+setup_data(fetch_sklearn_wine, wine_schema)

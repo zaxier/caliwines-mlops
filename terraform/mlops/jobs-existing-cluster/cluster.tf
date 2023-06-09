@@ -3,6 +3,7 @@ variable "cluster_autotermination_minutes" {}
 variable "cluster_num_workers" {}
 variable "cluster_data_security_mode" {}
 
+
 data "databricks_spark_version" "ml-latest" {
   latest = true
   long_term_support = false
@@ -20,12 +21,13 @@ resource "databricks_cluster" "all_purpose_cluster" {
   autotermination_minutes = var.cluster_autotermination_minutes
   num_workers             = var.cluster_num_workers
   data_security_mode      = var.cluster_data_security_mode
+  single_user_name        = data.databricks_current_user.me.user_name
 }
 
 resource "databricks_library" "databricks_common" {
   cluster_id = databricks_cluster.all_purpose_cluster.id
   pypi {
-    package = "databricks-common==0.1.7"
+    package = "databricks-common==0.1.8"
   }
 }
 
