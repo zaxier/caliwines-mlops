@@ -246,7 +246,7 @@ resource "databricks_job" "data_setup_repos" {
 }
 
 resource "databricks_job" "test_job_git" {
-  name = "${var.project_name}-test_job-${var.env}"
+  name = "${var.project_name}-test_job_git-${var.env}"
 
   git_source {
     provider = var.git_provider
@@ -335,7 +335,7 @@ resource "databricks_job" "test_job_git" {
 }
 
 resource "databricks_job" "test_job_repos" {
-  name = "${var.project_name}-test_job-${var.env}"
+  name = "${var.project_name}-test_job_repos-${var.env}"
 
   task {
     task_key = "taskA-data_cleanup"
