@@ -22,7 +22,7 @@ from src.mlops.model_train import (
     MLflowTrackingConfig,
 )
 from src.model_pipelines.random_forest import RandomForestPipelines
-from src.mlops.evaluation_utils import ModelEvaluation
+from src.mlops.evaluation_utils import RegressionEvaluation
 from src.mlops.plot_utils import PlotGenerator
 
 # COMMAND ----------
@@ -43,7 +43,7 @@ train_table = Table(
 )
 
 model_pipeline = RandomForestPipelines.simple_rf_regressor(model_params=pipeline_config["model_params"])
-model_evaluation = ModelEvaluation(model_type="regression")
+model_evaluation = RegressionEvaluation()
 # plot_generator = PlotGenerator(model_type="regression")
 plot_generator = None
 

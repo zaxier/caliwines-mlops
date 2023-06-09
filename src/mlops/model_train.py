@@ -14,7 +14,7 @@ from src.common import Table
 from src.utils.logger_utils import get_logger
 from src.utils.get_spark import spark
 from src.mlops.mlflow_utils import MLflowTrackingConfig
-from src.mlops.evaluation_utils import ModelEvaluation
+from src.mlops.evaluation_utils import Evaluation
 from src.mlops.plot_utils import PlotGenerator
 
 _logger = get_logger()
@@ -52,7 +52,7 @@ class ModelTrainConfig:
     model_pipeline: sklearn.pipeline.Pipeline
     model_params: Dict[str, Any]
     preproc_params: Dict[str, Any]
-    model_evaluation: ModelEvaluation = None
+    model_evaluation: Evaluation = None
     plot_generator: PlotGenerator = None
     conf: Dict[str, Any] = None
     env_vars: Dict[str, str] = None
