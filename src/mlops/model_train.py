@@ -134,6 +134,7 @@ class ModelTrain:  # TODO make completely generic
         _logger.info("Setting MLflow experiment...")
         mlflow_tracking_cfg: MLflowTrackingConfig = self.cfg.mlflow_tracking_cfg
         train_table: Table = self.cfg.train_table
+        model_evaluation: Evaluation = self.cfg.model_evaluation
 
         self._set_experiment(mlflow_tracking_cfg)
         # mlflow.sklearn.autolog(log_input_examples=True, silent=True)
@@ -164,13 +165,13 @@ class ModelTrain:  # TODO make completely generic
             y_train_pred = model.predict(X_train)
             y_test_pred = model.predict(X_test)
 
-            if self.cfg.model_evaluation:
+            if model_evaluation:
                 # Log train metrics
-                eval_dict = self.cfg.model_evaluation.evaluate(y_train, y_train_pred, metric_prefix="train_")
+                eval_dict = model_evaluation.evaluate(y_train, y_train_pred, metric_prefix="train_")
                 mlflow.log_metrics(eval_dict)
 
                 # Log test metrics
-                eval_dict = self.cfg.model_evaluation.evaluate(y_test, y_test_pred, metric_prefix="test_")
+                eval_dict = model_evaluation.evaluate(y_test, y_test_pred, metric_prefix="test_")
                 mlflow.log_metrics(eval_dict)
 
             if self.cfg.plot_generator:
