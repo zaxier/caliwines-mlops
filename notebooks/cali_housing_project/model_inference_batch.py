@@ -40,15 +40,15 @@ model_registry_stage = pipeline_config["mlflow_params"]["model_registry_stage"]
 model_uri = f"models:/{model_name}/{model_registry_stage}"
 
 input_table = Table(
-    name=pipeline_config["data_input"]["table_name"],
     catalog=env_vars["cali_catalog"],
     schema=env_vars["cali_schema"],
+    table=pipeline_config["data_input"]["table_name"],
 )
 
 output_table = Table(
-    name=pipeline_config["data_output"]["table_name"],
     catalog=env_vars["cali_catalog"],
     schema=env_vars["cali_schema"],
+    table=pipeline_config["data_output"]["table_name"],
 )
 
 
