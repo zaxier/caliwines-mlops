@@ -191,7 +191,7 @@ class ModelDeployment:
                     archive_existing_versions=True,
                 )
 
-    def run_wo_comparison(self):
+    def run(self):
         """
         Runner method to orchestrate model comparison and potential model promotion.
 
