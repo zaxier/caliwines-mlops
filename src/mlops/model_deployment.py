@@ -271,7 +271,7 @@ class ModelDeployment:
             _logger.info("==========Batch inference: staging model==========")
             staging_inference_pred_df = self._batch_inference_by_stage(stage="staging")
             staging_inference_pred_pdf = staging_inference_pred_df.toPandas()
-            _logger.info(staging_inference_pred_pdf.head(5)
+            _logger.info(staging_inference_pred_pdf.head(5))
 
             _logger.info("==========Model evaluation: staging model==========")
             staging_eval_metric = self._get_evaluation_metric(
