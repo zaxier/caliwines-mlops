@@ -10,7 +10,6 @@ class Evaluation(ABC):
     """
 
     @abstractmethod
-    @staticmethod
     def evaluate(y_true: pd.Series, y_score: pd.Series, metric_prefix: str = "") -> Dict:
         """
         Parameters
