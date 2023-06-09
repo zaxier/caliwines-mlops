@@ -39,9 +39,7 @@ pipeline_config = load_config(
 # COMMAND ----------
 # DBTITLE 1,Setup Pipeline Config
 train_table = Table(
-    name=env_vars["cali_train_table"],
-    catalog=env_vars["cali_catalog"],
-    schema=env_vars["cali_schema"],
+    catalog=env_vars["cali_catalog"], schema=env_vars["cali_schema"], table=env_vars["cali_train_table"]
 )
 
 model_pipeline = RandomForestPipelines.simple_rf_regressor(model_params=pipeline_config["model_params"])
