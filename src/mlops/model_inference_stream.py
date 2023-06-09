@@ -56,7 +56,7 @@ class ModelInferenceStream:
         -------
         pyspark.sql.DataFrame
         """
-        return spark.table(self.input_table.ref)
+        return spark.table(self.input_table.qualified_name)
 
     def _load_model(self) -> mlflow.pyfunc.PythonModel:
         """

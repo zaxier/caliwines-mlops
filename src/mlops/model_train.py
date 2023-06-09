@@ -152,8 +152,8 @@ class ModelTrain:  # TODO make completely generic
             mlflow.log_params(self.cfg.model_params)
 
             # Load data
-            _logger.info(f"Loading data from table: '{train_table.ref}'")
-            data = spark.table(train_table.ref).toPandas()
+            _logger.info(f"Loading data from table: '{train_table.qualified_name}'")
+            data = spark.table(train_table.qualified_name).toPandas()
 
             # Create train-test split
             X_train, X_test, y_train, y_test = self.create_train_test_split(data)
