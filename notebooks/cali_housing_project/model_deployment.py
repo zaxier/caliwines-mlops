@@ -19,6 +19,7 @@ from src.mlops.model_deployment import (
     ModelDeployment,
     ModelDeploymentConfig,
 )
+from src.mlops.evaluation_utils import RegressionEvaluation
 from src.mlops.mlflow_utils import MLflowTrackingConfig
 
 # COMMAND ----------
@@ -50,6 +51,7 @@ model_deployment_cfg = ModelDeploymentConfig(
         table=env_vars["cali_reference_table"],
     ),
     label_col=env_vars["cali_label_col"],
+    model_evaluation=RegressionEvaluation(),
     comparison_metric=pipeline_config["model_comparison_params"]["metric"],
     higher_is_better=pipeline_config["model_comparison_params"]["higher_is_better"],
 )
