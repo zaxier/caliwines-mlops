@@ -44,7 +44,8 @@ train_table = Table(
 
 model_pipeline = RandomForestPipelines.simple_rf_regressor(model_params=pipeline_config["model_params"])
 model_evaluation = ModelEvaluation(model_type="regression")
-plot_generator = PlotGenerator(model_type="regression")
+# plot_generator = PlotGenerator(model_type="regression")
+plot_generator = None
 
 mlflow_tracking_cfg = MLflowTrackingConfig(
     run_name=pipeline_config["mlflow_params"]["run_name"],  # TODO: change to random name?

@@ -70,7 +70,7 @@ class PlotGenerator:
 
         elif self.model_type == "regression":
             return [
-                # self._plot_regression_residuals(y_true, y_score, filename_prefix),
+                self._plot_regression_residuals(y_true, y_score, filename_prefix),
                 self._plot_regression_predictions(y_true, y_score, filename_prefix),
             ]
         else:
