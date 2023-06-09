@@ -25,11 +25,10 @@ env_vars = load_and_set_env_vars(env=dbutils.widgets.get("env"), project="mlops"
 
 # COMMAND ----------
 # TODO: Update for new data oriented programming approach
-cali_schema = Schema(name=env_vars["cali_schema"], catalog=env_vars["cali_catalog"])
-wine_schema = Schema(name=env_vars["wine_schema"], catalog=env_vars["wine_catalog"])
-iris_schema = Schema(name=env_vars["iris_schema"], catalog=env_vars["iris_catalog"])
+cali_schema = Schema(catalog=env_vars["cali_catalog"], schema=env_vars["cali_schema"])
+iris_schema = Schema(catalog=env_vars["iris_catalog"], schema=env_vars["iris_schema"])
+wine_schema = Schema(catalog=env_vars["wine_catalog"], schema=env_vars["wine_schema"])
 
 drop_schema(cali_schema, cascade=True)
 drop_schema(wine_schema, cascade=True)
 drop_schema(iris_schema, cascade=True)
-notebooks / _mlops_data_generator / data_cleanup.py
