@@ -40,11 +40,11 @@ class Table:
         return f"{self.schema}.{self.table}"
 
     @classmethod
-    def from_string(cls, ref: str) -> "Table":
+    def from_string(cls, data: str) -> "Table":
         """
         Alternative constructor to initialise a TableReference object from a string.
         """
-        cat, schema, table = ref.split(".")
+        cat, schema, table = data.split(".")
         return cls(cat, schema, table)
 
 
@@ -60,6 +60,14 @@ class Schema:
     @property
     def name(self):
         return f"{self.schema}"
+
+    @classmethod
+    def from_string(cls, data: str) -> "Table":
+        """
+        Alternative constructor to initialise a TableReference object from a string.
+        """
+        cat, schema = data.split(".")
+        return cls(cat, schema)
 
 
 @dataclass(frozen=True)
