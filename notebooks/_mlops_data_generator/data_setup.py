@@ -65,15 +65,15 @@ def setup_data(fn, schema: Schema) -> None:
     """
     Setup data for ML experiment.
     """
-    train_table = Table.from_string(schema.ref + ".train")
-    _logger.debug(f"schema.ref: {schema.ref}")
-    _logger.debug(f"table.ref: {schema.ref}.train")
-    _logger.debug(f"train_table.ref: {train_table.ref}")
+    train_table = Table.from_string(schema.qualified_name + ".train")
+    _logger.debug(f"schema.qualified_name: {schema.qualified_name}")
+    _logger.debug(f"table.qualified_name: {schema.qualified_name}.train")
+    _logger.debug(f"train_table.qualified_name: {train_table.qualified_name}")
 
-    holdout_table = Table.from_string(schema.ref + ".holdout")
-    _logger.info(f"schema.ref: {schema.ref}")
-    _logger.info(f"table.ref: {schema.ref}.holdout")
-    _logger.info(f"holdout_table.ref: {holdout_table.ref}")
+    holdout_table = Table.from_string(schema.qualified_name + ".holdout")
+    _logger.info(f"schema.qualified_name: {schema.qualified_name}")
+    _logger.info(f"table.qualified_name: {schema.qualified_name}.holdout")
+    _logger.info(f"holdout_table.qualified_name: {holdout_table.qualified_name}")
 
     df = fn()
 
@@ -82,8 +82,8 @@ def setup_data(fn, schema: Schema) -> None:
     train_df, holdout_df = df.randomSplit([(1 - holdout_decimal), holdout_decimal], seed=random_seed)
 
     # Write to metastore
-    train_df.write.mode("overwrite").format("delta").saveAsTable(train_table.ref)
-    holdout_df.write.mode("overwrite").format("delta").saveAsTable(holdout_table.ref)
+    train_df.write.mode("overwrite").format("delta").saveAsTable(train_table.qualified_name)
+    holdout_df.write.mode("overwrite").format("delta").saveAsTable(holdout_table.qualified_name)
 
 
 setup_data(fetch_sklearn_cali_housing, cali_schema)
