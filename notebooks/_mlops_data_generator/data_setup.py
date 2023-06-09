@@ -39,23 +39,25 @@ holdout_pct = 20
 random_seed = 42
 
 cali_schema = Schema(
-    name=env_vars["cali_schema"],
     catalog=env_vars["cali_catalog"],
+    schema=env_vars["cali_schema"],
 )
 
 iris_schema = Schema(
-    name=env_vars["iris_schema"],
     catalog=env_vars["iris_catalog"],
+    schema=env_vars["iris_schema"],
 )
 
 wine_schema = Schema(
-    name=env_vars["wine_schema"],
     catalog=env_vars["wine_catalog"],
+    schema=env_vars["wine_schema"],
 )
 
-cali_schema.create_if_not_exists()  # TODO : implement as create parents
-iris_schema.create_if_not_exists()
-wine_schema.create_if_not_exists()
+# COMMAND ----------
+# DBTITLE 1,Create Schemas
+spark.sql(f"CREATE SCHEMA IF NOT EXISTS {cali_schema.qualified_name}")
+spark.sql(f"CREATE SCHEMA IF NOT EXISTS {iris_schema.qualified_name}")
+spark.sql(f"CREATE SCHEMA IF NOT EXISTS {wine_schema.qualified_name}")
 
 
 # COMMAND ----------
