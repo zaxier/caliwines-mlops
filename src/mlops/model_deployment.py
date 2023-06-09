@@ -288,8 +288,8 @@ class ModelDeployment:
             _logger.info("Existing Production model will be archived if exists")
 
             model_name = self.cfg.mlflow_tracking_cfg.model_name
-            staging_model_version = client.get_latest_versions(name=model_name, stages=["staging"])[0]
             client = MlflowClient()
+            staging_model_version = client.get_latest_versions(name=model_name, stages=["staging"])[0]
             client.transition_model_version_stage(
                 name=model_name,
                 version=staging_model_version.version,
