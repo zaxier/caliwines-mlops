@@ -42,8 +42,8 @@ class PlotGenerator:
         plt.ylabel("Prediction")
         plt.title("Predictions")
 
-        file_name = f"{filename_prefix}predictions.png"
-        plt.savefig(file_name)
+        file_name = f"{filename_prefix}predictions"
+        plt.savefig(file_name, format="png")
         plt.close()
         return file_name
 
