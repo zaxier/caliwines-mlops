@@ -6,6 +6,7 @@
 # COMMAND ----------
 # DBTITLE 1,Set env
 dbutils.widgets.dropdown("env", "dev", ["dev", "staging", "prod"], "Environment Name")
+dbutils.widgets.dropdown("first_run", "True", ["True", "False"], "First Run?")
 
 # COMMAND ----------
 # DBTITLE 1,Module Imports
@@ -55,4 +56,7 @@ model_deployment_cfg = ModelDeploymentConfig(
 # COMMAND ----------
 # DBTITLE 1,Execute Pipeline
 model_deployment = ModelDeployment(cfg=model_deployment_cfg)
-model_deployment.run_wo_comparison()
+if dbutils.widgets.get("first_run") == "True":
+    model_deployment.run_wo_comparison()
+else:
+    model_deployment.run()
