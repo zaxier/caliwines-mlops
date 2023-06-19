@@ -1,5 +1,5 @@
 resource "databricks_job" "data_setup_git" {
-  name = "${var.project_name}--data_setup_job--${var.env}"
+  name = "${var.project_name}--data_setup_job--git_source--${var.env}"
 
   git_source {
     provider = var.git_provider
@@ -46,7 +46,7 @@ resource "databricks_job" "data_setup_git" {
 
 
 resource "databricks_job" "data_setup_repos" {
-  name = "${var.project_name}--data_setup_job--${var.env}"
+  name = "${var.project_name}--data_setup_job--repos_source--${var.env}"
 
   task {
     task_key = "taskA--data_cleanup"
