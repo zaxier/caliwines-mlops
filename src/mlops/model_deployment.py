@@ -6,10 +6,10 @@ import mlflow
 from mlflow import MlflowClient
 import pandas as pd
 
-from databricks_common.common import MetastoreTable
+from src.common import Table
 from src.mlops.model_train import MLflowTrackingConfig
-from src.mlops.model_inference_batch import ModelInferenceBatch
-from src.mlops.evaluation_utils import ModelEvaluation
+from src.mlops.model_inference_batch import ModelInferenceBatchPipeline
+from src.mlops.evaluation_utils import Evaluation
 from src.utils.get_spark import spark
 from src.utils.logger_utils import get_logger
 
@@ -24,19 +24,22 @@ class ModelDeploymentConfig:
     Attributes:
         mlflow_tracking_cfg (MLflowTrackingConfig)
             Configuration data class used to unpack MLflow parameters during a model training run.
-        reference_data (MetastoreTable)
+        reference_data (Table)
             Table containing reference data to be used for model evaluation.
+        label_col (str)
+            Name of the label column in the reference data.
         comparison_metric (str)
-            Metric to use for model evaluation. Default is 'r2'.
+            Metric to use for model evaluation.
         higher_is_better (bool)
-            Whether higher values of the comparison metric are better. Default is True.
+            Whether higher values of the comparison metric are better.
     """
 
     mlflow_tracking_cfg: MLflowTrackingConfig
-    reference_data: MetastoreTable
-    label_col: str = "MedHouseVal"
-    comparison_metric: str = "r2"
-    higher_is_better: bool = True
+    reference_data: Table
+    label_col: str
+    model_evaluation: Evaluation
+    comparison_metric: str
+    higher_is_better: bool
 
 
 class ModelDeployment:
@@ -97,12 +100,11 @@ class ModelDeployment:
         model_uri = self._get_model_uri_by_stage(stage=stage)
         _logger.info(f"Computing batch inference using: {model_uri}")
         _logger.info(f"Reference data: {self.cfg.reference_data}")
-        model_inference = ModelInferenceBatch(model_uri=model_uri, input_table=self.cfg.reference_data)
+        model_inference = ModelInferenceBatchPipeline(model_uri=model_uri, input_table=self.cfg.reference_data)
 
         return model_inference.run_batch()
 
-    @staticmethod
-    def _get_evaluation_metric(y_true: pd.Series, y_score: pd.Series, metric: str, stage: str) -> float:
+    def _get_evaluation_metric(self, y_true: pd.Series, y_score: pd.Series, metric: str, stage: str) -> float:
         """
         Trigger evaluation, and return evaluation specified. A dictionary of evaluation metrics will be tracked to
         MLflow tracking.
@@ -123,7 +125,7 @@ class ModelDeployment:
         Evaluation metric
         """
         metric_prefix = stage + "_"
-        eval_dict = ModelEvaluation().evaluate(y_true, y_score, metric_prefix=metric_prefix)
+        eval_dict = self.cfg.model_evaluation.evaluate(y_true, y_score, metric_prefix=metric_prefix)
         mlflow.log_metrics(eval_dict)
         eval_metric = eval_dict[metric_prefix + metric]
 
@@ -243,5 +245,56 @@ class ModelDeployment:
 
             _logger.info("==========Model comparison: candidate staging model vs current production model==========")
             self._run_promotion_logic(staging_eval_metric, production_eval_metric)
+
+            _logger.info("==========Model deployment completed==========")
+
+    def run_wo_comparison(self):
+        """
+        Runner method to orchestrate model comparison and potential model promotion.
+
+        Steps:
+            1. Set MLflow Tracking experiment. Used to track metrics computed when comparing Staging versus Production
+               models.
+            4. If higher_is_better=True, the Staging model will be promoted in place of the Production model iff the
+               Staging model evaluation metric is higher than the Production model evaluation metric.
+               If higher_is_better=False, the Staging model will be promoted in place of the Production model iff the
+               Staging model evaluation metric is lower than the Production model evaluation metric.
+
+        """
+        _logger.info("==========Running model deployment==========")
+
+        _logger.info("==========Setting MLflow experiment==========")
+        mlflow_tracking_cfg = self.cfg.mlflow_tracking_cfg
+        self._set_experiment(mlflow_tracking_cfg)
+
+        with mlflow.start_run(run_name=mlflow_tracking_cfg.run_name):
+            _logger.info("==========Batch inference: staging model==========")
+            staging_inference_pred_df = self._batch_inference_by_stage(stage="staging")
+            staging_inference_pred_pdf = staging_inference_pred_df.toPandas()
+            _logger.info(staging_inference_pred_pdf.head(5))
+
+            _logger.info("==========Model evaluation: staging model==========")
+            staging_eval_metric = self._get_evaluation_metric(
+                y_true=staging_inference_pred_pdf[self.cfg.label_col],
+                y_score=staging_inference_pred_pdf["prediction"],
+                metric=self.cfg.comparison_metric,
+                stage="staging",
+            )
+            _logger.info(
+                f'Candidate Staging model (stage="staging") {self.cfg.comparison_metric}: {staging_eval_metric}'
+            )
+
+            _logger.info('Transition candidate model from stage="staging" to stage="production"')
+            _logger.info("Existing Production model will be archived if exists")
+
+            model_name = self.cfg.mlflow_tracking_cfg.model_name
+            client = MlflowClient()
+            staging_model_version = client.get_latest_versions(name=model_name, stages=["staging"])[0]
+            client.transition_model_version_stage(
+                name=model_name,
+                version=staging_model_version.version,
+                stage="production",
+                archive_existing_versions=True,
+            )
 
             _logger.info("==========Model deployment completed==========")

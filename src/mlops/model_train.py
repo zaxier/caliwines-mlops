@@ -10,10 +10,12 @@ import mlflow
 from mlflow.models import infer_signature
 from mlflow.tracking import MlflowClient
 
-from databricks_common.common import MetastoreTable
+from src.common import Table
 from src.utils.logger_utils import get_logger
 from src.utils.get_spark import spark
 from src.mlops.mlflow_utils import MLflowTrackingConfig
+from src.mlops.evaluation_utils import Evaluation
+from src.mlops.plot_utils import PlotGenerator
 
 _logger = get_logger()
 
@@ -40,14 +42,18 @@ class ModelTrainConfig:
         env_vars (dict):
             [Optional] dictionary of environment variables to trigger pipeline. If provided will be tracked as a yml
             file to MLflow tracking.
+
+        TODO: keep up to date
     """
 
     mlflow_tracking_cfg: MLflowTrackingConfig
-    train_table: MetastoreTable
+    train_table: Table
     label_col: str
     model_pipeline: sklearn.pipeline.Pipeline
     model_params: Dict[str, Any]
     preproc_params: Dict[str, Any]
+    model_evaluation: Evaluation = None
+    plot_generator: PlotGenerator = None
     conf: Dict[str, Any] = None
     env_vars: Dict[str, str] = None
 
@@ -127,10 +133,11 @@ class ModelTrain:  # TODO make completely generic
 
         _logger.info("Setting MLflow experiment...")
         mlflow_tracking_cfg: MLflowTrackingConfig = self.cfg.mlflow_tracking_cfg
-        train_table: MetastoreTable = self.cfg.train_table
+        train_table: Table = self.cfg.train_table
+        model_evaluation: Evaluation = self.cfg.model_evaluation
 
         self._set_experiment(mlflow_tracking_cfg)
-        mlflow.sklearn.autolog(log_input_examples=True, silent=True)
+        # mlflow.sklearn.autolog(log_input_examples=True, silent=True)
 
         _logger.info("Starting MLflow run...")
         with mlflow.start_run(run_name=mlflow_tracking_cfg.run_name) as run:
@@ -142,15 +149,37 @@ class ModelTrain:  # TODO make completely generic
             if self.cfg.env_vars is not None:
                 mlflow.log_dict(self.cfg.env_vars, artifact_file="model_train_env_vars.yml")
 
+            # Log model params
+            mlflow.log_params(self.cfg.model_params)
+
             # Load data
-            _logger.info(f"Loading data from table: '{train_table.ref}'")
-            data = spark.table(train_table.ref).toPandas()
+            _logger.info(f"Loading data from table: '{train_table.qualified_name}'")
+            data = spark.table(train_table.qualified_name).toPandas()
 
             # Create train-test split
             X_train, X_test, y_train, y_test = self.create_train_test_split(data)
 
             # Fit pipeline
             model = self.fit_pipeline(X_train, y_train)
+
+            y_train_pred = model.predict(X_train)
+            y_test_pred = model.predict(X_test)
+
+            if model_evaluation:
+                # Log train metrics
+                eval_dict = model_evaluation.evaluate(y_train, y_train_pred, metric_prefix="train_")
+                mlflow.log_metrics(eval_dict)
+
+                # Log test metrics
+                eval_dict = model_evaluation.evaluate(y_test, y_test_pred, metric_prefix="test_")
+                mlflow.log_metrics(eval_dict)
+
+            if self.cfg.plot_generator:
+                # Log plots
+                train_plots = self.cfg.plot_generator.run(y_train, y_train_pred, filename_prefix="train_")
+                test_plots = self.cfg.plot_generator.run(y_test, y_test_pred, filename_prefix="test_")
+                for plot in train_plots + test_plots:
+                    mlflow.log_artifact(plot)
 
             # Log model
             mlflow.sklearn.log_model(
@@ -159,12 +188,6 @@ class ModelTrain:  # TODO make completely generic
                 input_example=X_train.iloc[:10],
                 signature=infer_signature(X_train, y_train),
             )
-
-            # Log model params
-            mlflow.log_params(self.cfg.model_params)
-
-            # Log model metrics
-            mlflow.log_metrics({"test_r2": model.score(X_test, y_test)})
 
             # Register model to MLflow Model Registry if provided
             if self.cfg.mlflow_tracking_cfg.model_name is not None:

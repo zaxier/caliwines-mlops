@@ -5,12 +5,12 @@ from mlflow import MlflowClient
 
 from src.utils.get_spark import spark
 from src.utils.logger_utils import get_logger
-from databricks_common.common import MetastoreTable
+from src.common import Table
 
 _logger = get_logger()
 
 
-class ModelInferenceBatch:
+class ModelInferenceBatchPipeline:
     """
     Class to execute model inference.
     Apply the model at the specified URI for batch inference on the table with name input_table_name,
@@ -20,15 +20,15 @@ class ModelInferenceBatch:
     def __init__(
         self,
         model_uri: str,
-        input_table: MetastoreTable,
-        output_table: MetastoreTable = None,
+        input_table: Table,
+        output_table: Table = None,
     ):
         """
         Parameters
         ----------
         model_uri : str
             MLflow model uri. Model model must have been logged using the Feature Store API.
-        input_table : MetastoreTable
+        input_table : Table
             Table to load as a Spark DataFrame to score the model on.
         output_table : str
             Output table to write results to.
@@ -45,7 +45,7 @@ class ModelInferenceBatch:
         -------
         pyspark.sql.DataFrame
         """
-        return spark.table(self.input_table.ref)
+        return spark.table(self.input_table.qualified_name)
 
     def _get_model_version(self) -> int:
         """
@@ -130,8 +130,10 @@ class ModelInferenceBatch:
         _logger.info("==========Writing predictions to output table==========")
         _logger.info(f"mode={mode}")
 
-        _logger.info(f"Predictions written to {self.output_table.ref} table")
+        _logger.info(f"Predictions written to {self.output_table.qualified_name} table")
 
-        pred_df.write.format("delta").mode(mode).option("mergeSchema", True).saveAsTable(self.output_table.ref)
+        pred_df.write.format("delta").mode(mode).option("mergeSchema", True).saveAsTable(
+            self.output_table.qualified_name
+        )
 
         _logger.info("==========Batch model inference completed==========")

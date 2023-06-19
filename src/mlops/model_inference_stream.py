@@ -5,7 +5,7 @@ import mlflow
 
 from src.utils.get_spark import spark
 from src.utils.logger_utils import get_logger
-from databricks_common.common import MetastoreTable
+from src.common import Table
 
 _logger = get_logger()
 
@@ -17,13 +17,13 @@ class ModelInferenceStream:
     writing results to the table with name output_table_name
     """
 
-    def __init__(self, model_uri: str, input_table: MetastoreTable, output_table: MetastoreTable) -> None:
+    def __init__(self, model_uri: str, input_table: Table, output_table: Table) -> None:
         """
         Parameters
         ----------
         model_uri : str
             MLflow model uri. Model model must have been logged using the Feature Store API.
-        input_table : MetastoreTable
+        input_table : Table
             Table to load as a Spark DataFrame to score the model on.
         output_table : str
             Output table to write results to.
@@ -56,7 +56,7 @@ class ModelInferenceStream:
         -------
         pyspark.sql.DataFrame
         """
-        return spark.table(self.input_table.ref)
+        return spark.table(self.input_table.qualified_name)
 
     def _load_model(self) -> mlflow.pyfunc.PythonModel:
         """

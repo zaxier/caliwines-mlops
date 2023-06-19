@@ -17,7 +17,7 @@ source dbx/bin/activate
 ```
 
 ```
-cd terraform/cali_housing_mlops/jobs-existing-cluster
+cd terraform/poc_accelerate_mlops/jobs-existing-cluster
 terraform init
 terraform plan
 terraform apply
@@ -27,3 +27,4 @@ terraform apply
 Must have configured databricks cli already
 
 
+# TODO Add feature importance to model training

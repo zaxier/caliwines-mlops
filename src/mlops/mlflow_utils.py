@@ -23,3 +23,22 @@ class MLflowTrackingConfig:
     experiment_id: int = None
     experiment_path: str = None
     model_name: str = None
+
+
+if __name__ == "__main__":
+    mlflow_tracking_config = MLflowTrackingConfig(
+        run_name="example run",
+        experiment_id=1,
+        experiment_path="example path",
+        model_name="example model",
+    )
+    print("\n obj:", mlflow_tracking_config)
+    print("\n obj.run_name: '" + mlflow_tracking_config.run_name + "'")
+    print("\n obj.experiment_id: '" + str(mlflow_tracking_config.experiment_id) + "'")
+    print("\n obj.experiment_path: '" + mlflow_tracking_config.experiment_path + "'")
+    print("\n obj.model_name: '" + mlflow_tracking_config.model_name + "'")
+
+    # print(mlflow_tracking_config.experiment_id, "\n")
+    # print(mlflow_tracking_config.experiment_path, "\n")
+    # print(mlflow_tracking_config.model_name, "\n")
+    print("\n")
