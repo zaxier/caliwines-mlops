@@ -4,10 +4,6 @@
 # MAGIC Pipeline to execute model inference. Model will be loaded from MLflow Model Registry and used to make predictions on a holdout dataset.
 
 # COMMAND ----------
-# DBTITLE 1,Install requirements
-# MAGIC %pip install -r ../../requirements.txt
-
-# COMMAND ----------
 # DBTITLE 1,Set env
 dbutils.widgets.dropdown("env", "dev", ["dev", "staging", "prod"], "Environment Name")
 dbutils.widgets.text("job-id", "test", "Job ID")  # TODO
@@ -23,7 +19,7 @@ from src.mlops.model_inference_batch import ModelInferenceBatchPipeline
 # DBTITLE 1,Setup Pipeline Config
 
 # Load env vars from config file (`conf/env_name/` dir)
-env_vars = load_and_set_env_vars(env=dbutils.widgets.get("env"), project="cali_housing_mlops")
+env_vars = load_and_set_env_vars(env=dbutils.widgets.get("env"), project="cali_mlops")
 job_id = dbutils.widgets.get(
     "job-id"
 )  # TODO: add a generic job metadata dict/class to pass to pipeline add job_id to metadata pulled from model version etc.
@@ -32,7 +28,7 @@ print(job_id)
 # Load pipeline config from config file (`conf/pipeline_config/` dir)
 pipeline_config = load_config(
     pipeline_name="cali_housing_model_inference_batch_cfg",
-    project="cali_housing_mlops",
+    project="cali_mlops",
 )
 
 model_name = env_vars["cali_model_name"]

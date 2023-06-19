@@ -15,7 +15,7 @@ resource "databricks_job" "data_setup" {
   }
 
   notebook_task {
-    notebook_path = "notebooks/cali_housing_mlops/data_setup"
+    notebook_path = "notebooks/cali_mlops/data_setup"
     base_parameters = tomap({
       env = "dev"
     })

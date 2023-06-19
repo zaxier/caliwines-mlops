@@ -10,13 +10,14 @@ data "databricks_spark_version" "ml-latest" {
   ml = true
 }
 
-data "databricks_node_type" "smallest" {
+data "databricks_node_type" "node_type" {
   local_disk = true
+  min_cores = 16
 }
 
 resource "databricks_cluster" "all_purpose_cluster" {
   cluster_name            = var.cluster_name
-  node_type_id            = data.databricks_node_type.smallest.id
+  node_type_id            = data.databricks_node_type.node_type.id
   spark_version           = data.databricks_spark_version.ml-latest.id
   autotermination_minutes = var.cluster_autotermination_minutes
   num_workers             = var.cluster_num_workers

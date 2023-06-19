@@ -5,10 +5,6 @@
 # MAGIC Optionally, the resulting model will be registered to MLflow Model Registry if provided.
 
 # COMMAND ----------
-# DBTITLE 1,Install requirements
-# MAGIC %pip install -r ../../requirements.txt
-
-# COMMAND ----------
 # DBTITLE 1,Set env
 dbutils.widgets.dropdown("env", "dev", ["dev", "staging", "prod"], "Environment Name")
 
@@ -28,12 +24,12 @@ from src.mlops.plot_utils import PlotGenerator
 # COMMAND ----------
 # DBTITLE 1,Load Config
 # Load env vars from config file (`conf/env_name/` dir)
-env_vars = load_and_set_env_vars(env=dbutils.widgets.get("env"), project="cali_housing_mlops")
+env_vars = load_and_set_env_vars(env=dbutils.widgets.get("env"), project="cali_mlops")
 
 # Load pipeline config from config file (`conf/pipeline_config/` dir)
 pipeline_config = load_config(
-    pipeline_name="cali_housing_model_train_cfg",
-    project="cali_housing_mlops",
+    pipeline_name="property_valuation_train_cfg",
+    project="cali_mlops",
 )
 
 # COMMAND ----------

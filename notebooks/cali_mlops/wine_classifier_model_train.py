@@ -18,17 +18,19 @@ from src.mlops.model_train import (
     MLflowTrackingConfig,
 )
 from src.model_pipelines.random_forest import RandomForestPipelines
+from src.mlops.evaluation_utils import RegressionEvaluation
+from src.mlops.plot_utils import PlotGenerator
+
 
 # COMMAND ----------
 # DBTITLE 1,Load Config
 # Load env vars from config file (`conf/env_name/` dir)
-env_vars = load_and_set_env_vars(env=dbutils.widgets.get("env"), project="cali_housing_mlops")
-# TODO: print out environment variables
+env_vars = load_and_set_env_vars(env=dbutils.widgets.get("env"), project="cali_mlops")
 
 # Load pipeline config from config file (`conf/pipeline_config/` dir)
 pipeline_config = load_config(
     pipeline_name="wine_model_train_cfg",
-    project="cali_housing_mlops",
+    project="cali_mlops",
 )
 # TODO: print out pipeline_config
 
