@@ -54,6 +54,12 @@ wine_schema = Schema(
 )
 
 # COMMAND ----------
+# DBTITLE 1,Create Catalogs
+spark.sql(f"CREATE CATALOG IF NOT EXISTS {cali_schema.catalog}")
+spark.sql(f"CREATE CATALOG IF NOT EXISTS {iris_schema.catalog}")
+spark.sql(f"CREATE CATALOG IF NOT EXISTS {wine_schema.catalog}")
+
+# COMMAND ----------
 # DBTITLE 1,Create Schemas
 spark.sql(f"CREATE SCHEMA IF NOT EXISTS {cali_schema.qualified_name}")
 spark.sql(f"CREATE SCHEMA IF NOT EXISTS {iris_schema.qualified_name}")
