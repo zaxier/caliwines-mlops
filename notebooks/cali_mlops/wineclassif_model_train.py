@@ -18,7 +18,7 @@ from src.mlops.model_train import (
     MLflowTrackingConfig,
 )
 from src.model_pipelines.random_forest import RandomForestPipelines
-from src.mlops.evaluation_utils import RegressionEvaluation
+from src.mlops.evaluation_utils import ClassificationEvaluation
 from src.mlops.plot_utils import PlotGenerator
 
 
@@ -43,6 +43,7 @@ train_table = Table(
 )
 
 model_pipeline = RandomForestPipelines.simple_rf_classifier(model_params=pipeline_config["model_params"])
+model_evaluation = ClassificationEvaluation()
 
 mlflow_tracking_cfg = MLflowTrackingConfig(
     run_name=pipeline_config["mlflow_params"]["run_name"],  # TODO: change to random name?
@@ -57,6 +58,8 @@ model_train_cfg = ModelTrainConfig(
     model_pipeline=model_pipeline,
     model_params=pipeline_config["model_params"],  # For logging with model
     preproc_params=pipeline_config["preproc_params"],
+    model_evaluation=model_evaluation,
+    plot_generator=None,
     conf=pipeline_config,
     env_vars=env_vars,
 )
