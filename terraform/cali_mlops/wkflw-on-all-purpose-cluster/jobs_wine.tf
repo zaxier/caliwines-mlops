@@ -124,8 +124,8 @@ resource "databricks_job" "wineclassif_model_inference_batch_repos" {
 
 }
 
-resource "databricks_job" "wineclassif_end2end_job_git" {
-  name = "${var.project_name}--test_job_git--${var.env}"
+resource "databricks_job" "wineclassif_e2e_job_git" {
+  name = "${var.project_name}--wineclassif_e2e_job_git--${var.env}"
 
   git_source {
     provider = var.git_provider
@@ -213,8 +213,8 @@ resource "databricks_job" "wineclassif_end2end_job_git" {
 
 }
 
-resource "databricks_job" "wineclassif_end2end_job_repos" {
-  name = "${var.project_name}--test_job_repos--${var.env}"
+resource "databricks_job" "wineclassif_e2e_job_repos" {
+  name = "${var.project_name}--wineclassif_e2e_repos--${var.env}"
 
   task {
     task_key = "taskA--data_cleanup"

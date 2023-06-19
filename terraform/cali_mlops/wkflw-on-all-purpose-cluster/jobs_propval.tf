@@ -124,8 +124,8 @@ resource "databricks_job" "propval_model_inference_batch_repos" {
 
 }
 
-resource "databricks_job" "propval_end2end_job_git" {
-  name = "${var.project_name}--test_job_git--${var.env}"
+resource "databricks_job" "propval_e2e_job_git" {
+  name = "${var.project_name}--proval_e2e_job_git--${var.env}"
 
   git_source {
     provider = var.git_provider
@@ -139,7 +139,7 @@ resource "databricks_job" "propval_end2end_job_git" {
 
 
     notebook_task {
-      notebook_path = "notebooks/_cali_cali_mlops_data_generatorator/data_cleanup"
+      notebook_path = "notebooks/__cali_mlops_data_generatorator/data_cleanup"
       base_parameters = tomap({
           env = var.env
       })
@@ -213,8 +213,8 @@ resource "databricks_job" "propval_end2end_job_git" {
 
 }
 
-resource "databricks_job" "propval_end2end_job_repos" {
-  name = "${var.project_name}--test_job_repos--${var.env}"
+resource "databricks_job" "propval_e2e_job_repos" {
+  name = "${var.project_name}--propval_e2e_job_repos--${var.env}"
 
   task {
     task_key = "taskA--data_cleanup"
