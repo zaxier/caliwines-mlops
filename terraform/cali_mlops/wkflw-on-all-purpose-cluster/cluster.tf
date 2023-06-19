@@ -25,13 +25,6 @@ resource "databricks_cluster" "all_purpose_cluster" {
   single_user_name        = data.databricks_current_user.me.user_name
 }
 
-resource "databricks_library" "databricks_common" {
-  cluster_id = databricks_cluster.all_purpose_cluster.id
-  pypi {
-    package = "databricks-common==0.1.8"
-  }
-}
-
 resource "databricks_library" "pyyaml" {
   cluster_id = databricks_cluster.all_purpose_cluster.id
   pypi {
@@ -39,7 +32,7 @@ resource "databricks_library" "pyyaml" {
   }
 }
 
-resource "databricks_library" "python-dotenv" {
+resource "databricks_library" "python_dotenv" {
   cluster_id = databricks_cluster.all_purpose_cluster.id
   pypi {
     package = "python-dotenv==0.21.1"
