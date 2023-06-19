@@ -12,7 +12,7 @@ line-length = 120
 [tool.coverage.run]
 branch = true
 source = [
-    "packaged_poc"
+    "poc_accelerate_mlops"
 ]
 
 [tool.coverage.report]

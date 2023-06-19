@@ -27,18 +27,18 @@ pipeline_config = load_config(
     project="cali_mlops",
 )
 
-model_name = env_vars["wine_model_name"]
+model_name = env_vars["wineclassif_model_name"]
 model_registry_stage = pipeline_config["mlflow_params"]["model_registry_stage"]
 model_uri = f"models:/{model_name}/{model_registry_stage}"
 
 input_table = Table(
-    catalog=env_vars["wine_catalog"],
+    catalog=env_vars["catalog"],
     schema=env_vars["wine_schema"],
     table=pipeline_config["data_input"]["table_name"],
 )
 
 output_table = Table(
-    catalog=env_vars["wine_catalog"],
+    catalog=env_vars["catalog"],
     schema=env_vars["wine_schema"],
     table=pipeline_config["data_output"]["table_name"],
 )

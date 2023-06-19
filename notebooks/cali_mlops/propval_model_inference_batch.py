@@ -17,7 +17,6 @@ from src.mlops.model_inference_batch import ModelInferenceBatchPipeline
 
 # COMMAND ----------
 # DBTITLE 1,Setup Pipeline Config
-
 # Load env vars from config file (`conf/env_name/` dir)
 env_vars = load_and_set_env_vars(env=dbutils.widgets.get("env"), project="cali_mlops")
 job_id = dbutils.widgets.get(
@@ -31,22 +30,23 @@ pipeline_config = load_config(
     project="cali_mlops",
 )
 
-model_name = env_vars["cali_model_name"]
+# Configure model URI
+model_name = env_vars["propval_model_name"]
 model_registry_stage = pipeline_config["mlflow_params"]["model_registry_stage"]
 model_uri = f"models:/{model_name}/{model_registry_stage}"
 
+# Configure input and output tables
 input_table = Table(
-    catalog=env_vars["cali_catalog"],
-    schema=env_vars["cali_schema"],
+    catalog=env_vars["catalog"],
+    schema=env_vars["property_schema"],
     table=pipeline_config["data_input"]["table_name"],
 )
 
 output_table = Table(
-    catalog=env_vars["cali_catalog"],
-    schema=env_vars["cali_schema"],
+    catalog=env_vars["catalog"],
+    schema=env_vars["property_schema"],
     table=pipeline_config["data_output"]["table_name"],
 )
-
 
 # COMMAND ----------
 # DBTITLE 1,Execute Pipeline

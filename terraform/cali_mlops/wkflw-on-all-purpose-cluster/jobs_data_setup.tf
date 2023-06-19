@@ -13,7 +13,7 @@ resource "databricks_job" "data_setup_git" {
 
 
     notebook_task {
-      notebook_path = "notebooks/_mlops_data_generator/data_cleanup"
+      notebook_path = "notebooks/_cali_mlops_data_generatorator/data_cleanup"
       base_parameters = tomap({
           env = var.env
       })
@@ -28,7 +28,7 @@ resource "databricks_job" "data_setup_git" {
     existing_cluster_id = databricks_cluster.all_purpose_cluster.id
 
     notebook_task {
-      notebook_path = "notebooks/_mlops_data_generator/data_setup"
+      notebook_path = "notebooks/_cali_mlops_data_generatorator/data_setup"
       base_parameters = tomap({
           env = var.env
       })
@@ -53,7 +53,7 @@ resource "databricks_job" "data_setup_repos" {
     existing_cluster_id = databricks_cluster.all_purpose_cluster.id
 
     notebook_task {
-      notebook_path = "/Repos/${data.databricks_current_user.me.user_name}/cali_mlops/notebooks/_mlops_data_generator/data_cleanup"
+      notebook_path = "/Repos/${data.databricks_current_user.me.user_name}/cali_mlops/notebooks/_cali_mlops_data_generatorator/data_cleanup"
       base_parameters = tomap({
           env = var.env
       })
@@ -68,7 +68,7 @@ resource "databricks_job" "data_setup_repos" {
     existing_cluster_id = databricks_cluster.all_purpose_cluster.id
 
     notebook_task {
-      notebook_path = "/Repos/${data.databricks_current_user.me.user_name}/cali_mlops/notebooks/_mlops_data_generator/data_setup"
+      notebook_path = "/Repos/${data.databricks_current_user.me.user_name}/cali_mlops/notebooks/_cali_mlops_data_generatorator/data_setup"
       base_parameters = tomap({
           env = var.env
       })

@@ -1,5 +1,5 @@
-resource "databricks_job" "wineclass_model_train_git" {
-  name = "${var.project_name}--wineclass_model_train_git_job--${var.env}"
+resource "databricks_job" "wineclassif_model_train_git" {
+  name = "${var.project_name}--wineclassif_model_train_git_job--${var.env}"
   existing_cluster_id = databricks_cluster.all_purpose_cluster.id
 
   git_source {
@@ -9,7 +9,7 @@ resource "databricks_job" "wineclass_model_train_git" {
   }
 
   notebook_task {
-    notebook_path = "notebooks/cali_mlops/wineclass_model_train"
+    notebook_path = "notebooks/cali_mlops/wineclassif_model_train"
     base_parameters = tomap({
         env = var.env
     })
@@ -22,12 +22,12 @@ resource "databricks_job" "wineclass_model_train_git" {
 
 }
 
-resource "databricks_job" "wineclass_model_train_repos" {
-  name = "${var.project_name}--wineclass_model_train_repos_job--${var.env}"
+resource "databricks_job" "wineclassif_model_train_repos" {
+  name = "${var.project_name}--wineclassif_model_train_repos_job--${var.env}"
   existing_cluster_id = databricks_cluster.all_purpose_cluster.id
 
   notebook_task {
-    notebook_path = "/Repos/${data.databricks_current_user.me.user_name}/cali_mlops/notebooks/cali_mlops/wineclass_model_train"
+    notebook_path = "/Repos/${data.databricks_current_user.me.user_name}/cali_mlops/notebooks/cali_mlops/wineclassif_model_train"
     base_parameters = tomap({
         env = var.env
     })
@@ -40,8 +40,8 @@ resource "databricks_job" "wineclass_model_train_repos" {
 
 }
 
-resource "databricks_job" "wineclass_model_deployment_git" {
-  name = "${var.project_name}--wineclass_model_deployment_git_job--${var.env}"
+resource "databricks_job" "wineclassif_model_deployment_git" {
+  name = "${var.project_name}--wineclassif_model_deployment_git_job--${var.env}"
   existing_cluster_id = databricks_cluster.all_purpose_cluster.id
 
   git_source {
@@ -51,7 +51,7 @@ resource "databricks_job" "wineclass_model_deployment_git" {
   }
 
   notebook_task {
-    notebook_path = "notebooks/cali_housing_project/wineclass_model_deployment"
+    notebook_path = "notebooks/cali_housing_project/wineclassif_model_deployment"
     base_parameters = tomap({
         env = var.env
     })
@@ -64,12 +64,12 @@ resource "databricks_job" "wineclass_model_deployment_git" {
 
 }
 
-resource "databricks_job" "wineclass_model_deployment_repos" {
-  name = "${var.project_name}--wineclass_model_deployment_repos_job--${var.env}"
+resource "databricks_job" "wineclassif_model_deployment_repos" {
+  name = "${var.project_name}--wineclassif_model_deployment_repos_job--${var.env}"
   existing_cluster_id = databricks_cluster.all_purpose_cluster.id
 
   notebook_task {
-    notebook_path = "/Repos/${data.databricks_current_user.me.user_name}/cali_mlops/notebooks/cali_housing_project/wineclass_model_deployment"
+    notebook_path = "/Repos/${data.databricks_current_user.me.user_name}/cali_mlops/notebooks/cali_housing_project/wineclassif_model_deployment"
     base_parameters = tomap({
         env = var.env
     })
@@ -82,7 +82,7 @@ resource "databricks_job" "wineclass_model_deployment_repos" {
 
 }
 
-resource "databricks_job" "wineclass_model_inference_batch_git" {
+resource "databricks_job" "wineclassif_model_inference_batch_git" {
   name = "${var.project_name}--model_inference_batch_job--${var.env}"
   existing_cluster_id = databricks_cluster.all_purpose_cluster.id
 
@@ -106,7 +106,7 @@ resource "databricks_job" "wineclass_model_inference_batch_git" {
 
 }
 
-resource "databricks_job" "wineclass_model_inference_batch_repos" {
+resource "databricks_job" "wineclassif_model_inference_batch_repos" {
   name = "${var.project_name}--model_inference_batch_job--${var.env}"
   existing_cluster_id = databricks_cluster.all_purpose_cluster.id
   
@@ -124,7 +124,7 @@ resource "databricks_job" "wineclass_model_inference_batch_repos" {
 
 }
 
-resource "databricks_job" "wineclass_end2end_job_git" {
+resource "databricks_job" "wineclassif_end2end_job_git" {
   name = "${var.project_name}--test_job_git--${var.env}"
 
   git_source {
@@ -139,7 +139,7 @@ resource "databricks_job" "wineclass_end2end_job_git" {
 
 
     notebook_task {
-      notebook_path = "notebooks/_mlops_data_generator/data_cleanup"
+      notebook_path = "notebooks/_cali_mlops_data_generatorator/data_cleanup"
       base_parameters = tomap({
           env = var.env
       })
@@ -154,7 +154,7 @@ resource "databricks_job" "wineclass_end2end_job_git" {
     existing_cluster_id = databricks_cluster.all_purpose_cluster.id
 
     notebook_task {
-      notebook_path = "notebooks/_mlops_data_generator/data_setup"
+      notebook_path = "notebooks/_cali_mlops_data_generatorator/data_setup"
       base_parameters = tomap({
           env = var.env
       })
@@ -213,7 +213,7 @@ resource "databricks_job" "wineclass_end2end_job_git" {
 
 }
 
-resource "databricks_job" "wineclass_end2end_job_repos" {
+resource "databricks_job" "wineclassif_end2end_job_repos" {
   name = "${var.project_name}--test_job_repos--${var.env}"
 
   task {
@@ -222,7 +222,7 @@ resource "databricks_job" "wineclass_end2end_job_repos" {
 
 
     notebook_task {
-      notebook_path = "/Repos/${data.databricks_current_user.me.user_name}/cali_mlops/notebooks/_mlops_data_generator/data_cleanup"
+      notebook_path = "/Repos/${data.databricks_current_user.me.user_name}/cali_mlops/notebooks/_cali_mlops_data_generatorator/data_cleanup"
       base_parameters = tomap({
           env = var.env
       })
@@ -237,7 +237,7 @@ resource "databricks_job" "wineclass_end2end_job_repos" {
     existing_cluster_id = databricks_cluster.all_purpose_cluster.id
 
     notebook_task {
-      notebook_path = "/Repos/${data.databricks_current_user.me.user_name}/cali_mlops/notebooks/_mlops_data_generator/data_setup"
+      notebook_path = "/Repos/${data.databricks_current_user.me.user_name}/cali_mlops/notebooks/_cali_mlops_data_generatorator/data_setup"
       base_parameters = tomap({
           env = var.env
       })
@@ -252,7 +252,7 @@ resource "databricks_job" "wineclass_end2end_job_repos" {
     existing_cluster_id = databricks_cluster.all_purpose_cluster.id
 
     notebook_task {
-      notebook_path = "/Repos/${data.databricks_current_user.me.user_name}/cali_mlops/notebooks/_mlops_data_generator/model_train"
+      notebook_path = "/Repos/${data.databricks_current_user.me.user_name}/cali_mlops/notebooks/_cali_mlops_data_generatorator/model_train"
       base_parameters = tomap({
           env = var.env
       })
@@ -267,7 +267,7 @@ resource "databricks_job" "wineclass_end2end_job_repos" {
     existing_cluster_id = databricks_cluster.all_purpose_cluster.id
 
     notebook_task {
-      notebook_path = "/Repos/${data.databricks_current_user.me.user_name}/cali_mlops/notebooks/_mlops_data_generator/model_deployment"
+      notebook_path = "/Repos/${data.databricks_current_user.me.user_name}/cali_mlops/notebooks/_cali_mlops_data_generatorator/model_deployment"
       base_parameters = tomap({
           env = var.env
       })
@@ -282,7 +282,7 @@ resource "databricks_job" "wineclass_end2end_job_repos" {
     existing_cluster_id = databricks_cluster.all_purpose_cluster.id
 
     notebook_task {
-      notebook_path = "/Repos/${data.databricks_current_user.me.user_name}/cali_mlops/notebooks/_mlops_data_generator/model_inference_batch"
+      notebook_path = "/Repos/${data.databricks_current_user.me.user_name}/cali_mlops/notebooks/_cali_mlops_data_generatorator/model_inference_batch"
       base_parameters = tomap({
           env = var.env
       })

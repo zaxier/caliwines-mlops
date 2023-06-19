@@ -132,6 +132,6 @@ def dbutils_fixture() -> Iterator[None]:
     :return:
     """
     logging.info("Patching the DBUtils object")
-    with patch("packaged_poc.common.get_dbutils", lambda _: DBUtilsFixture()):
+    with patch("src.common.get_dbutils", lambda _: DBUtilsFixture()):
         yield
     logging.info("Test session finished, patching completed")

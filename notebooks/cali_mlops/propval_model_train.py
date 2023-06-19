@@ -34,9 +34,7 @@ pipeline_config = load_config(
 
 # COMMAND ----------
 # DBTITLE 1,Setup Pipeline Config
-train_table = Table(
-    catalog=env_vars["cali_catalog"], schema=env_vars["cali_schema"], table=env_vars["cali_train_table"]
-)
+train_table = Table(catalog=env_vars["catalog"], schema=env_vars["property_schema"], table=env_vars["cali_train_table"])
 
 model_pipeline = RandomForestPipelines.simple_rf_regressor(model_params=pipeline_config["model_params"])
 model_evaluation = RegressionEvaluation()
@@ -45,8 +43,8 @@ plot_generator = None
 
 mlflow_tracking_cfg = MLflowTrackingConfig(
     run_name=pipeline_config["mlflow_params"]["run_name"],  # TODO: change to random name?
-    experiment_path=env_vars["cali_train_exper_path"],
-    model_name=env_vars["cali_model_name"],
+    experiment_path=env_vars["propval_model_train_exper_path"],
+    model_name=env_vars["propval_model_name"],
 )
 
 model_train_cfg = ModelTrainConfig(

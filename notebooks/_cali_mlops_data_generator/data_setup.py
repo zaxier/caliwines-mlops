@@ -34,30 +34,30 @@ env_vars = load_and_set_env_vars(env=dbutils.widgets.get("env"), project="cali_m
 holdout_pct = 20
 random_seed = 42
 
-cali_schema = Schema(
-    catalog=env_vars["cali_catalog"],
-    schema=env_vars["cali_schema"],
+property_schema = Schema(
+    catalog=env_vars["catalog"],
+    schema=env_vars["property_schema"],
 )
 
 iris_schema = Schema(
-    catalog=env_vars["iris_catalog"],
+    catalog=env_vars["catalog"],
     schema=env_vars["iris_schema"],
 )
 
 wine_schema = Schema(
-    catalog=env_vars["wine_catalog"],
+    catalog=env_vars["catalog"],
     schema=env_vars["wine_schema"],
 )
 
 # COMMAND ----------
 # DBTITLE 1,Create Catalogs
-spark.sql(f"CREATE CATALOG IF NOT EXISTS {cali_schema.catalog}")
+spark.sql(f"CREATE CATALOG IF NOT EXISTS {property_schema.catalog}")
 spark.sql(f"CREATE CATALOG IF NOT EXISTS {iris_schema.catalog}")
 spark.sql(f"CREATE CATALOG IF NOT EXISTS {wine_schema.catalog}")
 
 # COMMAND ----------
 # DBTITLE 1,Create Schemas
-spark.sql(f"CREATE SCHEMA IF NOT EXISTS {cali_schema.qualified_name}")
+spark.sql(f"CREATE SCHEMA IF NOT EXISTS {property_schema.qualified_name}")
 spark.sql(f"CREATE SCHEMA IF NOT EXISTS {iris_schema.qualified_name}")
 spark.sql(f"CREATE SCHEMA IF NOT EXISTS {wine_schema.qualified_name}")
 
@@ -88,6 +88,6 @@ def setup_data(fn, schema: Schema) -> None:
     holdout_df.write.mode("overwrite").format("delta").saveAsTable(holdout_table.qualified_name)
 
 
-setup_data(fetch_sklearn_cali_housing, cali_schema)
+setup_data(fetch_sklearn_cali_housing, property_schema)
 setup_data(fetch_sklearn_iris, iris_schema)
 setup_data(fetch_sklearn_wine, wine_schema)

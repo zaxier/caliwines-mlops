@@ -38,7 +38,7 @@ pipeline_config = load_config(
 # DBTITLE 1,Setup Pipeline Config
 train_table = Table(
     name=env_vars["wine_train_table"],
-    catalog=env_vars["wine_catalog"],
+    catalog=env_vars["catalog"],
     schema=env_vars["wine_schema"],
 )
 
@@ -46,8 +46,8 @@ model_pipeline = RandomForestPipelines.simple_rf_classifier(model_params=pipelin
 
 mlflow_tracking_cfg = MLflowTrackingConfig(
     run_name=pipeline_config["mlflow_params"]["run_name"],  # TODO: change to random name?
-    experiment_path=env_vars["wine_model_train_exper_path"],
-    model_name=env_vars["wine_model_name"],
+    experiment_path=env_vars["wineclassif_model_train_exper_path"],
+    model_name=env_vars["wineclassif_model_name"],
 )
 
 model_train_cfg = ModelTrainConfig(

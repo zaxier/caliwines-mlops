@@ -35,15 +35,15 @@ print(pipeline_config)
 # DBTITLE 1,Setup Pipeline Config
 mlflow_tracking_cfg = MLflowTrackingConfig(
     run_name="staging_vs_prod_comparison",
-    experiment_path=env_vars["cali_deploy_exper_path"],
-    model_name=env_vars["cali_model_name"],
+    experiment_path=env_vars["propval_model_deploy_exper_path"],
+    model_name=env_vars["propval_model_name"],
 )
 
 model_deployment_cfg = ModelDeploymentConfig(
     mlflow_tracking_cfg=mlflow_tracking_cfg,
     reference_data=Table(
-        catalog=env_vars["cali_catalog"],
-        schema=env_vars["cali_schema"],
+        catalog=env_vars["catalog"],
+        schema=env_vars["property_schema"],
         table=env_vars["cali_reference_table"],
     ),
     label_col=env_vars["cali_label_col"],

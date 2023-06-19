@@ -17,7 +17,7 @@ source dbx/bin/activate
 ```
 
 ```
-cd terraform/cali_mlops/jobs-existing-cluster
+cd terraform/poc_accelerate_mlops/jobs-existing-cluster
 terraform init
 terraform plan
 terraform apply
