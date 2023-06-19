@@ -46,7 +46,7 @@ model_pipeline = RandomForestPipelines.simple_rf_classifier(model_params=pipelin
 
 mlflow_tracking_cfg = MLflowTrackingConfig(
     run_name=pipeline_config["mlflow_params"]["run_name"],  # TODO: change to random name?
-    experiment_path=env_vars["wine_train_exper_path"],
+    experiment_path=env_vars["wine_model_train_exper_path"],
     model_name=env_vars["wine_model_name"],
 )
 
