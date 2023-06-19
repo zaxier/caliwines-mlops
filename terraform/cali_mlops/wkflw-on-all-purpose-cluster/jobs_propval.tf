@@ -83,7 +83,7 @@ resource "databricks_job" "propval_model_deployment_repos" {
 }
 
 resource "databricks_job" "propval_model_inference_batch_git" {
-  name = "${var.project_name}--model_inference_batch_job--${var.env}"
+  name = "${var.project_name}--propval_model_inference_batch_git_job--${var.env}"
   existing_cluster_id = databricks_cluster.all_purpose_cluster.id
 
   git_source {
@@ -107,7 +107,7 @@ resource "databricks_job" "propval_model_inference_batch_git" {
 }
 
 resource "databricks_job" "propval_model_inference_batch_repos" {
-  name = "${var.project_name}--propval_model_inference_batch_job--${var.env}"
+  name = "${var.project_name}--propval_model_inference_batch_repos_job--${var.env}"
   existing_cluster_id = databricks_cluster.all_purpose_cluster.id
   
   notebook_task {
