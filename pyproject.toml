@@ -41,6 +41,7 @@ packages = [{include = "src"}]
 [tool.poetry.dependencies]
 python = "^3.10"
 databricks-connect = ">=13.0.0,<13.1.0"
+databricks-sdk = "^0.1.10"
 
 [tool.poetry.group.dev.dependencies]
 databricks-connect = ">=13.0.0,<13.1.0"
