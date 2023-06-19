@@ -9,4 +9,4 @@ branch   = "dev"
 
 repo_root = "/Repos/${data.databricks_current_user.me.user_name}/packaged_poc_mlops"
 
-project_name = "mlops"
+project_name = "cali_housing_mlops"
