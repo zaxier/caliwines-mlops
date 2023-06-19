@@ -28,7 +28,7 @@ env_vars = load_and_set_env_vars(env=dbutils.widgets.get("env"), project="cali_m
 
 # Load pipeline config from config file (`conf/pipeline_config/` dir)
 pipeline_config = load_config(
-    pipeline_name="property_valuation_train_cfg",
+    pipeline_name="propval_train_model_cfg",
     project="cali_mlops",
 )
 

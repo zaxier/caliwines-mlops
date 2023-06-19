@@ -26,7 +26,7 @@ print(job_id)
 
 # Load pipeline config from config file (`conf/pipeline_config/` dir)
 pipeline_config = load_config(
-    pipeline_name="cali_housing_model_inference_batch_cfg",
+    pipeline_name="propval_model_inference_batch_cfg",
     project="cali_mlops",
 )
 
