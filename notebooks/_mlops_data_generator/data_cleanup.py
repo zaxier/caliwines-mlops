@@ -8,7 +8,7 @@ dbutils.widgets.dropdown("env", "dev", ["dev", "staging", "prod"], "Environment 
 
 # COMMAND ----------
 # DBTITLE 1,Module Imports
-from src.common import Schema, drop_schema
+from src.common import Schema
 from src.utils.notebook_utils import load_and_set_env_vars, load_config
 
 
@@ -29,6 +29,6 @@ cali_schema = Schema(catalog=env_vars["cali_catalog"], schema=env_vars["cali_sch
 iris_schema = Schema(catalog=env_vars["iris_catalog"], schema=env_vars["iris_schema"])
 wine_schema = Schema(catalog=env_vars["wine_catalog"], schema=env_vars["wine_schema"])
 
-drop_schema(cali_schema, cascade=True)
-drop_schema(wine_schema, cascade=True)
-drop_schema(iris_schema, cascade=True)
+spark.sql(f"DROP SCHEMA IF EXISTS {cali_schema.qualified_name} CASCADE")
+spark.sql(f"DROP SCHEMA IF EXISTS {iris_schema.qualified_name} CASCADE")
+spark.sql(f"DROP SCHEMA IF EXISTS {wine_schema.qualified_name} CASCADE")
