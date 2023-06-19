@@ -37,9 +37,9 @@ pipeline_config = load_config(
 # COMMAND ----------
 # DBTITLE 1,Setup Pipeline Config
 train_table = Table(
-    name=env_vars["wine_train_table"],
     catalog=env_vars["catalog"],
     schema=env_vars["wine_schema"],
+    table=env_vars["wine_train_table"],
 )
 
 model_pipeline = RandomForestPipelines.simple_rf_classifier(model_params=pipeline_config["model_params"])
