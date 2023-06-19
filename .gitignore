@@ -50,3 +50,6 @@ mlruns/
 
 # Venv dirs
 dbx/
+
+# Poetry
+poetry.lock
