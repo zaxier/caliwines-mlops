@@ -1,5 +1,5 @@
 resource "databricks_job" "e2e_job_git" {
-  name = "${var.project_name}--e2e_job_git--${var.env}"
+  name = "${var.project_name}--e2e_job--git_source--${var.env}"
 
   git_source {
     provider = var.git_provider
@@ -135,7 +135,7 @@ resource "databricks_job" "e2e_job_git" {
 }
 
 resource "databricks_job" "e2e_job_repos" {
-  name = "${var.project_name}--e2e_job_repos--${var.env}"
+  name = "${var.project_name}--e2e_job--repos_source--${var.env}"
 
   task {
     task_key = "taskA--data_cleanup"
