@@ -69,9 +69,16 @@ class ClassificationEvaluation(Evaluation):
         Dictionary of (metric name, computed value)
         """
         return {
+            # TODO: Add roc_auc_score for multiclass
+            # This requires some changes to model_train by enforcing the use of the predict_proba method
+            # when we want to have the roc_auc_score. To keep model_train pipeline generic (for
+            # regression and classification) we would need to add a flag to the pipeline config to
+            # indicate whether to use predict or predict_proba for the evaluation step.
+            # /Code -->
             # f"{metric_prefix}roc_auc_score": roc_auc_score(
             #     y_true=y_true, y_score=y_score, average="weighted", multi_class="ovo"
             # ),
+            # <-- Code/
             f"{metric_prefix}f1_score": f1_score(y_true, y_score, average="weighted"),
             f"{metric_prefix}accuracy_score": accuracy_score(y_true, y_score),
         }
