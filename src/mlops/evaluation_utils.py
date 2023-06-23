@@ -72,7 +72,7 @@ class ClassificationEvaluation(Evaluation):
             # f"{metric_prefix}roc_auc_score": roc_auc_score(
             #     y_true=y_true, y_score=y_score, average="weighted", multi_class="ovo"
             # ),
-            f"{metric_prefix}f1_score": f1_score(y_true, y_score),
+            f"{metric_prefix}f1_score": f1_score(y_true, y_score, average="weighted"),
             f"{metric_prefix}accuracy_score": accuracy_score(y_true, y_score),
         }
 
