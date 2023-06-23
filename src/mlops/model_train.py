@@ -163,8 +163,8 @@ class ModelTrain:
             # Fit pipeline
             model = self.fit_pipeline(X_train, y_train)
 
-            y_train_pred = pd.Series(model.predict(X_train))
-            y_test_pred = pd.Series(model.predict(X_test))
+            y_train_pred = pd.DataFrame(model.predict(X_train))
+            y_test_pred = pd.DataFrame(model.predict(X_test))
 
             # TODO: remove this
             print("y_train", y_train)
