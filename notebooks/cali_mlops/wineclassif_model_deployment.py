@@ -35,7 +35,7 @@ print(pipeline_config)
 # DBTITLE 1,Setup Pipeline Config
 mlflow_tracking_cfg = MLflowTrackingConfig(
     run_name="staging_vs_prod_comparison",
-    experiment_path=env_vars["wineclassif_model_deployment_exper_path"],
+    experiment_path=env_vars["wineclassif_model_deploy_exper_path"],
     model_name=env_vars["wineclassif_model_name"],
 )
 
