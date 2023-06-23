@@ -88,16 +88,9 @@ class ModelInferenceBatchPipeline:
         pyspark.sql.DataFrame
             Spark DataFrame with predictions column added.
         """
-        model_version = self._get_model_version()
         loaded_model = mlflow.pyfunc.spark_udf(spark, model_uri=self.model_uri, result_type="double")
         # loaded_model = mlflow.pyfunc.spark_udf(spark, model_uri=self.model_uri, result_type="double", env_manager="conda")
-        return (
-            df.withColumn("prediction", loaded_model(struct([col(c) for c in df.columns])))
-            .withColumn("model_uri", lit(self.model_uri))
-            .withColumn("model_version", lit(model_version))
-            .withColumn("model_details", struct(["model_uri", "model_version"]))
-            .drop("model_uri", "model_version")
-        )
+        return df.withColumn("prediction", loaded_model(struct([col(c) for c in df.columns])))
 
     def run_batch(self) -> pyspark.sql.DataFrame:
         """
@@ -125,13 +118,12 @@ class ModelInferenceBatchPipeline:
 
         """
         _logger.info("==========Running batch model inference==========")
-        pred_df = self.run_batch()
+        pred_df = self.run_batch().withColumn("model_details", struct([lit(self.model_uri)]))
 
         _logger.info("==========Writing predictions to output table==========")
         _logger.info(f"mode={mode}")
 
         _logger.info(f"Predictions written to {self.output_table.qualified_name} table")
-
         pred_df.write.format("delta").mode(mode).option("mergeSchema", True).saveAsTable(
             self.output_table.qualified_name
         )
