@@ -45,9 +45,9 @@ model_deployment_cfg = ModelDeploymentConfig(
     reference_data=Table(
         catalog=env_vars["catalog"],
         schema=env_vars["property_schema"],
-        table=env_vars["cali_reference_table"],
+        table=env_vars["propval_reference_table"],
     ),
-    label_col=env_vars["cali_label_col"],
+    label_col=env_vars["propval_label_col"],
     model_evaluation=RegressionEvaluation(),
     comparison_metric=pipeline_config["model_comparison_params"]["metric"],
     higher_is_better=pipeline_config["model_comparison_params"]["higher_is_better"],

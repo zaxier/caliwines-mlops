@@ -34,7 +34,9 @@ pipeline_config = load_config(
 
 # COMMAND ----------
 # DBTITLE 1,Setup Pipeline Config
-train_table = Table(catalog=env_vars["catalog"], schema=env_vars["property_schema"], table=env_vars["cali_train_table"])
+train_table = Table(
+    catalog=env_vars["catalog"], schema=env_vars["property_schema"], table=env_vars["propval_train_table"]
+)
 
 model_pipeline = RandomForestPipelines.simple_rf_regressor(model_params=pipeline_config["model_params"])
 model_evaluation = RegressionEvaluation()
@@ -50,7 +52,7 @@ mlflow_tracking_cfg = MLflowTrackingConfig(
 model_train_cfg = ModelTrainConfig(
     mlflow_tracking_cfg=mlflow_tracking_cfg,
     train_table=train_table,
-    label_col=env_vars["cali_label_col"],
+    label_col=env_vars["propval_label_col"],
     model_pipeline=model_pipeline,
     model_params=pipeline_config["model_params"],  # For logging with model
     preproc_params=pipeline_config["preproc_params"],
