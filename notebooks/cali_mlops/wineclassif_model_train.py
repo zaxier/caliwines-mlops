@@ -32,7 +32,6 @@ pipeline_config = load_config(
     pipeline_name="wineclassif_model_train_cfg",
     project="cali_mlops",
 )
-# TODO: print out pipeline_config
 
 # COMMAND ----------
 # DBTITLE 1,Setup Pipeline Config

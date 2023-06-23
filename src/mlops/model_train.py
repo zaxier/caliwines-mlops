@@ -58,8 +58,9 @@ class ModelTrainConfig:
     env_vars: Dict[str, str] = None
 
 
-class ModelTrain:  # TODO make completely generic
+class ModelTrain:
     """
+    TODO: check docstrings
     Class to train a model on a given dataset and log results to MLflow.
 
     Attributes:
@@ -71,7 +72,7 @@ class ModelTrain:  # TODO make completely generic
             Execute ModelTrain pipeline.
     """
 
-    def __init__(self, cfg: ModelTrainConfig):  # TODO update to be generic
+    def __init__(self, cfg: ModelTrainConfig):
         self.cfg = cfg
 
     @staticmethod
@@ -164,6 +165,12 @@ class ModelTrain:  # TODO make completely generic
 
             y_train_pred = model.predict(X_train)
             y_test_pred = model.predict(X_test)
+
+            # TODO: remove this
+            print("y_train", y_train)
+            print("y_train_pred", y_train_pred)
+            print("y_test_pred", y_test_pred)
+            # <<<<
 
             if model_evaluation:
                 # Log train metrics

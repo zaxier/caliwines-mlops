@@ -17,7 +17,6 @@ from src.utils.notebook_utils import load_and_set_env_vars, load_config
 env_vars = load_and_set_env_vars(env=dbutils.widgets.get("env"), project="cali_mlops")
 
 # COMMAND ----------
-# TODO: Update for new data oriented programming approach
 property_schema = Schema(catalog=env_vars["catalog"], schema=env_vars["property_schema"])
 wine_schema = Schema(catalog=env_vars["catalog"], schema=env_vars["wine_schema"])
 
