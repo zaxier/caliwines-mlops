@@ -60,7 +60,7 @@ class RegressionEvaluation(Evaluation):
 
 class ClassificationEvaluation(Evaluation):
     @staticmethod
-    def evaluate(y_true: pd.Series, y_score: pd.Series, metric_prefix: str = "") -> Dict:
+    def evaluate(y_true: pd.DataFrame, y_score: pd.DataFrame, metric_prefix: str = "") -> Dict:
         """
         Evaluate model performance on validation data.
 
@@ -69,9 +69,9 @@ class ClassificationEvaluation(Evaluation):
         Dictionary of (metric name, computed value)
         """
         return {
-            f"{metric_prefix}roc_auc_score": roc_auc_score(
-                y_true=y_true, y_score=y_score, average="weighted", multi_class="ovo"
-            ),
+            # f"{metric_prefix}roc_auc_score": roc_auc_score(
+            #     y_true=y_true, y_score=y_score, average="weighted", multi_class="ovo"
+            # ),
             f"{metric_prefix}f1_score": f1_score(y_true, y_score),
             f"{metric_prefix}accuracy_score": accuracy_score(y_true, y_score),
         }
