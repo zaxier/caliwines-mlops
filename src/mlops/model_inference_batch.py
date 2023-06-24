@@ -118,7 +118,12 @@ class ModelInferenceBatchPipeline:
 
         """
         _logger.info("==========Running batch model inference==========")
-        pred_df = self.run_batch().withColumn("model_details", struct([lit(self.model_uri)]))
+        pred_df = self.run_batch().withColumn(
+            "model_details",
+            struct(
+                lit(self.model_uri).alias("model_uri"),
+            ),
+        )
 
         _logger.info("==========Writing predictions to output table==========")
         _logger.info(f"mode={mode}")
