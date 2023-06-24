@@ -13,7 +13,7 @@ resource "databricks_job" "data_setup_git" {
 
 
     notebook_task {
-      notebook_path = "notebooks/_cali_mlops_data_generator/data_cleanup"
+      notebook_path = "notebooks/_data_generator/data_cleanup"
       base_parameters = tomap({
           env = var.env
       })
@@ -28,7 +28,7 @@ resource "databricks_job" "data_setup_git" {
     existing_cluster_id = databricks_cluster.all_purpose_cluster.id
 
     notebook_task {
-      notebook_path = "notebooks/_cali_mlops_data_generator/data_setup"
+      notebook_path = "notebooks/_data_generator/data_setup"
       base_parameters = tomap({
           env = var.env
       })
@@ -55,7 +55,7 @@ resource "databricks_job" "propval_model_train_git" {
   }
 
   notebook_task {
-    notebook_path = "notebooks/cali_mlops/propval_model_train"
+    notebook_path = "notebooks/cali_property_value/propval_model_train"
     base_parameters = tomap({
         env = var.env
     })
@@ -79,7 +79,7 @@ resource "databricks_job" "propval_model_deployment_git" {
   }
 
   notebook_task {
-    notebook_path = "notebooks/cali_mlops/propval_model_deployment"
+    notebook_path = "notebooks/cali_property_value/propval_model_deployment"
     base_parameters = tomap({
         env = var.env
     })
@@ -103,7 +103,7 @@ resource "databricks_job" "propval_model_inference_batch_git" {
   }
 
   notebook_task {
-    notebook_path = "notebooks/cali_mlops/propval_model_inference_batch"
+    notebook_path = "notebooks/cali_property_value/propval_model_inference_batch"
     base_parameters = tomap({
         env = var.env
     })
@@ -127,7 +127,7 @@ resource "databricks_job" "wineclassif_model_train_git" {
   }
 
   notebook_task {
-    notebook_path = "notebooks/cali_mlops/wineclassif_model_train"
+    notebook_path = "notebooks/cali_wine_quality/wineclassif_model_train"
     base_parameters = tomap({
         env = var.env
     })
@@ -151,7 +151,7 @@ resource "databricks_job" "wineclassif_model_deployment_git" {
   }
 
   notebook_task {
-    notebook_path = "notebooks/cali_mlops/wineclassif_model_deployment"
+    notebook_path = "notebooks/cali_wine_quality/wineclassif_model_deployment"
     base_parameters = tomap({
         env = var.env
     })
@@ -175,7 +175,7 @@ resource "databricks_job" "wineclassif_model_inference_batch_git" {
   }
 
   notebook_task {
-    notebook_path = "notebooks/cali_mlops/wineclassif_model_inference_batch"
+    notebook_path = "notebooks/cali_wine_quality/wineclassif_model_inference_batch"
     base_parameters = tomap({
         env = var.env
     })
@@ -203,7 +203,7 @@ resource "databricks_job" "e2e_job_git" {
 
 
     notebook_task {
-      notebook_path = "notebooks/_cali_mlops_data_generator/data_cleanup"
+      notebook_path = "notebooks/_data_generator/data_cleanup"
       base_parameters = tomap({
           env = var.env
       })
@@ -218,7 +218,7 @@ resource "databricks_job" "e2e_job_git" {
     existing_cluster_id = databricks_cluster.all_purpose_cluster.id
 
     notebook_task {
-      notebook_path = "notebooks/_cali_mlops_data_generator/data_setup"
+      notebook_path = "notebooks/_data_generator/data_setup"
       base_parameters = tomap({
           env = var.env
       })
@@ -233,7 +233,7 @@ resource "databricks_job" "e2e_job_git" {
     existing_cluster_id = databricks_cluster.all_purpose_cluster.id
 
     notebook_task {
-      notebook_path = "notebooks/cali_mlops/propval_model_train"
+      notebook_path = "notebooks/cali_property_value/propval_model_train"
       base_parameters = tomap({
           env = var.env
       })
@@ -248,7 +248,7 @@ resource "databricks_job" "e2e_job_git" {
     existing_cluster_id = databricks_cluster.all_purpose_cluster.id
 
     notebook_task {
-      notebook_path = "notebooks/cali_mlops/propval_model_deployment"
+      notebook_path = "notebooks/cali_property_value/propval_model_deployment"
       base_parameters = tomap({
           env = var.env
       })
@@ -263,7 +263,7 @@ resource "databricks_job" "e2e_job_git" {
     existing_cluster_id = databricks_cluster.all_purpose_cluster.id
 
     notebook_task {
-      notebook_path = "notebooks/cali_mlops/propval_model_inference_batch"
+      notebook_path = "notebooks/cali_property_value/propval_model_inference_batch"
       base_parameters = tomap({
           env = var.env
       })
@@ -278,7 +278,7 @@ resource "databricks_job" "e2e_job_git" {
     existing_cluster_id = databricks_cluster.all_purpose_cluster.id
 
     notebook_task {
-      notebook_path = "notebooks/cali_mlops/wineclassif_model_train"
+      notebook_path = "notebooks/cali_wine_quality/wineclassif_model_train"
       base_parameters = tomap({
           env = var.env
       })
@@ -293,7 +293,7 @@ resource "databricks_job" "e2e_job_git" {
     existing_cluster_id = databricks_cluster.all_purpose_cluster.id
 
     notebook_task {
-      notebook_path = "notebooks/cali_mlops/wineclassif_model_deployment"
+      notebook_path = "notebooks/cali_wine_quality/wineclassif_model_deployment"
       base_parameters = tomap({
           env = var.env
       })
@@ -308,7 +308,7 @@ resource "databricks_job" "e2e_job_git" {
     existing_cluster_id = databricks_cluster.all_purpose_cluster.id
 
     notebook_task {
-      notebook_path = "notebooks/cali_mlops/wineclassif_model_inference_batch"
+      notebook_path = "notebooks/cali_wine_quality/wineclassif_model_inference_batch"
       base_parameters = tomap({
           env = var.env
       })

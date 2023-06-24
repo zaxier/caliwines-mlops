@@ -16,7 +16,14 @@ def filter_job_list(search_string: str, limit: int = 1000):
 
 
 w = WorkspaceClient(profile="azure-field-eng-east")
-search_string = "cali_mlops"
+search_string = "poc-accelerate-mlops"
+for job in filter_job_list(search_string):
+    print("Deleting job: ", job.settings.name)
+    w.jobs.delete(job_id=job.job_id)
+
+
+w = WorkspaceClient(profile="DEFAULT")
+search_string = "poc-accelerate-mlops"
 for job in filter_job_list(search_string):
     print("Deleting job: ", job.settings.name)
     w.jobs.delete(job_id=job.job_id)

@@ -24,7 +24,7 @@ from src.mlops.plot_utils import PlotGenerator
 # COMMAND ----------
 # DBTITLE 1,Load Config
 # Load env vars from config file (`conf/env_name/` dir)
-env_vars = load_and_set_env_vars(env=dbutils.widgets.get("env"), project="cali_mlops")
+env_vars = load_and_set_env_vars(env=dbutils.widgets.get("env"))
 
 # Load pipeline config from config file (`conf/pipeline_config/` dir)
 pipeline_config = load_config(

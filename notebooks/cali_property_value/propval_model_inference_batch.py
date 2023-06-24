@@ -18,7 +18,7 @@ from src.mlops.model_inference_batch import ModelInferenceBatchPipeline
 # COMMAND ----------
 # DBTITLE 1,Setup Pipeline Config
 # Load env vars from config file (`conf/env_name/` dir)
-env_vars = load_and_set_env_vars(env=dbutils.widgets.get("env"), project="cali_mlops")
+env_vars = load_and_set_env_vars(env=dbutils.widgets.get("env"))
 job_id = dbutils.widgets.get(
     "job-id"
 )  # TODO: add a generic job metadata dict/class to pass to pipeline add job_id to metadata pulled from model version etc.

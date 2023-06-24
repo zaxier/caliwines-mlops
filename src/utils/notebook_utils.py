@@ -11,7 +11,7 @@ from pyspark.sql import SparkSession
 relative_root = os.path.join(os.pardir, os.pardir)
 
 
-def load_and_set_env_vars(env: str, project: str) -> Dict[str, Any]:
+def load_and_set_env_vars(env: str) -> Dict[str, Any]:
     """
     Utility function to use in Databricks notebooks to load .env files and set them via os
     Return a dict of set environment variables
@@ -25,10 +25,10 @@ def load_and_set_env_vars(env: str, project: str) -> Dict[str, Any]:
     -------
     Dictionary of set environment variables
     """
-    env_vars_path = os.path.join(relative_root, "conf", project, env, f".{env}.env")
+    env_vars_path = os.path.join(relative_root, "conf", env, f".{env}.env")
     dotenv.load_dotenv(env_vars_path)
 
-    base_data_vars_vars_path = os.path.join(relative_root, "conf", project, ".base_data_params.env")
+    base_data_vars_vars_path = os.path.join(relative_root, "conf", ".base_data_params.env")
     dotenv.load_dotenv(base_data_vars_vars_path)
 
     os_dict = dict(os.environ)
