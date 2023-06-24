@@ -27,7 +27,6 @@ print(env_vars)
 # Load pipeline config from config file (`conf/pipeline_config/` dir)
 pipeline_config = load_config(
     pipeline_name="wineclassif_model_deployment_cfg",
-    project="cali_mlops",
 )
 print(pipeline_config)
 

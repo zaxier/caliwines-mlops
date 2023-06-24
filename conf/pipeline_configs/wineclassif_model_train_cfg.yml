@@ -1,6 +1,6 @@
 mlflow_params:
-  model_name: 'wine_rf' # Environment suffix will be added by code
-  run_name: 'wine_new_forest'
+  model_name: 'wine_quality_rf' # Environment suffix will be added by code
+  run_name: 'rf_150_44_1_206'
 preproc_params:
   test_size: 0.33
   random_state: 42

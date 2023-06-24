@@ -30,7 +30,6 @@ env_vars = load_and_set_env_vars(env=dbutils.widgets.get("env"))
 # Load pipeline config from config file (`conf/pipeline_config/` dir)
 pipeline_config = load_config(
     pipeline_name="wineclassif_model_train_cfg",
-    project="cali_mlops",
 )
 
 # COMMAND ----------

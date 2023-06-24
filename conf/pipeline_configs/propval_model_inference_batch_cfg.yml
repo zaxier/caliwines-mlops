@@ -1,5 +1,5 @@
 mlflow_params:
-  model_name: 'cali_housing_rf' # Environment suffix will be added by code
+  model_name: 'property_value_rf' # Environment suffix will be added by code
   model_registry_stage: 'production'
 data_input:
   table_name: 'holdout' 
