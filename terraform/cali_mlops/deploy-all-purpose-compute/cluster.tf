@@ -1,9 +1,3 @@
-variable "cluster_name" {}
-variable "cluster_autotermination_minutes" {}
-variable "cluster_num_workers" {}
-variable "cluster_data_security_mode" {}
-
-
 data "databricks_spark_version" "ml-latest" {
   latest = true
   long_term_support = false
@@ -16,12 +10,12 @@ data "databricks_node_type" "node_type" {
 }
 
 resource "databricks_cluster" "all_purpose_cluster" {
-  cluster_name            = var.cluster_name
+  cluster_name            = "poc-accelerate-ml-cluster--${var.env}"
   node_type_id            = data.databricks_node_type.node_type.id
   spark_version           = data.databricks_spark_version.ml-latest.id
-  autotermination_minutes = var.cluster_autotermination_minutes
-  num_workers             = var.cluster_num_workers
-  data_security_mode      = var.cluster_data_security_mode
+  autotermination_minutes = 120
+  num_workers             = 1
+  data_security_mode      = "SINGLE_USER"
   single_user_name        = data.databricks_current_user.me.user_name
 }
 

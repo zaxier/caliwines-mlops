@@ -11,7 +11,6 @@
 #   path = "/Repos/{data.databricks_current_user.me.user_name}/packaged-poc-mlops/cali_mlops/model_train"
 # }
 
-  
 # resource "databricks_notebook" "model_inference_batch" {
 #   path = "/Repos/{data.databricks_current_user.me.user_name}/packaged-poc-mlops/cali_mlops/model_inference_batch"
 # }
