@@ -201,6 +201,7 @@ resource "databricks_job" "e2e_job_repos" {
       notebook_path = "/Repos/${data.databricks_current_user.me.user_name}/poc-accelerate-mlops/notebooks/cali_property_value/propval_model_deployment"
       base_parameters = tomap({
           env = var.env
+          compare_stag_v_prod = "false"
       })
     }
   } 
@@ -228,7 +229,7 @@ resource "databricks_job" "e2e_job_repos" {
     existing_cluster_id = databricks_cluster.all_purpose_cluster.id
 
     notebook_task {
-      notebook_path = "/Repos/${data.databricks_current_user.me.user_name}/poc-accelerate-mlops/notebooks/cali_property_value/wineclassif_model_train"
+      notebook_path = "/Repos/${data.databricks_current_user.me.user_name}/poc-accelerate-mlops/notebooks/cali_wine_quality/wineclassif_model_train"
       base_parameters = tomap({
           env = var.env
       })
@@ -246,6 +247,7 @@ resource "databricks_job" "e2e_job_repos" {
       notebook_path = "/Repos/${data.databricks_current_user.me.user_name}/poc-accelerate-mlops/notebooks/cali_wine_quality/wineclassif_model_deployment"
       base_parameters = tomap({
           env = var.env
+          compare_stag_v_prod = "false"
       })
     }
   } 
