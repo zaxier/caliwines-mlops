@@ -41,7 +41,7 @@ resource "databricks_job" "data_setup_git" {
 }
 
 resource "databricks_job" "propval_model_train_deploy_git" {
-  name = "${var.project_name}--propval_model_train_deploy_git_job--${var.env}"
+  name = "${var.project_name}--propval_model_train_deploy--git_source--${var.env}"
 
   git_source {
     provider = var.git_provider
@@ -83,7 +83,7 @@ resource "databricks_job" "propval_model_train_deploy_git" {
 }
 
 resource "databricks_job" "propval_model_inference_batch_git" {
-  name = "${var.project_name}--propval_model_inference_batch_git_job--${var.env}"
+  name = "${var.project_name}--propval_model_inference_batch--git_source--${var.env}"
   existing_cluster_id = databricks_cluster.all_purpose_cluster.id
 
   git_source {
@@ -107,7 +107,7 @@ resource "databricks_job" "propval_model_inference_batch_git" {
 }
 
 resource "databricks_job" "wineclassif_model_train_deploy_git" {
-  name = "${var.project_name}--wineclassif_model_train_deploy--git_job--${var.env}"
+  name = "${var.project_name}--wineclassif_model_train_deploy--git_source--${var.env}"
 
   git_source {
     provider = var.git_provider
@@ -149,7 +149,7 @@ resource "databricks_job" "wineclassif_model_train_deploy_git" {
 }
 
 resource "databricks_job" "wineclassif_model_inference_batch_git" {
-  name = "${var.project_name}--wineclassif_model_inference_batch_git_job--${var.env}"
+  name = "${var.project_name}--wineclassif_model_inference_batch--git_source--${var.env}"
   existing_cluster_id = databricks_cluster.all_purpose_cluster.id
 
   git_source {
