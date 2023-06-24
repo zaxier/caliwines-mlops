@@ -82,6 +82,7 @@ resource "databricks_job" "propval_model_deployment_git" {
     notebook_path = "notebooks/cali_property_value/propval_model_deployment"
     base_parameters = tomap({
         env = var.env
+        compare_stag_v_prod = "false"
     })
   }
   
@@ -154,6 +155,7 @@ resource "databricks_job" "wineclassif_model_deployment_git" {
     notebook_path = "notebooks/cali_wine_quality/wineclassif_model_deployment"
     base_parameters = tomap({
         env = var.env
+        compare_stag_v_prod = "false"
     })
   }
   
@@ -251,6 +253,7 @@ resource "databricks_job" "e2e_job_git" {
       notebook_path = "notebooks/cali_property_value/propval_model_deployment"
       base_parameters = tomap({
           env = var.env
+          compare_stag_v_prod = "false"
       })
     }
   } 
@@ -296,6 +299,7 @@ resource "databricks_job" "e2e_job_git" {
       notebook_path = "notebooks/cali_wine_quality/wineclassif_model_deployment"
       base_parameters = tomap({
           env = var.env
+          compare_stag_v_prod = "false"
       })
     }
   } 

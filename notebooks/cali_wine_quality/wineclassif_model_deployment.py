@@ -54,4 +54,7 @@ model_deployment_cfg = ModelDeploymentConfig(
 # COMMAND ----------
 # DBTITLE 1,Execute Pipeline
 model_deployment = ModelDeployment(cfg=model_deployment_cfg)
-model_deployment.run_wo_comparison()
+if dbutils.widgets.get("compare_stag_v_prod").lower() == "true":
+    model_deployment.run()
+else:
+    model_deployment.run_wo_comparison()
