@@ -3,3 +3,4 @@ mlflow_params:
 model_comparison_params:
   metric: 'r2_score'
   higher_is_better: True
+compare_models: True

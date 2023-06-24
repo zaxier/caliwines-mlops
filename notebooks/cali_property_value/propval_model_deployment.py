@@ -23,13 +23,11 @@ from src.mlops.mlflow_utils import MLflowTrackingConfig
 # DBTITLE 1,Load Config
 # Load env vars from config file (`conf/env_name/` dir)
 env_vars = load_and_set_env_vars(env=dbutils.widgets.get("env"))
-print(env_vars)
 
 # Load pipeline config from config file (`conf/pipeline_config/` dir)
 pipeline_config = load_config(
     pipeline_name="propval_model_deployment_cfg",
 )
-print(pipeline_config)
 
 # COMMAND ----------
 # DBTITLE 1,Setup Pipeline Config
@@ -55,7 +53,7 @@ model_deployment_cfg = ModelDeploymentConfig(
 # COMMAND ----------
 # DBTITLE 1,Execute Pipeline
 model_deployment = ModelDeployment(cfg=model_deployment_cfg)
-if dbutils.widgets.get("first_run") == "True":
-    model_deployment.run_wo_comparison()
-else:
+if pipeline_config["compare_models"] == True:
     model_deployment.run()
+else:
+    model_deployment.run_wo_comparison()
