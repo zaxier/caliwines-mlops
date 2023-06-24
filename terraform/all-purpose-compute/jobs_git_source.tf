@@ -10,8 +10,6 @@ resource "databricks_job" "data_setup_git" {
   task {
     task_key = "taskA--data_cleanup"
     existing_cluster_id = databricks_cluster.all_purpose_cluster.id
-
-
     notebook_task {
       notebook_path = "notebooks/_data_generator/data_cleanup"
       base_parameters = tomap({
@@ -26,14 +24,12 @@ resource "databricks_job" "data_setup_git" {
       task_key = "taskA--data_cleanup"
     }
     existing_cluster_id = databricks_cluster.all_purpose_cluster.id
-
     notebook_task {
       notebook_path = "notebooks/_data_generator/data_setup"
       base_parameters = tomap({
           env = var.env
       })
     }
-
   }
 
   email_notifications {
@@ -44,9 +40,8 @@ resource "databricks_job" "data_setup_git" {
 
 }
 
-resource "databricks_job" "propval_model_train_git" {
-  name = "${var.project_name}--propval_model_train_git_job--${var.env}"
-  existing_cluster_id = databricks_cluster.all_purpose_cluster.id
+resource "databricks_job" "propval_model_train_deploy_git" {
+  name = "${var.project_name}--propval_model_train_deploy_git_job--${var.env}"
 
   git_source {
     provider = var.git_provider
@@ -54,36 +49,30 @@ resource "databricks_job" "propval_model_train_git" {
     branch = var.git_branch
   }
 
-  notebook_task {
-    notebook_path = "notebooks/cali_property_value/propval_model_train"
-    base_parameters = tomap({
-        env = var.env
-    })
-  }
-  
-  email_notifications {
-    on_success = [data.databricks_current_user.me.user_name]
-    on_failure = [data.databricks_current_user.me.user_name]
-  }
-
-}
-
-resource "databricks_job" "propval_model_deployment_git" {
-  name = "${var.project_name}--propval_model_deployment_git_job--${var.env}"
-  existing_cluster_id = databricks_cluster.all_purpose_cluster.id
-
-  git_source {
-    provider = var.git_provider
-    url = var.repo_url
-    branch = var.git_branch
+  task {
+    task_key = "taskA--model_train"
+    existing_cluster_id = databricks_cluster.all_purpose_cluster.id
+    notebook_task {
+      notebook_path = "notebooks/cali_property_value/propval_model_train"
+      base_parameters = tomap({
+          env = var.env
+      })
+    }
   }
 
-  notebook_task {
-    notebook_path = "notebooks/cali_property_value/propval_model_deployment"
-    base_parameters = tomap({
-        env = var.env
-        compare_stag_v_prod = "false"
-    })
+  task {
+    task_key = "taskB--model_deploy"
+    depends_on {
+      task_key = "taskA--model_train"
+    }
+    existing_cluster_id = databricks_cluster.all_purpose_cluster.id
+    notebook_task {
+      notebook_path = "notebooks/cali_property_value/propval_model_deployment"
+      base_parameters = tomap({
+          env = var.env
+          compare_stag_v_prod = "true"
+      })
+    }
   }
   
   email_notifications {
@@ -117,9 +106,8 @@ resource "databricks_job" "propval_model_inference_batch_git" {
 
 }
 
-resource "databricks_job" "wineclassif_model_train_git" {
-  name = "${var.project_name}--wineclassif_model_train_git_job--${var.env}"
-  existing_cluster_id = databricks_cluster.all_purpose_cluster.id
+resource "databricks_job" "wineclassif_model_train_deploy_git" {
+  name = "${var.project_name}--wineclassif_model_train_deploy--git_job--${var.env}"
 
   git_source {
     provider = var.git_provider
@@ -127,36 +115,30 @@ resource "databricks_job" "wineclassif_model_train_git" {
     branch = var.git_branch
   }
 
-  notebook_task {
-    notebook_path = "notebooks/cali_wine_quality/wineclassif_model_train"
-    base_parameters = tomap({
-        env = var.env
-    })
-  }
-  
-  email_notifications {
-    on_success = [data.databricks_current_user.me.user_name]
-    on_failure = [data.databricks_current_user.me.user_name]
-  }
-
-}
-
-resource "databricks_job" "wineclassif_model_deployment_git" {
-  name = "${var.project_name}--wineclassif_model_deployment_git_job--${var.env}"
-  existing_cluster_id = databricks_cluster.all_purpose_cluster.id
-
-  git_source {
-    provider = var.git_provider
-    url = var.repo_url
-    branch = var.git_branch
+  task {
+    task_key = "taskA--model_train"
+    existing_cluster_id = databricks_cluster.all_purpose_cluster.id
+    notebook_task {
+      notebook_path = "notebooks/cali_wine_quality/wineclassif_model_train"
+      base_parameters = tomap({
+          env = var.env
+      })
+    }
   }
 
-  notebook_task {
-    notebook_path = "notebooks/cali_wine_quality/wineclassif_model_deployment"
-    base_parameters = tomap({
-        env = var.env
-        compare_stag_v_prod = "false"
-    })
+  task {
+    task_key = "taskB--model_deploy"
+    depends_on {
+      task_key = "taskA--model_train"
+    }
+    existing_cluster_id = databricks_cluster.all_purpose_cluster.id
+    notebook_task {
+      notebook_path = "notebooks/cali_wine_quality/wineclassif_model_deployment"
+      base_parameters = tomap({
+          env = var.env
+          compare_stag_v_prod = "true"
+      })
+    }
   }
   
   email_notifications {
