@@ -1,5 +1,0 @@
-mlflow_params:
-  model_name: 'property_valuation_model' # Environment suffix will be added by code # TODO: You need to check this I don't think it's working as intended
-model_comparison_params:
-  metric: 'r2_score'
-  higher_is_better: True

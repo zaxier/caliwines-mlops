@@ -1,0 +1,11 @@
+mlflow_params:
+  model_name: 'property_value_rf' # Environment suffix will be added by code
+  run_name: 'rf_150_44_1_206'
+preproc_params:
+  test_size: 0.33
+  random_state: 42
+model_params:
+  n_estimators: 150
+  max_depth: 44
+  min_samples_leaf: 1
+  random_state: 206

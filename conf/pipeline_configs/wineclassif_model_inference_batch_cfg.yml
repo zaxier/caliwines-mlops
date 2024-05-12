@@ -1,0 +1,8 @@
+mlflow_params:
+  model_name: 'wine_quality_rf' # Environment suffix will be added by code
+  model_registry_stage: 'production'
+data_input:
+  table_name: 'holdout' 
+data_output:
+  table_name: 'predictions'
+  mode: 'append'

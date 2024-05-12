@@ -5,6 +5,7 @@ import pprint
 import pyspark.sql.dataframe
 import sklearn
 from sklearn.model_selection import train_test_split
+from sklearn.pipeline import Pipeline
 import pandas as pd
 import mlflow
 from mlflow.models import infer_signature
@@ -49,7 +50,7 @@ class ModelTrainConfig:
     mlflow_tracking_cfg: MLflowTrackingConfig
     train_table: Table
     label_col: str
-    model_pipeline: sklearn.pipeline.Pipeline
+    model_pipeline: Pipeline
     model_params: Dict[str, Any]
     preproc_params: Dict[str, Any]
     model_evaluation: Evaluation = None
